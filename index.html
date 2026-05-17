@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPhone Club · Río Cuarto</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   THEME TOKENS
+═══════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --bg:          #080c14;
+  --bg2:         #0d1220;
+  --bg3:         #111827;
+  --surface:     rgba(255,255,255,0.04);
+  --surface2:    rgba(255,255,255,0.07);
+  --border:      rgba(255,255,255,0.09);
+  --border2:     rgba(255,255,255,0.14);
+  --txt:         #f0f4ff;
+  --txt2:        #a8b4cc;
+  --txt3:        #5a6a82;
+  --accent:      #3b82f6;
+  --accent2:     #60a5fa;
+  --accent-glow: rgba(59,130,246,0.30);
+  --accent-dim:  rgba(59,130,246,0.12);
+  --nav-bg:      rgba(8,12,20,0.85);
+  --card-bg:     rgba(13,18,32,0.9);
+  --hero-line:   rgba(255,255,255,0.06);
+  --shadow:      0 20px 60px rgba(0,0,0,0.5);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+}
+[data-theme="light"] {
+  --bg:          #f4f7ff;
+  --bg2:         #eaf0ff;
+  --bg3:         #ffffff;
+  --surface:     rgba(255,255,255,0.75);
+  --surface2:    rgba(255,255,255,0.9);
+  --border:      rgba(30,60,140,0.10);
+  --border2:     rgba(30,60,140,0.18);
+  --txt:         #0d1526;
+  --txt2:        #3d5070;
+  --txt3:        #8294ae;
+  --accent:      #2563eb;
+  --accent2:     #3b82f6;
+  --accent-glow: rgba(37,99,235,0.22);
+  --accent-dim:  rgba(37,99,235,0.09);
+  --nav-bg:      rgba(244,247,255,0.88);
+  --card-bg:     rgba(255,255,255,0.85);
+  --hero-line:   rgba(30,60,140,0.06);
+  --shadow:      0 20px 60px rgba(30,60,140,0.15);
+  --shadow-card: 0 4px 24px rgba(30,60,140,0.10);
+}
+
+/* ═══════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--txt);
+  overflow-x:hidden;
+  min-height:100vh;
+  transition:background .4s ease, color .3s ease;
+}
+
+/* ═══════════════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.8)}}
+@keyframes popIn{0%{transform:scale(1)}40%{transform:scale(1.5)}100%{transform:scale(1)}}
+@keyframes scanLine{0%{transform:translateY(-100%)}100%{transform:translateY(400%)}}
+@keyframes rotateRing{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes revealText{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0% 0 0)}}
+@keyframes shimmerBg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes counterUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;width:100%;z-index:300;
+  background:var(--nav-bg);
+  backdrop-filter:blur(48px) saturate(1.6);
+  -webkit-backdrop-filter:blur(48px) saturate(1.6);
+  border-bottom:1px solid var(--border);
+  transition:background .4s;
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;height:66px;max-width:1440px;margin:0 auto;
+}
+.logo-wrap{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none;transition:.2s}
+.logo-wrap:hover{opacity:.75;transform:scale(.98)}
+.logo-img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:1.5px solid var(--border2);box-shadow:0 0 16px var(--accent-glow)}
+.logo-text-block{display:flex;flex-direction:column;line-height:1.15}
+.logo-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--txt)}
+.logo-city{font-size:.55rem;letter-spacing:3.5px;text-transform:uppercase;color:var(--txt3);font-weight:500}
+nav ul{display:flex;gap:1.8rem;list-style:none}
+nav ul a{
+  color:var(--txt2);text-decoration:none;font-size:.78rem;
+  font-weight:500;letter-spacing:.4px;transition:.2s;
+  position:relative;padding-bottom:3px;
+}
+nav ul a::after{
+  content:'';position:absolute;bottom:-3px;left:50%;right:50%;
+  height:1.5px;background:var(--accent);border-radius:99px;transition:.25s;
+}
+nav ul a:hover{color:var(--accent2)}
+nav ul a:hover::after{left:0;right:0}
+.nav-right{display:flex;align-items:center;gap:7px}
+.nav-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:10px;
+  background:var(--surface);color:var(--txt2);
+  border:1px solid var(--border);cursor:pointer;
+  transition:.2s;text-decoration:none;position:relative;
+}
+.nav-btn svg{width:14px;height:14px;fill:currentColor}
+.nav-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Theme toggle */
+.theme-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:10px;
+  background:var(--surface);color:var(--txt2);
+  border:1px solid var(--border);cursor:pointer;
+  transition:.2s;font-size:.9rem;
+}
+.theme-btn:hover{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
+
+.cart-badge{
+  position:absolute;top:-5px;right:-5px;
+  background:var(--accent);color:#fff;
+  width:16px;height:16px;border-radius:50%;
+  font-size:.5rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+}
+.cart-badge.pop{animation:popIn .3s ease}
+
+/* ═══════════════════════════════════════════════
+   PAGES
+═══════════════════════════════════════════════ */
+.page{display:none;min-height:100vh}
+.page.active{display:block;animation:fadeIn .3s ease}
+
+/* ═══════════════════════════════════════════════
+   ████  EPIC HERO  ████
+═══════════════════════════════════════════════ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;
+  padding:80px 5% 60px;
+  overflow:hidden;
+  background:var(--bg);
+}
+
+/* deep space / mesh background */
+.hero::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(59,130,246,.13) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 5%  60%, rgba(99,102,241,.09) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 5%,  rgba(59,130,246,.07) 0%, transparent 50%);
+  pointer-events:none;
+}
+
+/* animated grid lines */
+.hero-grid{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--hero-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-line) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
+}
+
+/* scan line effect */
+.hero-scan{
+  position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+.hero-scan::after{
+  content:'';position:absolute;left:0;right:0;height:3px;
+  background:linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+  animation:scanLine 5s linear infinite;
+}
+
+/* floating orbs */
+.hero-orb{
+  position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;
+  animation:float 8s ease-in-out infinite;
+}
+.hero-orb-1{
+  width:600px;height:600px;top:-150px;right:-100px;
+  background:radial-gradient(circle, rgba(59,130,246,.14) 0%, transparent 70%);
+  animation-delay:-3s;
+}
+.hero-orb-2{
+  width:400px;height:400px;bottom:-100px;left:-100px;
+  background:radial-gradient(circle, rgba(99,102,241,.10) 0%, transparent 70%);
+  animation-delay:-6s;
+}
+
+/* hero layout */
+.hero-layout{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;
+  align-items:center;max-width:1300px;margin:0 auto;width:100%;
+}
+
+/* left: text */
+.hero-text{}
+.hero-chip{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--surface);border:1px solid var(--border2);
+  padding:7px 16px;border-radius:99px;margin-bottom:32px;
+  backdrop-filter:blur(20px);
+  animation:fadeUp .5s ease both;
+}
+.chip-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--accent);
+  animation:pulse 2s infinite;box-shadow:0 0 8px var(--accent);
+}
+.chip-txt{font-size:.68rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent2)}
+
+.hero-headline{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(3.2rem,6.5vw,6rem);
+  line-height:.95;letter-spacing:-2.5px;font-weight:800;
+  margin-bottom:8px;
+  animation:fadeUp .6s .1s ease both;
+}
+.hero-headline .line1{display:block;color:var(--txt)}
+.hero-headline .line2{
+  display:block;
+  background:linear-gradient(135deg, var(--accent), var(--accent2), #a5f3fc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% 200%;
+  animation:fadeUp .6s .2s ease both, shimmerBg 4s ease infinite;
+}
+.hero-headline .line3{display:block;color:var(--txt)}
+.hero-city-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);
+  font-weight:600;color:var(--txt3);letter-spacing:-1px;
+  margin-bottom:28px;
+  animation:fadeUp .6s .3s ease both;
+}
+.hero-city-tag::before{
+  content:'';display:block;width:24px;height:2px;
+  background:var(--accent);border-radius:99px;
+}
+
+.hero-desc{
+  font-size:.95rem;color:var(--txt2);line-height:1.8;
+  margin-bottom:40px;max-width:420px;
+  animation:fadeUp .6s .4s ease both;
+}
+.hero-actions{
+  display:flex;gap:12px;flex-wrap:wrap;
+  animation:fadeUp .6s .5s ease both;
+}
+
+/* right: epic phone mockup area */
+.hero-visual{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  animation:fadeUp .7s .2s ease both;
+}
+
+/* rotating ring */
+.hero-ring{
+  position:absolute;
+  width:380px;height:380px;border-radius:50%;
+  border:1px solid transparent;
+  background:
+    linear-gradient(var(--bg),var(--bg)) padding-box,
+    conic-gradient(from 0deg, var(--accent), transparent 50%, var(--accent2)) border-box;
+  animation:rotateRing 12s linear infinite;
+}
+.hero-ring-2{
+  width:460px;height:460px;
+  background:
+    linear-gradient(var(--bg),var(--bg)) padding-box,
+    conic-gradient(from 180deg, rgba(99,102,241,.5), transparent 60%, rgba(59,130,246,.3)) border-box;
+  animation:rotateRing 20s linear infinite reverse;
+}
+
+/* central phone card */
+.hero-phone-card{
+  position:relative;z-index:3;
+  background:var(--card-bg);
+  border:1px solid var(--border2);
+  border-radius:36px;
+  padding:36px 32px 28px;
+  width:260px;
+  backdrop-filter:blur(40px);
+  box-shadow:0 32px 80px rgba(0,0,0,.5), 0 0 0 1px var(--border), 0 0 80px var(--accent-glow);
+  animation:float 5s ease-in-out infinite;
+}
+.phone-card-img{
+  width:100%;max-width:180px;display:block;margin:0 auto 20px;
+  filter:drop-shadow(0 20px 40px rgba(59,130,246,.3));
+  transition:.3s;
+}
+.hero-phone-card:hover .phone-card-img{transform:scale(1.04) translateY(-4px)}
+.phone-card-name{
+  font-family:'Syne',sans-serif;
+  font-size:1.1rem;font-weight:700;text-align:center;
+  color:var(--txt);margin-bottom:4px;
+}
+.phone-card-sub{
+  font-size:.7rem;text-align:center;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--txt3);margin-bottom:16px;
+}
+.phone-card-price{
+  background:var(--accent-dim);border:1px solid rgba(59,130,246,.2);
+  border-radius:12px;padding:10px 16px;text-align:center;
+}
+.phone-card-price-label{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
+.phone-card-price-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:var(--accent2)}
+
+/* floating badges */
+.hero-badge{
+  position:absolute;background:var(--card-bg);
+  border:1px solid var(--border2);backdrop-filter:blur(20px);
+  border-radius:16px;padding:12px 18px;
+  box-shadow:var(--shadow-card);
+  animation:float 6s ease-in-out infinite;
+}
+.hero-badge-1{top:0;left:-60px;animation-delay:-1s}
+.hero-badge-2{bottom:20px;right:-60px;animation-delay:-3.5s}
+.hb-label{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
+.hb-val{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;color:var(--txt)}
+
+/* scroll indicator */
+.hero-scroll{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fadeIn 1s 1s ease both;
+}
+.hero-scroll-dot{
+  width:4px;height:20px;border-radius:99px;
+  border:1.5px solid var(--txt3);position:relative;overflow:hidden;
+}
+.hero-scroll-dot::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:8px;
+  background:var(--accent);border-radius:99px;
+  animation:scanLine 1.5s linear infinite;
+}
+.hero-scroll-txt{font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--txt3)}
+
+/* ═══════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════ */
+.btn-blue{
+  background:var(--accent);color:#fff;
+  padding:13px 30px;border-radius:12px;
+  font-weight:600;font-size:.8rem;text-decoration:none;
+  letter-spacing:.4px;transition:.25s;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;display:inline-block;
+  box-shadow:0 8px 28px var(--accent-glow);
+}
+.btn-blue:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 14px 40px var(--accent-glow)}
+.btn-glass{
+  background:var(--surface);color:var(--txt2);
+  padding:12px 30px;border-radius:12px;
+  font-weight:500;font-size:.8rem;text-decoration:none;
+  border:1px solid var(--border2);transition:.25s;
+  cursor:pointer;display:inline-block;letter-spacing:.4px;
+  font-family:'DM Sans',sans-serif;backdrop-filter:blur(16px);
+}
+.btn-glass:hover{border-color:var(--accent);color:var(--accent2);transform:translateY(-2px)}
+
+/* ═══════════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════════ */
+section{padding:90px 5%;position:relative;z-index:1}
+.sec-head{margin-bottom:52px}
+.sec-label{
+  font-size:.62rem;letter-spacing:4px;text-transform:uppercase;
+  color:var(--accent2);font-weight:600;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-label::before{
+  content:'';display:block;width:24px;height:1.5px;
+  background:linear-gradient(90deg, var(--accent), transparent);border-radius:99px;
+}
+.sec-head h2{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.1;
+  color:var(--txt);letter-spacing:-1px;
+}
+.sec-head h2 span{color:var(--accent2)}
+.sec-head p{color:var(--txt2);margin-top:10px;font-size:.9rem;font-weight:400;max-width:480px;line-height:1.7}
+
+/* ═══════════════════════════════════════════════
+   PRODUCT CARDS
+═══════════════════════════════════════════════ */
+.products-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;
+}
+.prod-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:24px 20px;
+  position:relative;cursor:pointer;transition:.3s cubic-bezier(.22,1,.36,1);
+  text-align:center;backdrop-filter:blur(20px);
+}
+.prod-card:hover{
+  transform:translateY(-6px) scale(1.01);
+  border-color:var(--accent);
+  box-shadow:0 20px 50px rgba(0,0,0,.3), 0 0 0 1px rgba(59,130,246,.2);
+}
+.prod-card:hover .prod-img{transform:scale(1.08) translateY(-6px)}
+.prod-badge{
+  position:absolute;top:14px;left:14px;
+  font-size:.55rem;font-weight:700;letter-spacing:1.5px;
+  padding:4px 11px;border-radius:99px;text-transform:uppercase;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--txt2);backdrop-filter:blur(8px);
+}
+.prod-badge.nuevo{
+  background:var(--accent);color:#fff;border-color:transparent;
+  box-shadow:0 4px 14px var(--accent-glow);
+}
+.prod-badge.sinstock{background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.2)}
+.prod-img{width:100%;max-width:140px;height:140px;object-fit:contain;margin:8px auto 16px;display:block;transition:.35s;filter:drop-shadow(0 10px 20px rgba(0,0,0,.3))}
+.prod-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--txt);margin-bottom:3px}
+.prod-storage{font-size:.65rem;letter-spacing:.8px;color:var(--txt3);margin-bottom:12px}
+.prod-price-label{font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:3px;font-weight:600}
+.prod-price{font-size:1.35rem;color:var(--accent2);font-weight:700;letter-spacing:-.5px}
+.prod-usd{font-size:.68rem;color:var(--txt3);margin-top:2px;letter-spacing:.8px}
+.prod-actions{margin-top:16px;display:flex;flex-direction:column;gap:7px}
+.prod-btn{
+  padding:9px;border-radius:10px;font-size:.7rem;font-weight:600;
+  cursor:pointer;transition:.2s;width:100%;letter-spacing:.4px;
+  font-family:'DM Sans',sans-serif;border:none;
+}
+.prod-btn-main{background:var(--accent);color:#fff;box-shadow:0 4px 14px var(--accent-glow)}
+.prod-btn-main:hover{transform:translateY(-1px);filter:brightness(1.1)}
+.prod-btn-ghost{background:var(--surface2);border:1px solid var(--border2);color:var(--txt2)}
+.prod-btn-ghost:hover{border-color:var(--accent);color:var(--accent2)}
+.prod-btn-disabled{background:var(--surface);color:var(--txt3);border:1px solid var(--border);cursor:default}
+
+/* ═══════════════════════════════════════════════
+   USED GRID
+═══════════════════════════════════════════════ */
+.used-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+
+/* ═══════════════════════════════════════════════
+   FILTER BAR
+═══════════════════════════════════════════════ */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.filter-btn{
+  padding:7px 18px;border-radius:99px;font-size:.72rem;font-weight:600;
+  cursor:pointer;transition:.2s;border:1px solid var(--border2);
+  background:var(--surface);color:var(--txt2);
+  font-family:'DM Sans',sans-serif;letter-spacing:.3px;backdrop-filter:blur(12px);
+}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent2)}
+.filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px var(--accent-glow)}
+
+/* ═══════════════════════════════════════════════
+   ACCESSORIES
+═══════════════════════════════════════════════ */
+.acc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:13px}
+.acc-card{
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(20px);border-radius:18px;
+  padding:26px 18px;text-align:center;cursor:pointer;transition:.3s;
+}
+.acc-card:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.acc-icon{font-size:2rem;margin-bottom:10px;display:block;transition:.3s}
+.acc-card:hover .acc-icon{transform:scale(1.2) rotate(-5deg)}
+.acc-card h3{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;margin-bottom:4px;color:var(--txt)}
+.acc-card p{font-size:.68rem;color:var(--txt3)}
+
+/* ═══════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════ */
+.stats-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:13px;margin-bottom:80px;
+}
+.stat-item{
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(20px);border-radius:18px;
+  padding:28px 22px;text-align:center;transition:.3s;
+}
+.stat-item:hover{transform:translateY(-4px);border-color:var(--accent)}
+.stat-num{
+  font-family:'Syne',sans-serif;
+  font-size:2.4rem;color:var(--accent2);line-height:1;
+  margin-bottom:6px;font-weight:800;letter-spacing:-1px;
+}
+.stat-label{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);font-weight:500}
+
+/* ═══════════════════════════════════════════════
+   REVIEWS
+═══════════════════════════════════════════════ */
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.review-card{
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(20px);border-radius:20px;padding:28px;
+  transition:.3s;
+}
+.review-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.stars{color:var(--accent2);font-size:.85rem;letter-spacing:2px;margin-bottom:14px}
+.review-text{font-size:.86rem;color:var(--txt2);line-height:1.75;margin-bottom:20px}
+.reviewer{display:flex;align-items:center;gap:12px}
+.avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg, var(--accent), #6366f1);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.75rem;color:#fff;flex-shrink:0;
+}
+.rev-name{font-weight:600;font-size:.82rem;color:var(--txt)}
+.rev-date{font-size:.65rem;color:var(--txt3);letter-spacing:.8px}
+
+/* ═══════════════════════════════════════════════
+   UBICACION
+═══════════════════════════════════════════════ */
+.ubicacion-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.ubi-detail{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
+.ubi-icon-wrap{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:1rem;border:1px solid rgba(59,130,246,.15);
+}
+.ubi-detail p{color:var(--txt2);font-size:.86rem;line-height:1.65}
+.ubi-detail strong{color:var(--txt);font-weight:600;display:block;margin-bottom:2px}
+.map-box{
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(20px);border-radius:20px;height:280px;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;font-size:2.6rem;position:relative;overflow:hidden;
+}
+.map-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%, var(--accent-dim), transparent 65%);
+}
+.map-box p{font-size:.78rem;color:var(--txt3);z-index:1;letter-spacing:1px}
+
+/* ═══════════════════════════════════════════════
+   INNER PAGES
+═══════════════════════════════════════════════ */
+.inner-back{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--accent2);cursor:pointer;font-size:.76rem;
+  letter-spacing:.5px;font-weight:600;
+  padding:88px 5% 0;transition:.2s;position:relative;z-index:1;
+}
+.inner-back:hover{opacity:.7}
+.inner-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+
+/* ═══════════════════════════════════════════════
+   DETAIL PAGE
+═══════════════════════════════════════════════ */
+.detail-wrap{padding:36px 5% 100px;position:relative;z-index:1}
+.detail-layout{display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:start}
+.detail-img-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(20px);border-radius:24px;
+  display:flex;align-items:center;justify-content:center;
+  padding:56px;min-height:380px;
+}
+.detail-img{width:100%;max-width:280px;object-fit:contain;filter:drop-shadow(0 20px 40px rgba(0,0,0,.4))}
+.detail-tag{
+  display:inline-block;font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--accent2);border:1px solid var(--accent-dim);
+  background:var(--accent-dim);padding:5px 14px;border-radius:99px;margin-bottom:14px;font-weight:600;
+}
+.detail-name{font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;line-height:1.05;margin-bottom:6px;letter-spacing:-1px;color:var(--txt)}
+.detail-storage{font-size:.72rem;color:var(--txt3);letter-spacing:2px;text-transform:uppercase;margin-bottom:22px;font-weight:500}
+.detail-price{font-family:'Syne',sans-serif;font-size:2.2rem;color:var(--accent2);font-weight:800;margin-bottom:4px;letter-spacing:-1px}
+.detail-usd{font-size:.76rem;color:var(--txt3);letter-spacing:.8px;margin-bottom:26px}
+.detail-desc{color:var(--txt2);line-height:1.8;font-size:.88rem;margin-bottom:26px}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;margin-bottom:26px}
+.spec-card{
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(12px);padding:12px 14px;border-radius:14px;
+}
+.spec-card span{font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);font-weight:600}
+.spec-card strong{display:block;margin-top:4px;font-size:.82rem;font-weight:600;color:var(--txt)}
+.detail-benefits{list-style:none;margin-bottom:26px}
+.detail-benefits li{
+  padding:10px 0;border-bottom:1px solid var(--border);
+  color:var(--txt2);font-size:.86rem;font-weight:400;display:flex;align-items:center;gap:12px;
+}
+.detail-benefits li::before{
+  content:'';display:block;width:5px;height:5px;border-radius:50%;
+  background:var(--accent2);flex-shrink:0;box-shadow:0 0 6px var(--accent-glow);
+}
+.detail-actions{display:flex;flex-direction:column;gap:9px}
+.installments{margin-bottom:10px}
+.installment-item{
+  display:flex;justify-content:space-between;
+  padding:9px 14px;background:var(--surface);border-radius:10px;
+  border:1px solid var(--border);margin-bottom:6px;
+  font-size:.78rem;color:var(--txt2);
+}
+.installment-item strong{color:var(--txt);font-weight:600}
+
+/* ═══════════════════════════════════════════════
+   CART PAGE
+═══════════════════════════════════════════════ */
+.cart-wrap{padding:36px 5% 100px;position:relative;z-index:1}
+.cart-layout{display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start}
+.cart-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:32px;color:var(--txt);letter-spacing:-.8px}
+.cart-item{
+  display:flex;align-items:center;gap:14px;
+  padding:18px 20px;background:var(--surface);
+  border:1px solid var(--border);border-radius:16px;margin-bottom:10px;
+}
+.cart-item-icon{font-size:2rem}
+.cart-item-info{flex:1}
+.cart-item-info h3{font-size:.88rem;font-weight:600;color:var(--txt);margin-bottom:3px}
+.cart-item-info p{font-size:.72rem;color:var(--txt3)}
+.qty-box{display:flex;align-items:center;gap:10px}
+.qty-box button{
+  width:28px;height:28px;border-radius:8px;border:1px solid var(--border2);
+  background:var(--surface2);color:var(--txt);font-size:.9rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.qty-box button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.qty-box span{font-size:.88rem;font-weight:600;min-width:20px;text-align:center;color:var(--txt)}
+.cart-item-price{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--accent2);min-width:90px;text-align:right}
+.cart-remove{
+  background:none;border:none;cursor:pointer;color:var(--txt3);font-size:.8rem;
+  padding:4px 7px;border-radius:6px;transition:.15s;
+}
+.cart-remove:hover{color:#f87171;background:rgba(239,68,68,.1)}
+.cart-summary{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:28px;backdrop-filter:blur(20px);position:sticky;top:90px;
+}
+.summary-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:22px;color:var(--txt)}
+.summary-row{display:flex;justify-content:space-between;margin-bottom:11px;font-size:.82rem;color:var(--txt2)}
+.summary-total{
+  display:flex;justify-content:space-between;
+  padding-top:14px;margin-top:8px;
+  border-top:1px solid var(--border2);
+  font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--txt);
+}
+.cart-empty{
+  text-align:center;padding:60px 20px;color:var(--txt3);
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+}
+.cart-empty span{display:block;font-size:2.5rem;margin-bottom:14px}
+
+/* ═══════════════════════════════════════════════
+   CHECKOUT PAGE
+═══════════════════════════════════════════════ */
+.checkout-wrap{padding:36px 5% 100px;position:relative;z-index:1}
+.checkout-layout{display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start}
+.form-group{margin-bottom:18px}
+.form-group label{
+  display:block;font-size:.72rem;font-weight:600;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--txt3);margin-bottom:8px;
+}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:12px 16px;
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:12px;color:var(--txt);font-size:.86rem;
+  font-family:'DM Sans',sans-serif;transition:.2s;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);
+}
+.form-group textarea{min-height:90px;resize:vertical}
+.order-summary-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:28px;backdrop-filter:blur(20px);
+  position:sticky;top:90px;
+}
+.order-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--border);
+}
+.order-item-icon{font-size:1.8rem}
+.order-item-info{flex:1}
+.order-item-info h3{font-size:.84rem;font-weight:600;color:var(--txt)}
+.order-item-info p{font-size:.68rem;color:var(--txt3)}
+.order-item-price{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;color:var(--accent2)}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{
+  background:var(--surface);border-top:1px solid var(--border);
+  backdrop-filter:blur(28px);padding:40px 5%;position:relative;z-index:1;
+  display:grid;grid-template-columns:auto 1fr auto;gap:40px;align-items:center;
+}
+.foot-logo{display:flex;align-items:center;gap:11px}
+.foot-logo-img{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);object-fit:cover}
+.foot-logo-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--txt)}
+.foot-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.foot-links a{color:var(--txt3);text-decoration:none;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;transition:.2s}
+.foot-links a:hover{color:var(--accent2)}
+.foot-copy{font-size:.68rem;color:var(--txt3);text-align:right}
+
+/* ═══════════════════════════════════════════════
+   WA FLOAT
+═══════════════════════════════════════════════ */
+.wa-btn{
+  position:fixed;bottom:28px;right:28px;z-index:200;
+  background:#25d366;color:#fff;width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;box-shadow:0 6px 24px rgba(37,211,102,.4);transition:.25s;
+}
+.wa-btn:hover{transform:scale(1.12);box-shadow:0 10px 32px rgba(37,211,102,.6)}
+.wa-btn svg{width:22px;height:22px;fill:#fff}
+
+/* ═══════════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:960px){
+  nav ul{display:none}
+  .hero-layout{grid-template-columns:1fr;gap:48px}
+  .hero-visual{display:none}
+  .hero{min-height:auto;padding:120px 5% 80px}
+  .ubicacion-grid,.detail-layout,.cart-layout,.checkout-layout{grid-template-columns:1fr}
+  footer{grid-template-columns:1fr;text-align:center}
+  .foot-copy{text-align:center}
+  .foot-links{justify-content:center}
+  .hero-ring,.hero-ring-2{width:280px;height:280px}
+}
+@media(max-width:480px){
+  .hero-headline{font-size:2.8rem}
+  .products-grid,.used-grid{grid-template-columns:1fr 1fr}
+  .acc-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo-wrap" onclick="showPage('storePage')">
+      <img class="logo-img" src="https://i.postimg.cc/bJQtzx0h/iphoner4.png" alt="IPhone Club Río Cuarto" onerror="this.style.display='none'">
+      <div class="logo-text-block">
+        <span class="logo-name">IPhone Club</span>
+        <span class="logo-city">Río Cuarto</span>
+      </div>
+    </div>
+    <ul>
+      <li><a href="#sellados" onclick="showPage('storePage')">Sellados</a></li>
+      <li><a href="#seminuevos" onclick="showPage('storePage')">Seminuevos</a></li>
+      <li><a href="#accesorios" onclick="showPage('storePage')">Accesorios</a></li>
+      <li><a href="#clientes" onclick="showPage('storePage')">Clientes</a></li>
+      <li><a href="#ubicacion" onclick="showPage('storePage')">Ubicación</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
+      <a href="https://www.instagram.com/iphone.club.riocuarto" target="_blank" class="nav-btn" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://wa.me/5493584000000" target="_blank" class="nav-btn" title="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+      <button class="nav-btn" onclick="openCartPage()" title="Carrito" style="position:relative">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;fill:none">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- STORE PAGE -->
+<div id="storePage" class="page active">
+
+<!-- ████████  EPIC HERO  ████████ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-scan"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="hero-layout">
+    <!-- LEFT: TEXT -->
+    <div class="hero-text">
+      <div class="hero-chip">
+        <span class="chip-dot"></span>
+        <span class="chip-txt">Tienda oficial · Río Cuarto</span>
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="line1">iPhone</span>
+        <span class="line2">Club</span>
+        <span class="line3">RC</span>
+      </h1>
+      <div class="hero-city-tag">Río Cuarto · Córdoba</div>
+
+      <p class="hero-desc">
+        Sellados y seminuevos seleccionados con garantía real, financiación y envío a todo el país. La experiencia Apple que merecés, al precio que querés.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#sellados" class="btn-blue" onclick="showPage('storePage')">Explorar productos</a>
+        <a href="https://wa.me/5493584000000" target="_blank" class="btn-glass">Consultar por WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- RIGHT: VISUAL -->
+    <div class="hero-visual">
+      <div class="hero-ring hero-ring-2"></div>
+      <div class="hero-ring"></div>
+
+      <div class="hero-phone-card">
+        <img class="phone-card-img"
+          src="https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png"
+          alt="iPhone 17 Pro">
+        <div class="phone-card-name">iPhone 17 Pro</div>
+        <div class="phone-card-sub">512 GB · Silver · Sellado</div>
+        <div class="phone-card-price">
+          <div class="phone-card-price-label">Desde</div>
+          <div class="phone-card-price-val">USD 1400</div>
+        </div>
+      </div>
+
+      <div class="hero-badge hero-badge-1">
+        <div class="hb-label">Equipos vendidos</div>
+        <div class="hb-val">500+</div>
+      </div>
+      <div class="hero-badge hero-badge-2">
+        <div class="hb-label">Calificación</div>
+        <div class="hb-val">5 ★ promedio</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-dot"></div>
+    <span class="hero-scroll-txt">Scroll</span>
+  </div>
+</section>
+
+<!-- STATS -->
+<section style="padding:0 5% 60px">
+  <div class="stats-row reveal">
+    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Equipos vendidos</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Garantía incluida</div></div>
+    <div class="stat-item"><div class="stat-num">24h</div><div class="stat-label">Envíos al país</div></div>
+    <div class="stat-item"><div class="stat-num">5★</div><div class="stat-label">Calificación promedio</div></div>
+  </div>
+</section>
+
+<!-- SELLADOS -->
+<section id="sellados">
+  <div class="sec-head reveal">
+    <div class="sec-label">Colección premium</div>
+    <h2>iPhone <span>Sellados</span></h2>
+    <p>Equipos nuevos, de fábrica, con caja y accesorios originales.</p>
+  </div>
+  <div class="products-grid">
+
+    <!-- ── iPhone 16 · Ultramarine ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone16_ultramarine')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png" alt="iPhone 16 Ultramarine">
+      <div class="prod-name">iPhone 16</div>
+      <div class="prod-storage">128 GB · Ultramarine · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="840">$0</div>
+      <div class="prod-usd">USD 840</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone16_ultramarine')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 128GB Ultramarine Sellado','📱',Math.round(840*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 16 · White ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone16_white')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png" alt="iPhone 16 White">
+      <div class="prod-name">iPhone 16</div>
+      <div class="prod-storage">128 GB · White · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="840">$0</div>
+      <div class="prod-usd">USD 840</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone16_white')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 128GB White Sellado','📱',Math.round(840*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 16 · Black ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone16_black')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png" alt="iPhone 16 Black">
+      <div class="prod-name">iPhone 16</div>
+      <div class="prod-storage">128 GB · Black · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="840">$0</div>
+      <div class="prod-usd">USD 840</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone16_black')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 128GB Black Sellado','📱',Math.round(840*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 16 · Pink ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone16_pink')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png" alt="iPhone 16 Pink">
+      <div class="prod-name">iPhone 16</div>
+      <div class="prod-storage">128 GB · Pink · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="840">$0</div>
+      <div class="prod-usd">USD 840</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone16_pink')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 128GB Pink Sellado','📱',Math.round(840*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 · White ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17_white')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png" alt="iPhone 17 White">
+      <div class="prod-name">iPhone 17</div>
+      <div class="prod-storage">256 GB · White · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="920">$0</div>
+      <div class="prod-usd">USD 920</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17_white')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 256GB White Sellado','📱',Math.round(920*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 · Lavender ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17_lavender')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png" alt="iPhone 17 Lavender">
+      <div class="prod-name">iPhone 17</div>
+      <div class="prod-storage">256 GB · Lavender · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="920">$0</div>
+      <div class="prod-usd">USD 920</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17_lavender')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 256GB Lavender Sellado','📱',Math.round(920*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 · Black ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17_black')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png" alt="iPhone 17 Black">
+      <div class="prod-name">iPhone 17</div>
+      <div class="prod-storage">256 GB · Black · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="920">$0</div>
+      <div class="prod-usd">USD 920</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17_black')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 256GB Black Sellado','📱',Math.round(920*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 Pro · 256GB · Cuatro Orange ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17pro_256_orange')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png" alt="iPhone 17 Pro Cuatro Orange">
+      <div class="prod-name">iPhone 17 Pro</div>
+      <div class="prod-storage">256 GB · Cuatro Orange · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="1370">$0</div>
+      <div class="prod-usd">USD 1370</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17pro_256_orange')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 Pro 256GB Cuatro Orange Sellado','📱',Math.round(1370*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 Pro · 256GB · Silver ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17pro_256_silver')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png" alt="iPhone 17 Pro Silver">
+      <div class="prod-name">iPhone 17 Pro</div>
+      <div class="prod-storage">256 GB · Silver · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="1370">$0</div>
+      <div class="prod-usd">USD 1370</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17pro_256_silver')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 Pro 256GB Silver Sellado','📱',Math.round(1370*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 Pro · 512GB · Silver ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17pro_512_silver')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png" alt="iPhone 17 Pro 512 Silver">
+      <div class="prod-name">iPhone 17 Pro</div>
+      <div class="prod-storage">512 GB · Silver · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="1600">$0</div>
+      <div class="prod-usd">USD 1600</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17pro_512_silver')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 Pro 512GB Silver Sellado','📱',Math.round(1600*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 Pro Max · 256GB · Silver ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17promax_256_silver')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png" alt="iPhone 17 Pro Max Silver">
+      <div class="prod-name">iPhone 17 Pro Max</div>
+      <div class="prod-storage">256 GB · Silver · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="1530">$0</div>
+      <div class="prod-usd">USD 1530</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17promax_256_silver')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 Pro Max 256GB Silver Sellado','📱',Math.round(1530*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 Pro Max · 256GB · Deep Blue ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17promax_256_deepblue')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png" alt="iPhone 17 Pro Max Deep Blue">
+      <div class="prod-name">iPhone 17 Pro Max</div>
+      <div class="prod-storage">256 GB · Deep Blue · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="1530">$0</div>
+      <div class="prod-usd">USD 1530</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17promax_256_deepblue')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 Pro Max 256GB Deep Blue Sellado','📱',Math.round(1530*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 Pro Max · 512GB · Cuatro Orange ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17promax_512_orange')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png" alt="iPhone 17 Pro Max Cuatro Orange">
+      <div class="prod-name">iPhone 17 Pro Max</div>
+      <div class="prod-storage">512 GB · Cuatro Orange · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="1530">$0</div>
+      <div class="prod-usd">USD 1530</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17promax_512_orange')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 Pro Max 512GB Cuatro Orange Sellado','📱',Math.round(1530*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 Pro Max · 512GB · Deep Blue ── -->
+    <div class="prod-card reveal" onclick="openDetail('iphone17promax_512_deepblue')">
+      <span class="prod-badge nuevo">Nuevo</span>
+      <img class="prod-img" src="https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png" alt="iPhone 17 Pro Max Deep Blue 512">
+      <div class="prod-name">iPhone 17 Pro Max</div>
+      <div class="prod-storage">512 GB · Deep Blue · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="1730">$0</div>
+      <div class="prod-usd">USD 1730</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('iphone17promax_512_deepblue')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 Pro Max 512GB Deep Blue Sellado','📱',Math.round(1730*dolarBlue))">Agregar al carrito</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SEMINUEVOS -->
+<section id="seminuevos">
+  <div class="sec-head reveal">
+    <div class="sec-label">Selección curada</div>
+    <h2>iPhone <span>Seminuevos</span></h2>
+    <p>Revisados y garantizados. Todos con funda, templado y cargador completo de regalo.</p>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterUsed('all',this)">Todos</button>
+    <button class="filter-btn" onclick="filterUsed('iphone13',this)">iPhone 13</button>
+    <button class="filter-btn" onclick="filterUsed('iphone14',this)">iPhone 14</button>
+    <button class="filter-btn" onclick="filterUsed('iphone15',this)">iPhone 15</button>
+    <button class="filter-btn" onclick="filterUsed('iphone16u',this)">iPhone 16</button>
+    <button class="filter-btn" onclick="filterUsed('iphone17u',this)">iPhone 17</button>
+  </div>
+  <div class="used-grid" id="usedGrid">
+
+    <!-- ── iPhone 13 ── -->
+    <div class="prod-card iphone13 reveal" onclick="openDetail('u_iph13_blanco_87')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/2jQZdPXQ/IPHONE-13-4-removebg-preview.png" alt="iPhone 13">
+      <div class="prod-name">iPhone 13</div>
+      <div class="prod-storage">128 GB · Blanco · Bat. 87%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="350">$0</div>
+      <div class="prod-usd">USD 350</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph13_blanco_87')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 13 128GB Blanco Bat.87%','📱',Math.round(350*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone13 reveal" onclick="openDetail('u_iph13_blanco_88')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/2jQZdPXQ/IPHONE-13-4-removebg-preview.png" alt="iPhone 13">
+      <div class="prod-name">iPhone 13</div>
+      <div class="prod-storage">128 GB · Blanco · Bat. 88% · Con Caja</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="360">$0</div>
+      <div class="prod-usd">USD 360</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph13_blanco_88')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 13 128GB Blanco Bat.88% Caja','📱',Math.round(360*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 14 Pro ── -->
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_morado_84')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Morado Profundo · Bat. 84%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="500">$0</div>
+      <div class="prod-usd">USD 500</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_morado_84')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Morado Bat.84%','📱',Math.round(500*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_morado_85a')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Morado Profundo · Bat. 85%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="500">$0</div>
+      <div class="prod-usd">USD 500</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_morado_85a')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Morado Bat.85% (1)','📱',Math.round(500*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_negro_85')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Negro Espacial · Bat. 85%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="500">$0</div>
+      <div class="prod-usd">USD 500</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_negro_85')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Negro Bat.85%','📱',Math.round(500*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_morado_86')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Morado Profundo · Bat. 86%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="500">$0</div>
+      <div class="prod-usd">USD 500</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_morado_86')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Morado Bat.86%','📱',Math.round(500*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_morado_100a')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Morado Profundo · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="505">$0</div>
+      <div class="prod-usd">USD 505</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_morado_100a')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Morado Bat.100% (1)','📱',Math.round(505*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_negro_100a')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Negro Grafito · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="505">$0</div>
+      <div class="prod-usd">USD 505</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_negro_100a')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Negro Bat.100% (1)','📱',Math.round(505*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_negro_100b')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Negro Grafito · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="505">$0</div>
+      <div class="prod-usd">USD 505</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_negro_100b')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Negro Bat.100% (2)','📱',Math.round(505*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_negro_100c')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Negro Grafito · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="505">$0</div>
+      <div class="prod-usd">USD 505</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_negro_100c')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Negro Bat.100% (3)','📱',Math.round(505*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14pro_morado_100b')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png" alt="iPhone 14 Pro">
+      <div class="prod-name">iPhone 14 Pro</div>
+      <div class="prod-storage">128 GB · Morado Profundo · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="505">$0</div>
+      <div class="prod-usd">USD 505</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14pro_morado_100b')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro 128GB Morado Bat.100% (2)','📱',Math.round(505*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 14 Pro Max ── -->
+    <div class="prod-card iphone14 reveal" onclick="openDetail('u_iph14promax_negro_100')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/1zJcsbwj/celular-apple-iphone-14-pro-128gb-recondicionado-155300-550x550-1-removebg-preview.png" alt="iPhone 14 Pro Max">
+      <div class="prod-name">iPhone 14 Pro Max</div>
+      <div class="prod-storage">128 GB · Negro Grafito · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="590">$0</div>
+      <div class="prod-usd">USD 590</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph14promax_negro_100')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 14 Pro Max 128GB Negro Bat.100%','📱',Math.round(590*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 15 ── -->
+    <div class="prod-card iphone15 reveal" onclick="openDetail('u_iph15_negro_90')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png" alt="iPhone 15">
+      <div class="prod-name">iPhone 15</div>
+      <div class="prod-storage">128 GB · Negro · Bat. 90% · Con Caja</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="515">$0</div>
+      <div class="prod-usd">USD 515</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph15_negro_90')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 15 128GB Negro Bat.90% Caja','📱',Math.round(515*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone15 reveal" onclick="openDetail('u_iph15_negro_100')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png" alt="iPhone 15">
+      <div class="prod-name">iPhone 15</div>
+      <div class="prod-storage">128 GB · Negro · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="530">$0</div>
+      <div class="prod-usd">USD 530</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph15_negro_100')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 15 128GB Negro Bat.100%','📱',Math.round(530*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone15 reveal" onclick="openDetail('u_iph15_rosa_100')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png" alt="iPhone 15 Rosa">
+      <div class="prod-name">iPhone 15</div>
+      <div class="prod-storage">128 GB · Rosa · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="535">$0</div>
+      <div class="prod-usd">USD 535</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph15_rosa_100')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 15 128GB Rosa Bat.100%','📱',Math.round(535*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 15 Pro ── -->
+    <div class="prod-card iphone15 reveal" onclick="openDetail('u_iph15pro_azulpac_100')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/rp8N6q05/15promaxqw-5673c7228b1d4c7efb17245976970936-1024-1024-removebg-preview.png" alt="iPhone 15 Pro">
+      <div class="prod-name">iPhone 15 Pro</div>
+      <div class="prod-storage">256 GB · Azul Pacífico · Bat. 100%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="670">$0</div>
+      <div class="prod-usd">USD 670</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph15pro_azulpac_100')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 15 Pro 256GB Azul Pacífico Bat.100%','📱',Math.round(670*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 16 ── -->
+    <div class="prod-card iphone16u reveal" onclick="openDetail('u_iph16_negro_93')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png" alt="iPhone 16">
+      <div class="prod-name">iPhone 16</div>
+      <div class="prod-storage">128 GB · Negro · Bat. 93% · Garantía Oficial</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="670">$0</div>
+      <div class="prod-usd">USD 670</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph16_negro_93')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 128GB Negro Bat.93%','📱',Math.round(670*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone16u reveal" onclick="openDetail('u_iph16_512_blanco_96')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png" alt="iPhone 16 512GB">
+      <div class="prod-name">iPhone 16</div>
+      <div class="prod-storage">512 GB · Blanco · Bat. 96%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="730">$0</div>
+      <div class="prod-usd">USD 730</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph16_512_blanco_96')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 512GB Blanco Bat.96%','📱',Math.round(730*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 16 Pro ── -->
+    <div class="prod-card iphone16u reveal" onclick="openDetail('u_iph16pro_blancoti_92')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png" alt="iPhone 16 Pro">
+      <div class="prod-name">iPhone 16 Pro</div>
+      <div class="prod-storage">128 GB · Blanco Titanio · Bat. 92%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="790">$0</div>
+      <div class="prod-usd">USD 790</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph16pro_blancoti_92')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 Pro 128GB Blanco Titanio Bat.92%','📱',Math.round(790*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone16u reveal" onclick="openDetail('u_iph16pro_negroti_93')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png" alt="iPhone 16 Pro">
+      <div class="prod-name">iPhone 16 Pro</div>
+      <div class="prod-storage">128 GB · Negro Titanio · Bat. 93%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="790">$0</div>
+      <div class="prod-usd">USD 790</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph16pro_negroti_93')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 Pro 128GB Negro Titanio Bat.93%','📱',Math.round(790*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <div class="prod-card iphone16u reveal" onclick="openDetail('u_iph16pro_naturalt_94')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png" alt="iPhone 16 Pro">
+      <div class="prod-name">iPhone 16 Pro</div>
+      <div class="prod-storage">128 GB · Natural Titanio · Bat. 94%</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="805">$0</div>
+      <div class="prod-usd">USD 805</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph16pro_naturalt_94')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 16 Pro 128GB Natural Titanio Bat.94%','📱',Math.round(805*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+    <!-- ── iPhone 17 Pro ── -->
+    <div class="prod-card iphone17u reveal" onclick="openDetail('u_iph17pro_naranja_100')">
+      <span class="prod-badge">Usado</span>
+      <img class="prod-img" src="https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png" alt="iPhone 17 Pro">
+      <div class="prod-name">iPhone 17 Pro</div>
+      <div class="prod-storage">256 GB · Naranja · Bat. 100% · Garantía Oficial</div>
+      <div class="prod-price-label">Precio</div>
+      <div class="prod-price" data-usd="1240">$0</div>
+      <div class="prod-usd">USD 1240</div>
+      <div class="prod-actions">
+        <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('u_iph17pro_naranja_100')">Ver detalles</button>
+        <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('iPhone 17 Pro 256GB Naranja Bat.100%','📱',Math.round(1240*dolarBlue))">Agregar</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACCESORIOS -->
+<section id="accesorios">
+  <div class="sec-head reveal">
+    <div class="sec-label">Complementos</div>
+    <h2><span>Accesorios</span> Apple</h2>
+    <p>Fundas, cables, auriculares y todo lo que tu iPhone necesita.</p>
+  </div>
+  <div class="acc-grid">
+    <div class="acc-card reveal"><span class="acc-icon">🎧</span><h3>AirPods Pro</h3><p>Cancelación de ruido activa</p></div>
+    <div class="acc-card reveal"><span class="acc-icon">⌚</span><h3>Apple Watch</h3><p>Series y SE disponibles</p></div>
+    <div class="acc-card reveal"><span class="acc-icon">🔋</span><h3>MagSafe</h3><p>Carga inalámbrica 15W</p></div>
+    <div class="acc-card reveal"><span class="acc-icon">🔌</span><h3>Cables USB-C</h3><p>Originales y compatibles</p></div>
+    <div class="acc-card reveal"><span class="acc-icon">📦</span><h3>Fundas Premium</h3><p>Protección y estilo</p></div>
+    <div class="acc-card reveal"><span class="acc-icon">🖥️</span><h3>iPad</h3><p>Varios modelos disponibles</p></div>
+  </div>
+</section>
+
+<!-- CLIENTES -->
+<section id="clientes">
+  <div class="sec-head reveal">
+    <div class="sec-label">Testimonios</div>
+    <h2>Lo que dicen <span>nuestros clientes</span></h2>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Compré el iPhone 15 Pro Max y llegó perfecto, sellado y en tiempo récord. La atención fue excelente, muy profesionales.</p>
+      <div class="reviewer">
+        <div class="avatar">MG</div>
+        <div><div class="rev-name">Martina G.</div><div class="rev-date">Abril 2025</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Compré el iPhone 13 seminuevo y está como nuevo. Muy honesto el vendedor y el precio fue muy conveniente comparado con otras tiendas.</p>
+      <div class="reviewer">
+        <div class="avatar">LR</div>
+        <div><div class="rev-name">Lucas R.</div><div class="rev-date">Marzo 2025</div></div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Increíble servicio, me asesoraron bien, me explicaron todo y llegó con garantía. Totalmente recomendado para comprar en Río Cuarto.</p>
+      <div class="reviewer">
+        <div class="avatar">AV</div>
+        <div><div class="rev-name">Agustina V.</div><div class="rev-date">Febrero 2025</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UBICACION -->
+<section id="ubicacion">
+  <div class="sec-head reveal">
+    <div class="sec-label">Dónde encontrarnos</div>
+    <h2>Visítanos en <span>Río Cuarto</span></h2>
+  </div>
+  <div class="ubicacion-grid reveal">
+    <div>
+      <div class="ubi-detail">
+        <div class="ubi-icon-wrap">📍</div>
+        <p><strong>Dirección</strong>Río Cuarto, Córdoba</p>
+      </div>
+      <div class="ubi-detail">
+        <div class="ubi-icon-wrap">🕐</div>
+        <p><strong>Horario</strong>Lun–Vie: 9:00 – 20:00 hs<br>Sáb: 9:00 – 14:00 hs</p>
+      </div>
+      <div class="ubi-detail">
+        <div class="ubi-icon-wrap">📱</div>
+        <p><strong>WhatsApp</strong>+54 9 358 400-0000</p>
+      </div>
+      <div class="ubi-detail">
+        <div class="ubi-icon-wrap">📦</div>
+        <p><strong>Envíos</strong>Todo el país vía Andreani / OCA</p>
+      </div>
+      <div style="margin-top:28px">
+        <a href="https://wa.me/5493584000000" target="_blank" class="btn-blue">Contactar por WhatsApp</a>
+      </div>
+    </div>
+    <div class="map-box">
+      <span>🗺️</span>
+      <p>Río Cuarto, Córdoba</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-logo">
+    <img class="foot-logo-img" src="https://i.postimg.cc/bJQtzx0h/iphoner4.png" alt="Logo" onerror="this.style.display='none'">
+    <span class="foot-logo-name">IPhone Club · Río Cuarto</span>
+  </div>
+  <div class="foot-links">
+    <a href="#sellados" onclick="showPage('storePage')">Sellados</a>
+    <a href="#seminuevos" onclick="showPage('storePage')">Seminuevos</a>
+    <a href="#accesorios" onclick="showPage('storePage')">Accesorios</a>
+    <a href="#clientes" onclick="showPage('storePage')">Reseñas</a>
+    <a href="#ubicacion" onclick="showPage('storePage')">Ubicación</a>
+  </div>
+  <div class="foot-copy">© 2025 IPhone Club Río Cuarto<br>Todos los derechos reservados</div>
+</footer>
+
+</div><!-- /storePage -->
+
+<!-- DETAIL PAGE -->
+<div id="detailPage" class="page">
+  <div class="inner-back" onclick="showPage('storePage')">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Volver a la tienda
+  </div>
+  <div class="detail-wrap">
+    <div class="detail-layout">
+      <div>
+        <div class="detail-img-wrap">
+          <img id="detailImg" class="detail-img" src="" alt="">
+        </div>
+      </div>
+      <div class="detail-info">
+        <div class="detail-tag" id="detailTag">Sellado</div>
+        <div class="detail-name" id="detailName">iPhone 17 Pro</div>
+        <div class="detail-storage" id="detailStorage">256 GB · Sellado</div>
+        <div class="detail-price" id="detailPrice">$0</div>
+        <div class="detail-usd" id="detailUsd"></div>
+        <p class="detail-desc" id="detailDesc"></p>
+        <div class="spec-grid" id="detailSpecs"></div>
+        <ul class="detail-benefits" id="detailBenefits"></ul>
+        <div class="installments" id="installmentsBox"></div>
+        <div class="detail-actions" style="margin-top:20px">
+          <button id="detailAddBtn" class="btn-blue">Agregar al carrito</button>
+          <a href="https://wa.me/5493584000000" target="_blank" class="btn-glass">Consultar por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART PAGE -->
+<div id="cartPage" class="page">
+  <div class="inner-back" onclick="showPage('storePage')">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Seguir comprando
+  </div>
+  <div class="cart-wrap">
+    <div class="cart-title">Tu carrito</div>
+    <div class="cart-layout">
+      <div id="cartItems"></div>
+      <div class="cart-summary">
+        <div class="summary-title">Resumen del pedido</div>
+        <div class="summary-row"><span>Productos</span><span id="summaryQty">0</span></div>
+        <div class="summary-row"><span>Subtotal</span><span id="summarySubtotal">$0</span></div>
+        <div class="summary-total"><span>Total</span><span id="summaryTotal">$0</span></div>
+        <button id="checkoutBtn" class="btn-blue" style="width:100%;margin-top:22px;padding:14px" onclick="openCheckoutPage()">Finalizar compra</button>
+        <button class="btn-glass" style="width:100%;margin-top:10px;padding:12px" onclick="clearCart()">Vaciar carrito</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT PAGE -->
+<div id="checkoutPage" class="page">
+  <div class="inner-back" onclick="openCartPage()">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Volver al carrito
+  </div>
+  <div class="checkout-wrap">
+    <div class="cart-title">Finalizar compra</div>
+    <div class="checkout-layout">
+      <div>
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="buyerName" placeholder="Tu nombre y apellido">
+        </div>
+        <div class="form-group">
+          <label>Teléfono / WhatsApp</label>
+          <input type="tel" id="buyerPhone" placeholder="+54 9 ...">
+        </div>
+        <div class="form-group">
+          <label>Dirección de envío</label>
+          <input type="text" id="buyerAddress" placeholder="Calle, número, ciudad, provincia">
+        </div>
+        <div class="form-group">
+          <label>Método de pago</label>
+          <select id="buyerPayment">
+            <option value="">Seleccioná una opción</option>
+            <option>Efectivo</option>
+            <option>Transferencia bancaria</option>
+            <option>Mercado Pago</option>
+            <option>Tarjeta de crédito (3 cuotas)</option>
+            <option>Tarjeta de crédito (6 cuotas)</option>
+            <option>Tarjeta de crédito (12 cuotas)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Comentarios (opcional)</label>
+          <textarea id="buyerNotes" placeholder="Algún detalle, color preferido, consulta..."></textarea>
+        </div>
+        <button class="btn-blue" onclick="sendOrder()" style="width:100%;padding:15px">Enviar pedido por WhatsApp</button>
+      </div>
+      <div class="order-summary-card">
+        <div class="summary-title">Tu pedido</div>
+        <div id="orderItems"></div>
+        <div id="totalBox" style="display:none">
+          <div class="summary-row" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+            <span>Cantidad</span><span id="totalQty"></span>
+          </div>
+          <div class="summary-total"><span>Total</span><span id="finalTotal"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/5493584000000" target="_blank" class="wa-btn">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// ── THEME ──
+function toggleTheme() {
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  if(html.getAttribute('data-theme')==='dark'){
+    html.setAttribute('data-theme','light');
+    btn.textContent='🌙';
+    localStorage.setItem('theme_rc','light');
+  } else {
+    html.setAttribute('data-theme','dark');
+    btn.textContent='☀️';
+    localStorage.setItem('theme_rc','dark');
+  }
+}
+(function(){
+  const saved = localStorage.getItem('theme_rc');
+  const btn = document.getElementById('themeBtn');
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    btn.textContent='🌙';
+  } else {
+    btn.textContent='☀️';
+  }
+})();
+
+// ── CART ──
+let cart = JSON.parse(localStorage.getItem('cart_rc')||'[]');
+let dolarBlue = 1425;
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateBadge(){
+  const n=cart.reduce((s,i)=>s+i.qty,0);
+  const b=document.getElementById('cartBadge');
+  b.textContent=n;
+  b.classList.remove('pop');
+  void b.offsetWidth;
+  b.classList.add('pop');
+}
+
+function saveCart(){localStorage.setItem('cart_rc',JSON.stringify(cart))}
+
+function addToCart(name,icon,price){
+  const item=cart.find(i=>i.name===name);
+  if(item)item.qty++;
+  else cart.push({name,icon,price,qty:1});
+  saveCart();updateBadge();
+  const btn=event.target;
+  const orig=btn.textContent;
+  btn.textContent='✓ Agregado';
+  btn.style.background='linear-gradient(135deg,#16a34a,#22c55e)';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background=''},1400);
+}
+
+function money(n){
+  return n.toLocaleString('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
+}
+
+async function fetchDolar(){
+  try{
+    const r=await fetch('https://dolarapi.com/v1/dolares/blue');
+    const d=await r.json();
+    dolarBlue=d.venta+25;
+  }catch(e){dolarBlue=1425;}
+  document.querySelectorAll('.prod-price[data-usd]').forEach(el=>{
+    el.textContent=money(Number(el.dataset.usd)*dolarBlue);
+  });
+  // also update phone card price
+  document.querySelector('.phone-card-price-val').textContent='USD 1400';
+}
+fetchDolar();
+setInterval(fetchDolar,300000);
+
+// ── PRODUCT DATA ──
+const products={
+  // ── SELLADOS ──
+  iphone16_ultramarine:{name:'iPhone 16',storage:'128 GB · Ultramarine · Sellado',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:840,tag:'Sellado',description:'iPhone 16 sellado de fábrica en el vibrante color Ultramarine. 128 GB, batería al 100%, chip A18, Camera Control y soporte para Apple Intelligence. Incluye caja y accesorios originales.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'100%',Color:'Ultramarine'},benefits:['Color Ultramarine exclusivo','Chip A18 Bionic','Camera Control','Batería 100%','Sellado de fábrica','Garantía incluida']},
+  iphone16_white:{name:'iPhone 16',storage:'128 GB · White · Sellado',image:'https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png',usd:840,tag:'Sellado',description:'iPhone 16 sellado de fábrica en color White. 128 GB, batería al 100%, chip A18, Camera Control y Apple Intelligence. Con caja y accesorios originales.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'100%',Color:'White'},benefits:['Color White clásico','Chip A18 Bionic','Camera Control','Batería 100%','Sellado de fábrica','Garantía incluida']},
+  iphone16_black:{name:'iPhone 16',storage:'128 GB · Black · Sellado',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:840,tag:'Sellado',description:'iPhone 16 sellado de fábrica en color Black. 128 GB, batería al 100%, chip A18, Camera Control y Apple Intelligence. Con caja y accesorios originales.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'100%',Color:'Black'},benefits:['Color Black elegante','Chip A18 Bionic','Camera Control','Batería 100%','Sellado de fábrica','Garantía incluida']},
+  iphone16_pink:{name:'iPhone 16',storage:'128 GB · Pink · Sellado',image:'https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png',usd:840,tag:'Sellado',description:'iPhone 16 sellado de fábrica en el delicado color Pink. 128 GB, batería al 100%, chip A18, Camera Control y Apple Intelligence. Con caja y accesorios originales.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'100%',Color:'Pink'},benefits:['Color Pink suave','Chip A18 Bionic','Camera Control','Batería 100%','Sellado de fábrica','Garantía incluida']},
+  iphone17_white:{name:'iPhone 17',storage:'256 GB · White · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado',description:'iPhone 17 sellado de fábrica en color White. 256 GB, batería al 100%, chip A19 con la última tecnología Apple. Diseño renovado, cámara mejorada y conectividad avanzada. Con caja y accesorios originales.',specs:{Pantalla:'6.3" OLED',Chip:'A19',Almacenamiento:'256 GB',Batería:'100%',Color:'White'},benefits:['Color White moderno','Chip A19','256 GB de almacenamiento','Batería 100%','Sellado de fábrica','Garantía incluida']},
+  iphone17_lavender:{name:'iPhone 17',storage:'256 GB · Lavender · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado',description:'iPhone 17 sellado de fábrica en el exclusivo color Lavender. 256 GB, batería al 100%, chip A19. Color especial y diferenciador, diseño renovado y cámara mejorada. Con caja y accesorios originales.',specs:{Pantalla:'6.3" OLED',Chip:'A19',Almacenamiento:'256 GB',Batería:'100%',Color:'Lavender'},benefits:['Color Lavender exclusivo','Chip A19','256 GB de almacenamiento','Batería 100%','Sellado de fábrica','Garantía incluida']},
+  iphone17_black:{name:'iPhone 17',storage:'256 GB · Black · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado',description:'iPhone 17 sellado de fábrica en color Black. 256 GB, batería al 100%, chip A19. Clásico y elegante, con la última tecnología Apple. Con caja y accesorios originales.',specs:{Pantalla:'6.3" OLED',Chip:'A19',Almacenamiento:'256 GB',Batería:'100%',Color:'Black'},benefits:['Color Black atemporal','Chip A19','256 GB de almacenamiento','Batería 100%','Sellado de fábrica','Garantía incluida']},
+  iphone17pro_256_orange:{name:'iPhone 17 Pro',storage:'256 GB · Cuatro Orange · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1370,tag:'Sellado',description:'iPhone 17 Pro sellado en el llamativo color Cuatro Orange. 256 GB, batería al 100%, chip A19 Pro, cámara Pro tetraédrica, pantalla ProMotion 120Hz y cuerpo de titanio. Con caja y accesorios originales.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Cuatro Orange',Material:'Titanio'},benefits:['Color Cuatro Orange único','Chip A19 Pro','ProMotion 120Hz','Cámara Pro tetraédrica','Titanio aeroespacial','Sellado de fábrica']},
+  iphone17pro_256_silver:{name:'iPhone 17 Pro',storage:'256 GB · Silver · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1370,tag:'Sellado',description:'iPhone 17 Pro sellado en el elegante color Silver. 256 GB, batería al 100%, chip A19 Pro, pantalla ProMotion 120Hz y cuerpo de titanio. El máximo de Apple en versión clásica. Con caja y accesorios originales.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Silver',Material:'Titanio'},benefits:['Color Silver premium','Chip A19 Pro','ProMotion 120Hz','Cámara Pro tetraédrica','Titanio aeroespacial','Sellado de fábrica']},
+  iphone17pro_512_silver:{name:'iPhone 17 Pro',storage:'512 GB · Silver · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1600,tag:'Sellado',description:'iPhone 17 Pro sellado en Silver con 512 GB de almacenamiento. Batería al 100%, chip A19 Pro, pantalla ProMotion 120Hz y cuerpo de titanio. Máxima capacidad para los más exigentes. Con caja y accesorios originales.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'512 GB',Batería:'100%',Color:'Silver',Material:'Titanio'},benefits:['512 GB de almacenamiento','Color Silver premium','Chip A19 Pro','ProMotion 120Hz','Titanio aeroespacial','Sellado de fábrica']},
+  iphone17promax_256_silver:{name:'iPhone 17 Pro Max',storage:'256 GB · Silver · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado',description:'iPhone 17 Pro Max sellado en Silver. La pantalla más grande de Apple (6.9"), 256 GB, batería al 100%, chip A19 Pro, cámara Pro tetraédrica y cuerpo de titanio. Con caja y accesorios originales.',specs:{Pantalla:'6.9" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Silver',Material:'Titanio'},benefits:['Pantalla 6.9" ProMotion','Color Silver premium','Chip A19 Pro','Batería de larga duración','Titanio aeroespacial','Sellado de fábrica']},
+  iphone17promax_256_deepblue:{name:'iPhone 17 Pro Max',storage:'256 GB · Deep Blue · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado',description:'iPhone 17 Pro Max sellado en el exclusivo color Deep Blue. 256 GB, batería al 100%, pantalla 6.9" ProMotion, chip A19 Pro y cuerpo de titanio. Con caja y accesorios originales.',specs:{Pantalla:'6.9" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Deep Blue',Material:'Titanio'},benefits:['Color Deep Blue exclusivo','Pantalla 6.9" ProMotion','Chip A19 Pro','Batería de larga duración','Titanio aeroespacial','Sellado de fábrica']},
+  iphone17promax_512_orange:{name:'iPhone 17 Pro Max',storage:'512 GB · Cuatro Orange · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado',description:'iPhone 17 Pro Max sellado en el audaz color Cuatro Orange. 512 GB, batería al 100%, pantalla 6.9" ProMotion, chip A19 Pro y cuerpo de titanio. Máxima capacidad con el color más llamativo. Con caja y accesorios originales.',specs:{Pantalla:'6.9" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'512 GB',Batería:'100%',Color:'Cuatro Orange',Material:'Titanio'},benefits:['Color Cuatro Orange único','512 GB de almacenamiento','Pantalla 6.9" ProMotion','Chip A19 Pro','Titanio aeroespacial','Sellado de fábrica']},
+  iphone17promax_512_deepblue:{name:'iPhone 17 Pro Max',storage:'512 GB · Deep Blue · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1730,tag:'Sellado',description:'iPhone 17 Pro Max sellado en Deep Blue con 512 GB. La combinación perfecta: el color más profundo, la mayor capacidad y el máximo rendimiento. Batería al 100%, pantalla 6.9" ProMotion y chip A19 Pro. Con caja y accesorios originales.',specs:{Pantalla:'6.9" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'512 GB',Batería:'100%',Color:'Deep Blue',Material:'Titanio'},benefits:['Color Deep Blue + 512 GB','Pantalla 6.9" ProMotion','Chip A19 Pro','Batería de larga duración','Titanio aeroespacial','Sellado de fábrica']},
+  // ── SEMINUEVOS ──
+  u_iph13_blanco_87:{name:'iPhone 13',storage:'128 GB · Blanco · Bat. 87%',image:'https://i.postimg.cc/2jQZdPXQ/IPHONE-13-4-removebg-preview.png',usd:350,tag:'Usado',description:'iPhone 13 en excelente estado. 128 GB, color Blanco, batería original al 87%. Incluye funda, templado y cargador completo de regalo.',specs:{Pantalla:'6.1" OLED',Chip:'A15 Bionic',Almacenamiento:'128 GB',Batería:'87%',Color:'Blanco',Bateria:'Original'},benefits:['Batería original 87%','Funda + templado de regalo','Cargador incluido','Equipo probado y revisado','Garantía incluida']},
+  u_iph13_blanco_88:{name:'iPhone 13',storage:'128 GB · Blanco · Bat. 88% · Con Caja',image:'https://i.postimg.cc/2jQZdPXQ/IPHONE-13-4-removebg-preview.png',usd:360,tag:'Usado',description:'iPhone 13 en excelente estado con su caja original. 128 GB, color Blanco, batería original al 88%. Incluye funda, templado y cargador completo de regalo.',specs:{Pantalla:'6.1" OLED',Chip:'A15 Bionic',Almacenamiento:'128 GB',Batería:'88%',Color:'Blanco',Extras:'Con Caja Original'},benefits:['Incluye caja original','Batería original 88%','Funda + templado de regalo','Cargador incluido','Garantía incluida']},
+  u_iph14pro_morado_84:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 84%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado',description:'iPhone 14 Pro en excelente estado. 128 GB, color Morado Profundo, batería original al 84%. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'84%',Color:'Morado Profundo','Bateria tipo':'Original'},benefits:['Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo','Garantía incluida']},
+  u_iph14pro_morado_85a:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 85%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado',description:'iPhone 14 Pro en excelente estado. 128 GB, color Morado Profundo, batería original al 85%. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'85%',Color:'Morado Profundo','Bateria tipo':'Original'},benefits:['Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo','Garantía incluida']},
+  u_iph14pro_negro_85:{name:'iPhone 14 Pro',storage:'128 GB · Negro Espacial · Bat. 85%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado',description:'iPhone 14 Pro en excelente estado. 128 GB, color Negro Espacial, batería original al 85%. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'85%',Color:'Negro Espacial','Bateria tipo':'Original'},benefits:['Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo','Garantía incluida']},
+  u_iph14pro_morado_86:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 86%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado',description:'iPhone 14 Pro en excelente estado. 128 GB, color Morado Profundo, batería original al 86%. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'86%',Color:'Morado Profundo','Bateria tipo':'Original'},benefits:['Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo','Garantía incluida']},
+  u_iph14pro_morado_100a:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro en excelente estado con batería cambiada al 100%. 128 GB, color Morado Profundo. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Morado Profundo','Bateria tipo':'Cambiada'},benefits:['Batería al 100% (cambiada)','Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo']},
+  u_iph14pro_negro_100a:{name:'iPhone 14 Pro',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro en excelente estado con batería cambiada al 100%. 128 GB, color Negro Grafito. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro Grafito','Bateria tipo':'Cambiada'},benefits:['Batería al 100% (cambiada)','Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo']},
+  u_iph14pro_negro_100b:{name:'iPhone 14 Pro',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro en excelente estado con batería cambiada al 100%. 128 GB, color Negro Grafito. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro Grafito','Bateria tipo':'Cambiada'},benefits:['Batería al 100% (cambiada)','Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo']},
+  u_iph14pro_negro_100c:{name:'iPhone 14 Pro',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro en excelente estado con batería cambiada al 100%. 128 GB, color Negro Grafito. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro Grafito','Bateria tipo':'Cambiada'},benefits:['Batería al 100% (cambiada)','Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo']},
+  u_iph14pro_morado_100b:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro en excelente estado con batería cambiada al 100%. 128 GB, color Morado Profundo. Dynamic Island, chip A16 Bionic y cámara de 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Morado Profundo','Bateria tipo':'Cambiada'},benefits:['Batería al 100% (cambiada)','Dynamic Island','Cámara 48 MP','Chip A16 Bionic','Funda + templado de regalo']},
+  u_iph14promax_negro_100:{name:'iPhone 14 Pro Max',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/1zJcsbwj/celular-apple-iphone-14-pro-128gb-recondicionado-155300-550x550-1-removebg-preview.png',usd:590,tag:'Usado',description:'iPhone 14 Pro Max en excelente estado con batería cambiada al 100%. 128 GB, color Negro Grafito. Pantalla 6.7" ProMotion, Dynamic Island y chip A16 Bionic. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.7" ProMotion 120Hz',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro Grafito','Bateria tipo':'Cambiada'},benefits:['Batería al 100% (cambiada)','Pantalla 6.7"','Dynamic Island','Chip A16 Bionic','Funda + templado de regalo']},
+  u_iph15_negro_90:{name:'iPhone 15',storage:'128 GB · Negro · Bat. 90% · Con Caja',image:'https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png',usd:515,tag:'Usado',description:'iPhone 15 en excelente estado con su caja original. 128 GB, color Negro, batería original al 90%. Dynamic Island, USB-C y cámara 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" OLED',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'90%',Color:'Negro',Extras:'Con Caja Original'},benefits:['Incluye caja original','Dynamic Island','USB-C','Cámara 48 MP','Funda + templado de regalo']},
+  u_iph15_negro_100:{name:'iPhone 15',storage:'128 GB · Negro · Bat. 100%',image:'https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png',usd:530,tag:'Usado',description:'iPhone 15 en excelente estado. 128 GB, color Negro, batería original al 100%. Dynamic Island, USB-C y cámara 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" OLED',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro','Bateria tipo':'Original'},benefits:['Batería 100% original','Dynamic Island','USB-C','Cámara 48 MP','Funda + templado de regalo']},
+  u_iph15_rosa_100:{name:'iPhone 15',storage:'128 GB · Rosa · Bat. 100%',image:'https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png',usd:535,tag:'Usado',description:'iPhone 15 en excelente estado. 128 GB, color Rosa, batería original al 100%. Dynamic Island, USB-C y cámara 48 MP. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" OLED',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Rosa','Bateria tipo':'Original'},benefits:['Color Rosa','Batería 100% original','Dynamic Island','USB-C','Funda + templado de regalo']},
+  u_iph15pro_azulpac_100:{name:'iPhone 15 Pro',storage:'256 GB · Azul Pacífico · Bat. 100%',image:'https://i.postimg.cc/rp8N6q05/15promaxqw-5673c7228b1d4c7efb17245976970936-1024-1024-removebg-preview.png',usd:670,tag:'Usado',description:'iPhone 15 Pro en excelente estado. 256 GB, color Azul Pacífico, batería original al 100%. Chip A17 Pro, cámara tetraédrica, cuerpo de titanio y USB-C. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" ProMotion 120Hz',Chip:'A17 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Azul Pacífico',Material:'Titanio'},benefits:['Color Azul Pacífico','Chip A17 Pro','Cámara tetraédrica','Titanio + USB-C','Funda + templado de regalo']},
+  u_iph16_negro_93:{name:'iPhone 16',storage:'128 GB · Negro · Bat. 93% · Garantía Oficial',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:670,tag:'Usado',description:'iPhone 16 en excelente estado con Garantía Oficial Apple. 128 GB, color Negro, batería original al 93%. Chip A18, Camera Control y Apple Intelligence. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'93%',Color:'Negro','Garantía':'Oficial Apple'},benefits:['Garantía Oficial Apple','Batería 93% original','Chip A18','Camera Control','Funda + templado de regalo']},
+  u_iph16_512_blanco_96:{name:'iPhone 16',storage:'512 GB · Blanco · Bat. 96%',image:'https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png',usd:730,tag:'Usado',description:'iPhone 16 en excelente estado. 512 GB, color Blanco, batería original al 96%. Chip A18, Camera Control y Apple Intelligence. Gran capacidad de almacenamiento. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'512 GB',Batería:'96%',Color:'Blanco','Bateria tipo':'Original'},benefits:['512 GB almacenamiento','Batería 96% original','Chip A18','Camera Control','Funda + templado de regalo']},
+  u_iph16pro_blancoti_92:{name:'iPhone 16 Pro',storage:'128 GB · Blanco Titanio · Bat. 92%',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:790,tag:'Usado',description:'iPhone 16 Pro en excelente estado. 128 GB, color Blanco Titanio, batería original al 92%. Chip A18 Pro, ProMotion 120Hz, cámara Pro tetraédrica y cuerpo de titanio. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A18 Pro',Almacenamiento:'128 GB',Batería:'92%',Color:'Blanco Titanio',Material:'Titanio'},benefits:['Color Blanco Titanio','Chip A18 Pro','ProMotion 120Hz','Cámara Pro','Funda + templado de regalo']},
+  u_iph16pro_negroti_93:{name:'iPhone 16 Pro',storage:'128 GB · Negro Titanio · Bat. 93%',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:790,tag:'Usado',description:'iPhone 16 Pro en excelente estado. 128 GB, color Negro Titanio, batería original al 93%. Chip A18 Pro, ProMotion 120Hz, cámara Pro tetraédrica y cuerpo de titanio. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A18 Pro',Almacenamiento:'128 GB',Batería:'93%',Color:'Negro Titanio',Material:'Titanio'},benefits:['Color Negro Titanio','Chip A18 Pro','ProMotion 120Hz','Cámara Pro','Funda + templado de regalo']},
+  u_iph16pro_naturalt_94:{name:'iPhone 16 Pro',storage:'128 GB · Natural Titanio · Bat. 94%',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:805,tag:'Usado',description:'iPhone 16 Pro en excelente estado. 128 GB, color Natural Titanio, batería original al 94%. Chip A18 Pro, ProMotion 120Hz, cámara Pro tetraédrica y cuerpo de titanio. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A18 Pro',Almacenamiento:'128 GB',Batería:'94%',Color:'Natural Titanio',Material:'Titanio'},benefits:['Color Natural Titanio','Chip A18 Pro','ProMotion 120Hz','Cámara Pro','Funda + templado de regalo']},
+  u_iph17pro_naranja_100:{name:'iPhone 17 Pro',storage:'256 GB · Naranja · Bat. 100% · Garantía Oficial',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1240,tag:'Usado',description:'iPhone 17 Pro con Garantía Oficial Apple. 256 GB, color Naranja (Cuatro Orange), batería original al 100%. Chip A19 Pro, ProMotion 120Hz, cámara Pro y cuerpo de titanio. Incluye funda, templado y cargador de regalo.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Naranja','Garantía':'Oficial Apple'},benefits:['Garantía Oficial Apple','Batería 100% original','Chip A19 Pro','ProMotion 120Hz','Funda + templado de regalo']},
+};
+
+function openDetail(id){
+  const p=products[id]; if(!p)return;
+  document.getElementById('detailImg').src=p.image;
+  document.getElementById('detailTag').textContent=p.tag;
+  document.getElementById('detailName').textContent=p.name;
+  document.getElementById('detailStorage').textContent=p.storage;
+  const pricePesos=p.usd?p.usd*dolarBlue:p.price;
+  document.getElementById('detailPrice').textContent=money(pricePesos);
+  document.getElementById('detailUsd').textContent=p.usd?'USD '+p.usd:'';
+  document.getElementById('detailDesc').textContent=p.description;
+  document.getElementById('detailSpecs').innerHTML=Object.entries(p.specs).map(([k,v])=>
+    `<div class="spec-card"><span>${k}</span><strong>${v}</strong></div>`).join('');
+  document.getElementById('detailBenefits').innerHTML=p.benefits.map(b=>`<li>${b}</li>`).join('');
+  if(pricePesos>0){
+    const base=pricePesos*1.10;
+    document.getElementById('installmentsBox').innerHTML=`
+      <div style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px;font-weight:600">Financiación disponible</div>
+      <div class="installment-item"><span>3 cuotas</span><strong>${money((base*1.21)/3)} / mes</strong></div>
+      <div class="installment-item"><span>6 cuotas</span><strong>${money((base*1.35)/6)} / mes</strong></div>
+      <div class="installment-item"><span>12 cuotas</span><strong>${money((base*1.70)/12)} / mes</strong></div>`;
+  } else {
+    document.getElementById('installmentsBox').innerHTML='';
+  }
+  document.getElementById('detailAddBtn').onclick=()=>{
+    if(p.price===0&&!p.usd){
+      window.open('https://wa.me/5493584000000?text=Hola! Me interesa el '+encodeURIComponent(p.name),'_blank');
+    } else {
+      addToCart(p.name+' '+p.storage,'📱',pricePesos);
+    }
+  };
+  showPage('detailPage');
+}
+
+function filterUsed(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#usedGrid .prod-card').forEach(card=>{
+    card.style.display=(cat==='all'||card.classList.contains(cat))?'':'none';
+  });
+}
+
+function openCartPage(){saveCart();renderCart();showPage('cartPage')}
+function openCheckoutPage(){if(!cart.length)return;saveCart();renderCheckout();showPage('checkoutPage')}
+
+function renderCart(){
+  const qty=cart.reduce((s,i)=>s+i.qty,0);
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  document.getElementById('summaryQty').textContent=qty;
+  document.getElementById('summarySubtotal').textContent=money(total);
+  document.getElementById('summaryTotal').textContent=money(total);
+  document.getElementById('checkoutBtn').disabled=!cart.length;
+  const el=document.getElementById('cartItems');
+  if(!cart.length){
+    el.innerHTML='<div class="cart-empty"><span>🛍️</span>Tu carrito está vacío.<br>Volvé a la tienda para agregar productos.</div>';
+    return;
+  }
+  el.innerHTML=cart.map(item=>`
+    <div class="cart-item">
+      <div class="cart-item-icon">${item.icon}</div>
+      <div class="cart-item-info"><h3>${item.name}</h3><p>${money(item.price)} c/u</p></div>
+      <div class="qty-box">
+        <button onclick="changeQty('${item.name.replace(/'/g,"\\'")}', -1)">−</button>
+        <span>${item.qty}</span>
+        <button onclick="changeQty('${item.name.replace(/'/g,"\\'")}', 1)">+</button>
+      </div>
+      <div class="cart-item-price">${money(item.price*item.qty)}</div>
+      <button class="cart-remove" onclick="removeItem('${item.name.replace(/'/g,"\\'")}')">✕</button>
+    </div>`).join('');
+}
+
+function changeQty(name,delta){
+  const item=cart.find(i=>i.name===name);if(!item)return;
+  item.qty+=delta;
+  if(item.qty<=0)cart=cart.filter(i=>i.name!==name);
+  saveCart();updateBadge();renderCart();
+}
+function removeItem(name){cart=cart.filter(i=>i.name!==name);saveCart();updateBadge();renderCart()}
+function clearCart(){cart=[];saveCart();updateBadge();renderCart()}
+
+function renderCheckout(){
+  const el=document.getElementById('orderItems');
+  const tb=document.getElementById('totalBox');
+  if(!cart.length){el.innerHTML='';tb.style.display='none';return;}
+  tb.style.display='block';
+  const qty=cart.reduce((s,i)=>s+i.qty,0);
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  document.getElementById('totalQty').textContent=qty;
+  document.getElementById('finalTotal').textContent=money(total);
+  el.innerHTML=cart.map(item=>`
+    <div class="order-item">
+      <div class="order-item-icon">${item.icon}</div>
+      <div class="order-item-info"><h3>${item.name}</h3><p>Cantidad: ${item.qty}</p></div>
+      <div class="order-item-price">${money(item.price*item.qty)}</div>
+    </div>`).join('');
+}
+
+function sendOrder(){
+  const name=document.getElementById('buyerName').value.trim();
+  const phone=document.getElementById('buyerPhone').value.trim();
+  const address=document.getElementById('buyerAddress').value.trim();
+  const payment=document.getElementById('buyerPayment').value;
+  const notes=document.getElementById('buyerNotes').value.trim();
+  if(!cart.length){alert('Tu carrito está vacío.');return;}
+  if(!name||!phone||!address||!payment){alert('Completá todos los campos obligatorios.');return;}
+  const lines=cart.map(i=>`• ${i.name} x${i.qty} — ${money(i.price*i.qty)}`).join('%0A');
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const msg=`Hola! Quiero finalizar mi compra:%0A%0A${lines}%0A%0ATotal: ${money(total).replace(/\$/,'$')}%0A%0ACliente: ${name}%0ATel: ${phone}%0ADirección: ${address}%0APago: ${payment}%0AComentario: ${notes||'—'}`;
+  window.open(`https://wa.me/5493584000000?text=${msg}`,'_blank');
+}
+
+// ── SCROLL REVEAL ──
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+updateBadge();
+</script>
+</body>
+</html>
