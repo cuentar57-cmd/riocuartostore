@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IPhone Club · Río Cuarto</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════
    THEME TOKENS
@@ -58,7 +58,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  font-family:'DM Sans',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   background:var(--bg);
   color:var(--txt);
   overflow-x:hidden;
@@ -100,7 +100,7 @@ nav{
 .logo-wrap:hover{opacity:.75;transform:scale(.98)}
 .logo-img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:1.5px solid var(--border2);box-shadow:0 0 16px var(--accent-glow)}
 .logo-text-block{display:flex;flex-direction:column;line-height:1.15}
-.logo-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--txt)}
+.logo-name{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--txt)}
 .logo-city{font-size:.55rem;letter-spacing:3.5px;text-transform:uppercase;color:var(--txt3);font-weight:500}
 nav ul{display:flex;gap:1.8rem;list-style:none}
 nav ul a{
@@ -231,7 +231,7 @@ nav ul a:hover::after{left:0;right:0}
 .chip-txt{font-size:.68rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent2)}
 
 .hero-headline{
-  font-family:'Syne',sans-serif;
+  font-family:'Space Grotesk',sans-serif;
   font-size:clamp(3.2rem,6.5vw,6rem);
   line-height:.95;letter-spacing:-2.5px;font-weight:800;
   margin-bottom:8px;
@@ -248,7 +248,7 @@ nav ul a:hover::after{left:0;right:0}
 .hero-headline .line3{display:block;color:var(--txt)}
 .hero-city-tag{
   display:inline-flex;align-items:center;gap:8px;
-  font-family:'Syne',sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);
+  font-family:'Space Grotesk',sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);
   font-weight:600;color:var(--txt3);letter-spacing:-1px;
   margin-bottom:28px;
   animation:fadeUp .6s .3s ease both;
@@ -264,7 +264,7 @@ nav ul a:hover::after{left:0;right:0}
   animation:fadeUp .6s .4s ease both;
 }
 .hero-actions{
-  display:flex;gap:12px;flex-wrap:wrap;
+  display:flex;gap:10px;flex-wrap:wrap;max-width:420px;
   animation:fadeUp .6s .5s ease both;
 }
 
@@ -311,7 +311,7 @@ nav ul a:hover::after{left:0;right:0}
 }
 .hero-phone-card:hover .phone-card-img{transform:scale(1.04) translateY(-4px)}
 .phone-card-name{
-  font-family:'Syne',sans-serif;
+  font-family:'Space Grotesk',sans-serif;
   font-size:1.1rem;font-weight:700;text-align:center;
   color:var(--txt);margin-bottom:4px;
 }
@@ -324,7 +324,7 @@ nav ul a:hover::after{left:0;right:0}
   border-radius:12px;padding:10px 16px;text-align:center;
 }
 .phone-card-price-label{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
-.phone-card-price-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:var(--accent2)}
+.phone-card-price-val{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;color:var(--accent2)}
 
 /* floating badges */
 .hero-badge{
@@ -337,7 +337,7 @@ nav ul a:hover::after{left:0;right:0}
 .hero-badge-1{top:0;left:-60px;animation-delay:-1s}
 .hero-badge-2{bottom:20px;right:-60px;animation-delay:-3.5s}
 .hb-label{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
-.hb-val{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;color:var(--txt)}
+.hb-val{font-family:'Space Grotesk',sans-serif;font-size:.92rem;font-weight:700;color:var(--txt)}
 
 /* scroll indicator */
 .hero-scroll{
@@ -364,7 +364,7 @@ nav ul a:hover::after{left:0;right:0}
   padding:13px 30px;border-radius:12px;
   font-weight:600;font-size:.8rem;text-decoration:none;
   letter-spacing:.4px;transition:.25s;border:none;cursor:pointer;
-  font-family:'DM Sans',sans-serif;display:inline-block;
+  font-family:'Plus Jakarta Sans',sans-serif;display:inline-block;
   box-shadow:0 8px 28px var(--accent-glow);
 }
 .btn-blue:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 14px 40px var(--accent-glow)}
@@ -374,7 +374,7 @@ nav ul a:hover::after{left:0;right:0}
   font-weight:500;font-size:.8rem;text-decoration:none;
   border:1px solid var(--border2);transition:.25s;
   cursor:pointer;display:inline-block;letter-spacing:.4px;
-  font-family:'DM Sans',sans-serif;backdrop-filter:blur(16px);
+  font-family:'Plus Jakarta Sans',sans-serif;backdrop-filter:blur(16px);
 }
 .btn-glass:hover{border-color:var(--accent);color:var(--accent2);transform:translateY(-2px)}
 
@@ -393,7 +393,7 @@ section{padding:90px 5%;position:relative;z-index:1}
   background:linear-gradient(90deg, var(--accent), transparent);border-radius:99px;
 }
 .sec-head h2{
-  font-family:'Syne',sans-serif;
+  font-family:'Space Grotesk',sans-serif;
   font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.1;
   color:var(--txt);letter-spacing:-1px;
 }
@@ -431,7 +431,7 @@ section{padding:90px 5%;position:relative;z-index:1}
 }
 .prod-badge.sinstock{background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.2)}
 .prod-img{width:100%;max-width:140px;height:140px;object-fit:contain;margin:8px auto 16px;display:block;transition:.35s;filter:drop-shadow(0 10px 20px rgba(0,0,0,.3))}
-.prod-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--txt);margin-bottom:3px}
+.prod-name{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:var(--txt);margin-bottom:3px}
 .prod-storage{font-size:.65rem;letter-spacing:.8px;color:var(--txt3);margin-bottom:12px}
 .prod-price-label{font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:3px;font-weight:600}
 .prod-price{font-size:1.35rem;color:var(--accent2);font-weight:700;letter-spacing:-.5px}
@@ -440,7 +440,7 @@ section{padding:90px 5%;position:relative;z-index:1}
 .prod-btn{
   padding:9px;border-radius:10px;font-size:.7rem;font-weight:600;
   cursor:pointer;transition:.2s;width:100%;letter-spacing:.4px;
-  font-family:'DM Sans',sans-serif;border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;border:none;
 }
 .prod-btn-main{background:var(--accent);color:#fff;box-shadow:0 4px 14px var(--accent-glow)}
 .prod-btn-main:hover{transform:translateY(-1px);filter:brightness(1.1)}
@@ -461,7 +461,7 @@ section{padding:90px 5%;position:relative;z-index:1}
   padding:7px 18px;border-radius:99px;font-size:.72rem;font-weight:600;
   cursor:pointer;transition:.2s;border:1px solid var(--border2);
   background:var(--surface);color:var(--txt2);
-  font-family:'DM Sans',sans-serif;letter-spacing:.3px;backdrop-filter:blur(12px);
+  font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.3px;backdrop-filter:blur(12px);
 }
 .filter-btn:hover{border-color:var(--accent);color:var(--accent2)}
 .filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px var(--accent-glow)}
@@ -478,7 +478,7 @@ section{padding:90px 5%;position:relative;z-index:1}
 .acc-card:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 16px 40px rgba(0,0,0,.3)}
 .acc-icon{font-size:2rem;margin-bottom:10px;display:block;transition:.3s}
 .acc-card:hover .acc-icon{transform:scale(1.2) rotate(-5deg)}
-.acc-card h3{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;margin-bottom:4px;color:var(--txt)}
+.acc-card h3{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:700;margin-bottom:4px;color:var(--txt)}
 .acc-card p{font-size:.68rem;color:var(--txt3)}
 
 /* ═══════════════════════════════════════════════
@@ -495,7 +495,7 @@ section{padding:90px 5%;position:relative;z-index:1}
 }
 .stat-item:hover{transform:translateY(-4px);border-color:var(--accent)}
 .stat-num{
-  font-family:'Syne',sans-serif;
+  font-family:'Space Grotesk',sans-serif;
   font-size:2.4rem;color:var(--accent2);line-height:1;
   margin-bottom:6px;font-weight:800;letter-spacing:-1px;
 }
@@ -576,9 +576,9 @@ section{padding:90px 5%;position:relative;z-index:1}
   color:var(--accent2);border:1px solid var(--accent-dim);
   background:var(--accent-dim);padding:5px 14px;border-radius:99px;margin-bottom:14px;font-weight:600;
 }
-.detail-name{font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;line-height:1.05;margin-bottom:6px;letter-spacing:-1px;color:var(--txt)}
+.detail-name{font-family:'Space Grotesk',sans-serif;font-size:2.6rem;font-weight:800;line-height:1.05;margin-bottom:6px;letter-spacing:-1px;color:var(--txt)}
 .detail-storage{font-size:.72rem;color:var(--txt3);letter-spacing:2px;text-transform:uppercase;margin-bottom:22px;font-weight:500}
-.detail-price{font-family:'Syne',sans-serif;font-size:2.2rem;color:var(--accent2);font-weight:800;margin-bottom:4px;letter-spacing:-1px}
+.detail-price{font-family:'Space Grotesk',sans-serif;font-size:2.2rem;color:var(--accent2);font-weight:800;margin-bottom:4px;letter-spacing:-1px}
 .detail-usd{font-size:.76rem;color:var(--txt3);letter-spacing:.8px;margin-bottom:26px}
 .detail-desc{color:var(--txt2);line-height:1.8;font-size:.88rem;margin-bottom:26px}
 .spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;margin-bottom:26px}
@@ -612,7 +612,7 @@ section{padding:90px 5%;position:relative;z-index:1}
 ═══════════════════════════════════════════════ */
 .cart-wrap{padding:36px 5% 100px;position:relative;z-index:1}
 .cart-layout{display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start}
-.cart-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:32px;color:var(--txt);letter-spacing:-.8px}
+.cart-title{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:800;margin-bottom:32px;color:var(--txt);letter-spacing:-.8px}
 .cart-item{
   display:flex;align-items:center;gap:14px;
   padding:18px 20px;background:var(--surface);
@@ -630,7 +630,7 @@ section{padding:90px 5%;position:relative;z-index:1}
 }
 .qty-box button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
 .qty-box span{font-size:.88rem;font-weight:600;min-width:20px;text-align:center;color:var(--txt)}
-.cart-item-price{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--accent2);min-width:90px;text-align:right}
+.cart-item-price{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--accent2);min-width:90px;text-align:right}
 .cart-remove{
   background:none;border:none;cursor:pointer;color:var(--txt3);font-size:.8rem;
   padding:4px 7px;border-radius:6px;transition:.15s;
@@ -640,13 +640,13 @@ section{padding:90px 5%;position:relative;z-index:1}
   background:var(--surface);border:1px solid var(--border);
   border-radius:20px;padding:28px;backdrop-filter:blur(20px);position:sticky;top:90px;
 }
-.summary-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:22px;color:var(--txt)}
+.summary-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;margin-bottom:22px;color:var(--txt)}
 .summary-row{display:flex;justify-content:space-between;margin-bottom:11px;font-size:.82rem;color:var(--txt2)}
 .summary-total{
   display:flex;justify-content:space-between;
   padding-top:14px;margin-top:8px;
   border-top:1px solid var(--border2);
-  font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--txt);
+  font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--txt);
 }
 .cart-empty{
   text-align:center;padding:60px 20px;color:var(--txt3);
@@ -668,7 +668,7 @@ section{padding:90px 5%;position:relative;z-index:1}
   width:100%;padding:12px 16px;
   background:var(--surface);border:1px solid var(--border2);
   border-radius:12px;color:var(--txt);font-size:.86rem;
-  font-family:'DM Sans',sans-serif;transition:.2s;
+  font-family:'Plus Jakarta Sans',sans-serif;transition:.2s;
 }
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{
   outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);
@@ -687,7 +687,7 @@ section{padding:90px 5%;position:relative;z-index:1}
 .order-item-info{flex:1}
 .order-item-info h3{font-size:.84rem;font-weight:600;color:var(--txt)}
 .order-item-info p{font-size:.68rem;color:var(--txt3)}
-.order-item-price{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;color:var(--accent2)}
+.order-item-price{font-family:'Space Grotesk',sans-serif;font-size:.92rem;font-weight:700;color:var(--accent2)}
 
 /* ═══════════════════════════════════════════════
    FOOTER
@@ -699,7 +699,7 @@ footer{
 }
 .foot-logo{display:flex;align-items:center;gap:11px}
 .foot-logo-img{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);object-fit:cover}
-.foot-logo-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--txt)}
+.foot-logo-name{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:var(--txt)}
 .foot-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
 .foot-links a{color:var(--txt3);text-decoration:none;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;transition:.2s}
 .foot-links a:hover{color:var(--accent2)}
@@ -782,7 +782,7 @@ footer{
 <nav>
   <div class="nav-inner">
     <div class="logo-wrap" onclick="showPage('storePage')">
-      <img class="logo-img" src="https://i.postimg.cc/bJQtzx0h/iphoner4.png" alt="IPhone Club Río Cuarto" onerror="this.style.display='none'">
+      <img class="logo-img" src="https://i.postimg.cc/5y5jXskf/IMG-0126.jpg" alt="IPhone Club Río Cuarto" onerror="this.style.display='none'">
       <div class="logo-text-block">
         <span class="logo-name">IPhone Club</span>
         <span class="logo-city">Río Cuarto</span>
@@ -844,8 +844,10 @@ footer{
       </p>
 
       <div class="hero-actions">
-        <a href="#sellados" class="btn-blue" onclick="showPage('storePage')">Explorar productos</a>
-        <a href="https://wa.me/5493584000000" target="_blank" class="btn-glass">Consultar por WhatsApp</a>
+        <a href="#sellados" class="btn-blue" onclick="showPage('storePage')">Ver Sellados</a>
+        <a href="#usados" class="btn-glass" onclick="showPage('storePage')">Ver Seminuevos</a>
+        <a href="#resenas" class="btn-glass" onclick="showPage('storePage')">Qué dicen los clientes</a>
+        <a href="#ubicacion" class="btn-glass" onclick="showPage('storePage')">Ubicación</a>
       </div>
     </div>
 
@@ -1539,7 +1541,7 @@ footer{
 
 <footer>
   <div class="foot-logo">
-    <img class="foot-logo-img" src="https://i.postimg.cc/bJQtzx0h/iphoner4.png" alt="Logo" onerror="this.style.display='none'">
+    <img class="foot-logo-img" src="https://i.postimg.cc/5y5jXskf/IMG-0126.jpg" alt="Logo" onerror="this.style.display='none'">
     <span class="foot-logo-name">IPhone Club · Río Cuarto</span>
   </div>
   <div class="foot-links">
