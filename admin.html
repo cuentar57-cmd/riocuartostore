@@ -695,11 +695,10 @@ function doLogout(){
 //  API
 // ═══════════════════════════════════════════════════════════════
 async function api(action, body={}){
-  const url = API_URL + '?action=' + action;
+  const data = encodeURIComponent(JSON.stringify(body));
+  const url = API_URL + '?action=' + action + '&data=' + data;
   const res = await fetch(url, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({action, ...body}),
+    method: 'GET',
     redirect: 'follow'
   });
   return res.json();
