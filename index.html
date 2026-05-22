@@ -861,13 +861,40 @@ function addToCartDirect(name,icon,price){
 }
 
 // ── FILTER ──
-function filterUsed(cat,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+function filterUsed(type,btn){
+
+  document
+    .querySelectorAll('.filter-btn')
+    .forEach(b=>b.classList.remove('active'));
+
   btn.classList.add('active');
-  document.querySelectorAll('#usedGrid .prod-card').forEach(card=>{
-    if(card.style.display==='none'&&hiddenIds.size)return;
-    card.style.display=(cat==='all'||card.classList.contains(cat))?'':'none';
+
+  // ⚡ SOLO productos usados
+  const cards =
+    document.querySelectorAll('#usedGrid .prod-card');
+
+  cards.forEach(card=>{
+
+    if(type==='all'){
+
+      card.style.display='block';
+
+      return;
+
+    }
+
+    if(card.classList.contains(type)){
+
+      card.style.display='block';
+
+    }else{
+
+      card.style.display='none';
+
+    }
+
   });
+
 }
 
 // ── CART ──
