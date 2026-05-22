@@ -869,7 +869,42 @@ function renderGrid(){
   grid.innerHTML = '';
   let count = 0;
 
-  Object.entries(allProducts).forEach(([id, p]) => {
+ Object.entries(allProducts)
+
+.sort((a,b)=>{
+
+  const getOrder = (name)=>{
+
+    name = name.toLowerCase();
+
+    if(name.includes('13 pro max')) return 1304;
+    if(name.includes('13 pro'))     return 1303;
+    if(name.includes('13'))         return 1302;
+
+    if(name.includes('14 pro max')) return 1404;
+    if(name.includes('14 pro'))     return 1403;
+    if(name.includes('14'))         return 1402;
+
+    if(name.includes('15 pro max')) return 1504;
+    if(name.includes('15 pro'))     return 1503;
+    if(name.includes('15'))         return 1502;
+
+    if(name.includes('16 pro max')) return 1604;
+    if(name.includes('16 pro'))     return 1603;
+    if(name.includes('16'))         return 1602;
+
+    if(name.includes('17 pro max')) return 1704;
+    if(name.includes('17 pro'))     return 1703;
+    if(name.includes('17'))         return 1702;
+
+    return 0;
+  };
+
+  return getOrder(a[1].name) - getOrder(b[1].name);
+
+})
+
+.forEach(([id, p]) => {
     const isCustom = !!customProducts[id];
     const isHidden = hiddenIds.includes(id);
 
