@@ -527,17 +527,30 @@ let hiddenIds=new Set();
 let customProducts={};
 
 // ── SHEETS INTEGRATION ──
-async function loadFromSheets(){
-  try{
-    const url=SHEETS_API+'?action=getAll';
-    const res=await fetch(url,{redirect:'follow'});
-    const data=await res.json();
-    if(!data.ok)return;
-    hiddenIds=new Set(data.hidden||[]);
-    customProducts=data.products||{};
+async function loadFromSheets() {
+
+  try {
+
+    const res = await fetch(SHEETS_API + '?action=getAll');
+
+    const data = await res.json();
+
+    if (!data.ok) return;
+
+    hiddenIds = new Set(data.hidden || []);
+
+    customProducts = data.products || {};
+
     applyHiddenToStaticCards();
+
     renderCustomCards();
-  }catch(e){console.warn('No se pudo cargar desde Sheets:',e)}
+
+  } catch (e) {
+
+    console.warn('No se pudo cargar desde Sheets:', e);
+
+  }
+
 }
 
 function applyHiddenToStaticCards(){
