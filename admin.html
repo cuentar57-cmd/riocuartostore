@@ -384,12 +384,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <div class="setup-icon">🔗</div>
     <div class="setup-title">Configuración inicial</div>
     <div class="setup-sub">Ingresá la URL de tu Google Apps Script para conectar el panel con tu planilla de productos.</div>
-    <div class="setup-hint">
-      La URL se obtiene al <strong>deployar</strong> el Apps Script como Web App.<br>
-      Tiene el formato:<br>
-      <code>https://script.google.com/macros/s/AK.../exec</code><br><br>
-      Seguí las instrucciones en la pestaña <strong>"Instrucciones"</strong> del panel una vez que te conectes.
-    </div>
     <input type="url" id="setupUrl" class="setup-input" placeholder="https://script.google.com/macros/s/.../exec" oninput="this.value=this.value.trim()">
     <div id="setupError" class="setup-error">URL inválida. Debe empezar con https://script.google.com</div>
     <button class="setup-btn" onclick="doSetup()">Conectar con Google Sheets →</button>
@@ -514,33 +508,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <div class="prod-grid" id="prodGrid"></div>
       </div>
 
-      <!-- VIEW: INSTRUCCIONES -->
-      <div id="view-instrucciones" style="display:none">
-        <div class="sec-hdr"><h2>Instrucciones de <span>configuración</span></h2></div>
-        <div class="sheets-panel">
-          <h3>🗂 Tu URL de API conectada</h3>
-          <div class="url-display">
-            <code id="connectedUrl">—</code>
-            <button class="url-copy-btn" onclick="copyApiUrl()">Copiar</button>
-          </div>
-          <h3 style="margin-top:20px;margin-bottom:12px">📋 Pasos para configurar desde cero</h3>
-          <ol class="step-list">
-            <li>Andá a <strong>Google Sheets</strong> → <strong>sheets.google.com</strong> y creá una hoja nueva. Llamala <code>iPhone Club Admin</code>.</li>
-            <li>En la barra de menú de la hoja, abrí <strong>Extensiones → Apps Script</strong>.</li>
-            <li>Borrá el código por defecto, pegá todo el contenido del archivo <code>Code.gs</code> que descargaste, y guardá (<strong>Ctrl+S</strong>).</li>
-            <li>Buscá la línea <code>const SPREADSHEET_ID = 'TU_SPREADSHEET_ID_AQUI'</code> y reemplazá con el ID de tu hoja. El ID es la parte larga de la URL entre <code>/d/</code> y <code>/edit</code>.</li>
-            <li>Cambiá también <code>ADMIN_PASSWORD</code> por la contraseña que quieras usar.</li>
-            <li>Hacé clic en <strong>Implementar → Nueva implementación</strong>. Tipo: <strong>Aplicación web</strong>. Ejecutar como: <strong>Yo</strong>. Acceso: <strong>Cualquier persona</strong>. Hacé clic en <strong>Implementar</strong>.</li>
-            <li>Google te pedirá permiso para acceder a tus hojas. Aceptá todo.</li>
-            <li>Copiá la <strong>URL de la aplicación web</strong> que aparece (empieza con <code>https://script.google.com/macros/s/...</code>) y pegala en el campo de configuración del panel.</li>
-            <li>Listo 🎉 Cada vez que agregues o edites un producto desde el panel, se guarda automáticamente en tu Google Sheet.</li>
-          </ol>
-          <h3 style="margin-top:28px;margin-bottom:10px">🔄 Para actualizar el Apps Script</h3>
-          <p>Si modificás el código <code>Code.gs</code>, tenés que hacer una <strong>nueva implementación</strong> (no editar la existente) para que los cambios tengan efecto.</p>
-          <h3 style="margin-top:24px;margin-bottom:10px">📱 Para conectar la tienda (indexrio4.html)</h3>
-          <p>En la tienda ya está incorporado el sistema. Solo necesitás que la URL de la API esté guardada en el <code>localStorage</code> bajo la clave <code>iphoneclub_api_url</code>. El panel lo hace automáticamente cuando te conectás.</p>
-        </div>
-      </div>
+
 
     </main>
   </div>
