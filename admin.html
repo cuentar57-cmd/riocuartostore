@@ -578,6 +578,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         </div>
       </div>
       <div class="form-row full">
+        <div class="form-group">
+          <label class="form-label">Descripción completa</label>
+          <textarea class="form-textarea" id="f-desc" placeholder="Detalle del producto, estado, accesorios, garantía, etc."></textarea>
+        </div>
+      </div>
+      <div class="form-row full">
   <div class="form-group">
 
     <label class="form-label">
@@ -1021,7 +1027,8 @@ function openModal(id){
       document.getElementById('f-name').value = p.name||'';
       document.getElementById('f-storage').value = p.storage||'';
       document.getElementById('f-image').value = p.image||'';
-      document.getElementById('f-desc').value = p.description||'';
+      const descEl = document.getElementById('f-desc');
+      if(descEl) descEl.value = p.description||'';
       previewImg();
       if(p.specs) Object.entries(p.specs).forEach(([k,v])=>addSpec(k,v));
       else { addSpec('Pantalla','');addSpec('Chip','');addSpec('Almacenamiento',''); }
@@ -1047,6 +1054,7 @@ function closeModal(){
 function clearForm(){
   ['f-tag','f-usd','f-name','f-storage','f-image','f-desc'].forEach(id=>{
     const el = document.getElementById(id);
+    if(!el) return;
     if(el.tagName==='SELECT') el.value = 'Sellado'; else el.value = '';
   });
   document.getElementById('imgPreview').innerHTML='<span>Vista previa</span>';
@@ -1094,7 +1102,8 @@ async function saveProduct(){
 
   const usd     = parseFloat(document.getElementById('f-usd').value)||0;
   const tag     = document.getElementById('f-tag').value;
-  const desc    = document.getElementById('f-desc').value.trim();
+  const descEl  = document.getElementById('f-desc');
+  const desc    = descEl ? descEl.value.trim() : '';
 
   // CLOUDINARY
 
