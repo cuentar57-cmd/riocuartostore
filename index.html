@@ -551,137 +551,42 @@ function applyHiddenToStaticCards(){
 }
 
 function renderCustomCards(){
+  const selladosGrid=document.getElementById('selladosGrid');
+  const usedGrid=document.getElementById('usedGrid');
+  Object.values(customProducts)
 
-  const selladosGrid = document.getElementById('selladosGrid');
-  const usedGrid = document.getElementById('usedGrid');
+.sort((a,b)=>{
 
-  // LIMPIAR TODO
-  selladosGrid.innerHTML = '';
-  usedGrid.innerHTML = '';
+  const getOrder = (name)=>{
 
-  // UNIR TODOS LOS PRODUCTOS
-  const allProducts = {
-    ...products,
-    ...customProducts
+    name = name.toLowerCase();
+
+    if(name.includes('13 pro max')) return 1304;
+    if(name.includes('13 pro'))     return 1303;
+    if(name.includes('13'))         return 1302;
+
+    if(name.includes('14 pro max')) return 1404;
+    if(name.includes('14 pro'))     return 1403;
+    if(name.includes('14'))         return 1402;
+
+    if(name.includes('15 pro max')) return 1504;
+    if(name.includes('15 pro'))     return 1503;
+    if(name.includes('15'))         return 1502;
+
+    if(name.includes('16 pro max')) return 1604;
+    if(name.includes('16 pro'))     return 1603;
+    if(name.includes('16'))         return 1602;
+
+    if(name.includes('17 pro max')) return 1704;
+    if(name.includes('17 pro'))     return 1703;
+    if(name.includes('17'))         return 1702;
+
+    return 0;
   };
 
-  Object.values(allProducts)
+  return getOrder(a.name) - getOrder(b.name);
 
-  .sort((a,b)=>{
-
-    const getOrder = (name)=>{
-
-      name = name.toLowerCase();
-
-      if(name.includes('13 pro max')) return 1304;
-      if(name.includes('13 pro'))     return 1303;
-      if(name.includes('13'))         return 1302;
-
-      if(name.includes('14 pro max')) return 1404;
-      if(name.includes('14 pro'))     return 1403;
-      if(name.includes('14'))         return 1402;
-
-      if(name.includes('15 pro max')) return 1504;
-      if(name.includes('15 pro'))     return 1503;
-      if(name.includes('15'))         return 1502;
-
-      if(name.includes('16 pro max')) return 1604;
-      if(name.includes('16 pro'))     return 1603;
-      if(name.includes('16'))         return 1602;
-
-      if(name.includes('17 pro max')) return 1704;
-      if(name.includes('17 pro'))     return 1703;
-      if(name.includes('17'))         return 1702;
-
-      return 0;
-    };
-
-    return getOrder(a.name) - getOrder(b.name);
-
-  })
-
-  .forEach(p=>{
-
-    if(hiddenIds.has(p.id)) return;
-
-    const pricePesos = Math.round((p.usd||0) * dolarBlue);
-
-    const badgeClass =
-      p.tag === 'Sellado' || p.tag === 'Nuevo'
-      ? 'nuevo'
-      : '';
-
-    const cardHTML = `
-      <div class="prod-card reveal custom-card" onclick="openDetail('${p.id}')">
-
-        <span class="prod-badge ${badgeClass}">
-          ${p.tag || 'Nuevo'}
-        </span>
-
-        <img
-          class="prod-img"
-          src="${p.image||''}"
-          alt="${p.name}"
-          onerror="this.src='https://via.placeholder.com/140'"
-        >
-
-        <div class="prod-name">${p.name}</div>
-
-        <div class="prod-storage">
-          ${p.storage || ''}
-        </div>
-
-        <div class="prod-price-label">
-          Precio
-        </div>
-
-        <div class="prod-price">
-          ${money(pricePesos)}
-        </div>
-
-        <div class="prod-usd">
-          ${p.usd ? 'USD ' + p.usd : ''}
-        </div>
-
-        <div class="prod-actions">
-
-          <button
-            class="prod-btn prod-btn-ghost"
-            onclick="event.stopPropagation();openDetail('${p.id}')"
-          >
-            Ver detalles
-          </button>
-
-          <button
-            class="prod-btn prod-btn-main"
-            onclick="event.stopPropagation();addToCart('${p.name} ${p.storage}','📱',${pricePesos})"
-          >
-            Agregar al carrito
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-    const isSellado =
-      p.tag === 'Sellado' ||
-      p.tag === 'Nuevo';
-
-    const target =
-      isSellado
-      ? selladosGrid
-      : usedGrid;
-
-    target.insertAdjacentHTML('beforeend', cardHTML);
-
-  });
-
-  document
-    .querySelectorAll('.custom-card')
-    .forEach(el=>observer.observe(el));
-
-}
+})
 
 .forEach(p=>{
     if(hiddenIds.has(p.id))return;
