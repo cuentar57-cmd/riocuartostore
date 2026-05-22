@@ -333,7 +333,8 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
     <h2>iPhone <span>Sellados</span></h2>
     <p>Equipos nuevos, de fábrica, con caja y accesorios originales.</p>
   </div>
-  
+  <div class="products-grid" id="selladosGrid">
+    
 </section>
 
 <section id="seminuevos">
@@ -350,7 +351,9 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
     <button class="filter-btn" onclick="filterUsed('iphone16u',this)">iPhone 16</button>
     <button class="filter-btn" onclick="filterUsed('iphone17u',this)">iPhone 17</button>
   </div>
-
+  <div class="used-grid" id="usedGrid">
+   
+  </div>
 </section>
 
 <section id="accesorios">
@@ -489,30 +492,17 @@ let hiddenIds=new Set();
 let customProducts={};
 
 // ── SHEETS INTEGRATION ──
-async function loadFromSheets() {
-
-  try {
-
-    const res = await fetch(SHEETS_API + '?action=getAll');
-
-    const data = await res.json();
-
-    if (!data.ok) return;
-
-    hiddenIds = new Set(data.hidden || []);
-
-    customProducts = data.products || {};
-
+async function loadFromSheets(){
+  try{
+    const url=SHEETS_API+'?action=getAll';
+    const res=await fetch(url,{redirect:'follow'});
+    const data=await res.json();
+    if(!data.ok)return;
+    hiddenIds=new Set(data.hidden||[]);
+    customProducts=data.products||{};
     applyHiddenToStaticCards();
-
     renderCustomCards();
-
-  } catch (e) {
-
-    console.warn('No se pudo cargar desde Sheets:', e);
-
-  }
-
+  }catch(e){console.warn('No se pudo cargar desde Sheets:',e)}
 }
 
 function applyHiddenToStaticCards(){
@@ -528,42 +518,7 @@ function applyHiddenToStaticCards(){
 function renderCustomCards(){
   const selladosGrid=document.getElementById('selladosGrid');
   const usedGrid=document.getElementById('usedGrid');
-  Object.values(customProducts)
-
-.sort((a,b)=>{
-
-  const getOrder = (name)=>{
-
-    name = name.toLowerCase();
-
-    if(name.includes('13 pro max')) return 1304;
-    if(name.includes('13 pro'))     return 1303;
-    if(name.includes('13'))         return 1302;
-
-    if(name.includes('14 pro max')) return 1404;
-    if(name.includes('14 pro'))     return 1403;
-    if(name.includes('14'))         return 1402;
-
-    if(name.includes('15 pro max')) return 1504;
-    if(name.includes('15 pro'))     return 1503;
-    if(name.includes('15'))         return 1502;
-
-    if(name.includes('16 pro max')) return 1604;
-    if(name.includes('16 pro'))     return 1603;
-    if(name.includes('16'))         return 1602;
-
-    if(name.includes('17 pro max')) return 1704;
-    if(name.includes('17 pro'))     return 1703;
-    if(name.includes('17'))         return 1702;
-
-    return 0;
-  };
-
-  return getOrder(a.name) - getOrder(b.name);
-
-})
-
-.forEach(p=>{
+  Object.values(customProducts).forEach(p=>{
     if(hiddenIds.has(p.id))return;
     // Añadir al products lookup para que openDetail funcione
     products[p.id]=p;
@@ -746,5 +701,4 @@ fetchDolar().then(()=>loadFromSheets());
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done: $(wc -c < /mnt/user-data/outputs/indexrio4.html) bytes"
+
