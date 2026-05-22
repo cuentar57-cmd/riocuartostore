@@ -1,4 +1,4 @@
-
+cat > /mnt/user-data/outputs/indexrio4.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
 <head>
@@ -246,9 +246,109 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
 .dev-badge svg{width:14px;height:14px;fill:#fff;flex-shrink:0}
 @media(max-width:960px){nav ul{display:none}.hero-layout{grid-template-columns:1fr;gap:48px}.hero-visual{display:none}.hero{min-height:auto;padding:120px 5% 80px}.ubicacion-grid,.detail-layout,.cart-layout,.checkout-layout{grid-template-columns:1fr}footer{grid-template-columns:1fr;text-align:center}.foot-copy{text-align:center}.foot-links{justify-content:center}.hero-ring,.hero-ring-2{width:280px;height:280px}}
 @media(max-width:480px){.hero-headline{font-size:2.8rem}.products-grid,.used-grid{grid-template-columns:1fr 1fr}.acc-grid{grid-template-columns:repeat(2,1fr)}}
+
+#loaderScreen{
+  position:fixed;
+  inset:0;
+  background:#080c14;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+  transition:opacity .5s ease;
+}
+
+.loader-bar{
+  width:220px;
+  height:8px;
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:18px;
+  border:1px solid rgba(255,255,255,.05);
+}
+
+.loader-progress{
+  width:40%;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#3b82f6,#60a5fa);
+  animation:loadingMove 1.2s infinite ease-in-out;
+}
+
+@keyframes loadingMove{
+
+  0%{
+    transform:translateX(-120%);
+  }
+
+  100%{
+    transform:translateX(320%);
+  }
+
+}
+
+.loader-logo{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:20px;
+  animation:logoPulse 1.8s infinite ease-in-out;
+  box-shadow:0 0 40px rgba(59,130,246,.35);
+}
+
+.loader-text{
+  color:white;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1rem;
+  letter-spacing:2px;
+  opacity:.8;
+}
+
+@keyframes logoPulse{
+
+  0%,100%{
+    transform:scale(1);
+    opacity:1;
+  }
+
+  50%{
+    transform:scale(1.08);
+    opacity:.7;
+  }
+
+}
+
 </style>
 </head>
 <body>
+
+<div id="loaderScreen">
+
+  <img 
+    src="https://i.postimg.cc/5y5jXskf/IMG-0126.jpg"
+    alt="Logo"
+    class="loader-logo"
+  >
+
+  <div class="loader-text">
+    Cargando productos...
+  </div>
+
+  <div class="loader-bar">
+
+    <div class="loader-progress"></div>
+
+  </div>
+
+</div>
+
+  <div class="loader-text">
+    IPhone Club Río Cuarto
+  </div>
+</div>
 
 <nav>
   <div class="nav-inner">
@@ -493,17 +593,71 @@ let customProducts={};
 
 // ── SHEETS INTEGRATION ──
 async function loadFromSheets(){
+
   try{
-    const url=SHEETS_API+'?action=getAll';
-    const res=await fetch(url,{redirect:'follow'});
-    const data=await res.json();
-    if(!data.ok)return;
-    hiddenIds=new Set(data.hidden||[]);
-    customProducts=data.products||{};
-    applyHiddenToStaticCards();
-    renderCustomCards();
-  }catch(e){console.warn('No se pudo cargar desde Sheets:',e)}
+
+    // ⚡ Cache instantánea
+    const cached = localStorage.getItem('products_cache');
+
+    if(cached){
+
+      const cacheData = JSON.parse(cached);
+
+      hiddenIds = new Set(cacheData.hidden || []);
+
+      customProducts = cacheData.products || {};
+
+      applyHiddenToStaticCards();
+
+      renderCustomCards();
+
+    }
+
+    // ⚡ Cargar desde Sheets
+    const url = SHEETS_API + '?action=getAll';
+
+    const res = await fetch(url,{redirect:'follow'});
+
+    const data = await res.json();
+
+    if(data.ok){
+
+      hiddenIds = new Set(data.hidden || []);
+
+      customProducts = data.products || {};
+
+      localStorage.setItem('products_cache', JSON.stringify({
+        products:data.products,
+        hidden:data.hidden
+      }));
+
+      applyHiddenToStaticCards();
+
+      renderCustomCards();
+
+    }
+
+  }catch(e){
+
+    console.warn('No se pudo cargar desde Sheets:',e);
+
+  }finally{
+
+    // ⚡ SIEMPRE cerrar loader
+    document.getElementById('loaderScreen').style.opacity='0';
+
+    setTimeout(()=>{
+
+      document.getElementById('loaderScreen').remove();
+
+    },400);
+
+  }
+
 }
+
+
+
 
 function applyHiddenToStaticCards(){
   // Ocultar cards hardcodeadas que el admin marcó como ocultas
@@ -518,6 +672,8 @@ function applyHiddenToStaticCards(){
 function renderCustomCards(){
   const selladosGrid=document.getElementById('selladosGrid');
   const usedGrid=document.getElementById('usedGrid');
+  selladosGrid.innerHTML = '';
+  usedGrid.innerHTML = '';
   Object.values(customProducts).forEach(p=>{
     if(hiddenIds.has(p.id))return;
     // Añadir al products lookup para que openDetail funcione
