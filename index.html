@@ -88,8 +88,7 @@ nav ul a:hover::after{left:0;right:0}
 .hero-ring{position:absolute;width:380px;height:380px;border-radius:50%;border:1px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(from 0deg,var(--accent),transparent 50%,var(--accent2)) border-box;animation:rotateRing 12s linear infinite}
 .hero-ring-2{width:460px;height:460px;background:linear-gradient(var(--bg),var(--bg)) padding-box,conic-gradient(from 180deg,rgba(99,102,241,.5),transparent 60%,rgba(59,130,246,.3)) border-box;animation:rotateRing 20s linear infinite reverse}
 .hero-phone-card{position:relative;z-index:3;background:var(--card-bg);border:1px solid var(--border2);border-radius:36px;padding:36px 32px 28px;width:260px;backdrop-filter:blur(40px);box-shadow:0 32px 80px rgba(0,0,0,.5),0 0 0 1px var(--border),0 0 80px var(--accent-glow);animation:float 5s ease-in-out infinite}
-.phone-card-img{width:100%;max-width:180px;display:block;margin:0 auto 20px;filter:drop-shadow(0 20px 40px rgba(59,130,246,.3));transition:.3s}
-.hero-phone-card:hover .phone-card-img{transform:scale(1.04) translateY(-4px)}
+
 .phone-card-name{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;text-align:center;color:var(--txt);margin-bottom:4px}
 .phone-card-sub{font-size:.7rem;text-align:center;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt3);margin-bottom:16px}
 .phone-card-price{background:var(--accent-dim);border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:10px 16px;text-align:center}
@@ -176,12 +175,7 @@ section{padding:90px 5%;position:relative;z-index:1}
   font-size:1.2rem;
   position:relative;
 }
-.prod-model-icon img{
-  width:32px;
-  height:32px;
-  object-fit:contain;
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,.3));
-}
+
 
 /* Text info */
 .prod-info{flex:1;min-width:0}
@@ -228,8 +222,8 @@ section{padding:90px 5%;position:relative;z-index:1}
 .prod-badge.nuevo{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 4px 14px var(--accent-glow);display:inline-block}
 .prod-badge.sinstock{background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.2);display:inline-block}
 
-/* Ocultar imagen solo dentro de las cards, no en el detalle */
-.prod-card .prod-img{display:none}
+/* Legacy - keep prod-img hidden but available for detail page */
+.prod-img{display:none}
 .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
 .filter-btn{padding:7px 18px;border-radius:99px;font-size:.72rem;font-weight:600;cursor:pointer;transition:.2s;border:1px solid var(--border2);background:var(--surface);color:var(--txt2);font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.3px;backdrop-filter:blur(12px)}
 .filter-btn:hover{border-color:var(--accent);color:var(--accent2)}
@@ -267,9 +261,8 @@ section{padding:90px 5%;position:relative;z-index:1}
 .inner-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
 .detail-wrap{padding:36px 5% 100px;position:relative;z-index:1}
 .detail-layout{display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:start}
-.detail-img-wrap{background:var(--surface);border:1px solid var(--border);backdrop-filter:blur(20px);border-radius:24px;display:flex;align-items:center;justify-content:center;padding:40px;min-height:0}
-.detail-img-wrap:has(img[src=""]), .detail-img-wrap:has(img:not([src])){display:none}
-.detail-img{width:100%;max-width:280px;object-fit:contain;filter:drop-shadow(0 20px 40px rgba(0,0,0,.4))}
+
+
 .detail-tag{display:inline-block;font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent2);border:1px solid var(--accent-dim);background:var(--accent-dim);padding:5px 14px;border-radius:99px;margin-bottom:14px;font-weight:600}
 .detail-name{font-family:'Space Grotesk',sans-serif;font-size:2.6rem;font-weight:800;line-height:1.05;margin-bottom:6px;letter-spacing:-1px;color:var(--txt)}
 .detail-storage{font-size:.72rem;color:var(--txt3);letter-spacing:2px;text-transform:uppercase;margin-bottom:22px;font-weight:500}
@@ -345,7 +338,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
   .acc-grid{grid-template-columns:repeat(2,1fr)}
   .prod-card-body{gap:10px}
   .prod-model-icon{width:36px;height:36px;border-radius:9px}
-  .prod-model-icon img{width:26px;height:26px}
+
   .prod-name{font-size:.82rem}
   .prod-chip{font-size:.52rem;padding:2px 7px}
   .prod-price{font-size:.95rem}
@@ -399,10 +392,12 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
   width:110px;
   height:110px;
   border-radius:50%;
-  object-fit:cover;
   margin-bottom:20px;
   animation:logoPulse 1.8s infinite ease-in-out;
   box-shadow:0 0 40px rgba(59,130,246,.35);
+  background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(99,102,241,.15));
+  border:2px solid rgba(59,130,246,.3);
+  display:flex;align-items:center;justify-content:center;font-size:3.5rem;
 }
 
 .loader-text{
@@ -433,11 +428,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
 
 <div id="loaderScreen">
 
-  <img 
-    src="https://i.postimg.cc/5y5jXskf/IMG-0126.jpg"
-    alt="Logo"
-    class="loader-logo"
-  >
+  <div class="loader-logo" style="display:flex;align-items:center;justify-content:center;font-size:3.5rem">📱</div>
 
   <div class="loader-text">
     Cargando productos...
@@ -456,7 +447,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
 <nav>
   <div class="nav-inner">
     <div class="logo-wrap" onclick="showPage('storePage')">
-      <img class="logo-img" src="https://i.postimg.cc/5y5jXskf/IMG-0126.jpg" alt="IPhone Club Río Cuarto" onerror="this.style.display='none'">
+      
       <div class="logo-text-block">
         <span class="logo-name">IPhone Club</span>
         <span class="logo-city">Río Cuarto</span>
@@ -509,8 +500,8 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
       <div class="hero-ring hero-ring-2"></div>
       <div class="hero-ring"></div>
       <div class="hero-phone-card">
-        <img class="phone-card-img" src="https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png" alt="iPhone 17 Pro">
-        <div class="phone-card-name">iPhone 17 Pro</div>
+        
+        <div style="font-size:4rem;text-align:center;margin-bottom:16px">📱</div><div class="phone-card-name">iPhone 17 Pro</div>
         <div class="phone-card-sub">512 GB · Silver · Sellado</div>
         <div class="phone-card-price"><div class="phone-card-price-label">Desde</div><div class="phone-card-price-val">USD 1400</div></div>
       </div>
@@ -601,7 +592,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
 </section>
 
 <footer>
-  <div class="foot-logo"><img class="foot-logo-img" src="https://i.postimg.cc/5y5jXskf/IMG-0126.jpg" alt="Logo" onerror="this.style.display='none'"><span class="foot-logo-name">IPhone Club · Río Cuarto</span></div>
+  <div class="foot-logo"><span class="foot-logo-name">IPhone Club · Río Cuarto</span></div>
   <div class="foot-links"><a href="#sellados" onclick="showPage('storePage')">Sellados</a><a href="#seminuevos" onclick="showPage('storePage')">Seminuevos</a><a href="#accesorios" onclick="showPage('storePage')">Accesorios</a><a href="#clientes" onclick="showPage('storePage')">Reseñas</a><a href="#ubicacion" onclick="showPage('storePage')">Ubicación</a></div>
   <div class="foot-copy">© 2026 IPhone Club Río Cuarto<br>Todos los derechos reservados</div>
   <div class="dev-credit">Desarrollado por&nbsp;<a class="dev-badge" href="https://instagram.com/btarratweb" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>@btarratweb</a></div>
@@ -613,7 +604,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
   <div class="inner-back" onclick="showPage('storePage')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Volver a la tienda</div>
   <div class="detail-wrap">
     <div class="detail-layout">
-      <div><div class="detail-img-wrap"><img id="detailImg" class="detail-img" src="" alt=""></div></div>
+      <div class="detail-img-wrap" id="detailImgWrap" style="display:flex;align-items:center;justify-content:center;font-size:7rem;padding:40px 0">📱</div>
       <div class="detail-info">
         <div class="detail-tag" id="detailTag">Sellado</div>
         <div class="detail-name" id="detailName"></div>
@@ -696,31 +687,67 @@ let customProducts={};
 
 // ── SHEETS INTEGRATION ──
 async function loadFromSheets(){
+
   try{
-    const cached=localStorage.getItem('products_cache');
+
+    // ⚡ Cache instantánea
+    const cached = localStorage.getItem('products_cache');
+
     if(cached){
-      const cacheData=JSON.parse(cached);
-      hiddenIds=new Set(cacheData.hidden||[]);
-      customProducts=cacheData.products||{};
+
+      const cacheData = JSON.parse(cached);
+
+      hiddenIds = new Set(cacheData.hidden || []);
+
+      customProducts = cacheData.products || {};
+
       applyHiddenToStaticCards();
+
       renderCustomCards();
+
     }
-    const url=SHEETS_API+'?action=getAll';
-    const res=await fetch(url,{redirect:'follow'});
-    const data=await res.json();
+
+    // ⚡ Cargar desde Sheets
+    const url = SHEETS_API + '?action=getAll';
+
+    const res = await fetch(url,{redirect:'follow'});
+
+    const data = await res.json();
+
     if(data.ok){
-      hiddenIds=new Set(data.hidden||[]);
-      customProducts=data.products||{};
-      localStorage.setItem('products_cache',JSON.stringify({products:data.products,hidden:data.hidden}));
+
+      hiddenIds = new Set(data.hidden || []);
+
+      customProducts = data.products || {};
+
+      localStorage.setItem('products_cache', JSON.stringify({
+        products:data.products,
+        hidden:data.hidden
+      }));
+
       applyHiddenToStaticCards();
+
       renderCustomCards();
+
     }
+
   }catch(e){
+
     console.warn('No se pudo cargar desde Sheets:',e);
+
   }finally{
+
+    // ⚡ SIEMPRE cerrar loader
     document.getElementById('loaderScreen').style.opacity='0';
-    setTimeout(()=>{document.getElementById('loaderScreen').remove();},400);
+
+    setTimeout(()=>{
+
+      document.getElementById('loaderScreen').remove();
+
+    },400);
+
   }
+
 }
 
 
@@ -744,79 +771,91 @@ function renderCustomCards(){
   selladosGrid.innerHTML='';
   usedGrid.innerHTML='';
 
-  Object.entries(customProducts).forEach(([key, p])=>{
+  Object.values(customProducts).forEach(p=>{
 
-    // Asegurar que el producto tenga id
-    const pid = p.id || key;
-    p.id = pid;
+    if(hiddenIds.has(p.id)) return;
 
-    if(hiddenIds.has(pid)) return;
+    products[p.id]=p;
 
-    products[pid] = p;
+    const pricePesos=Math.round((p.usd||0)*dolarBlue);
 
-    const pricePesos = Math.round((p.usd||0)*dolarBlue);
-    const isSellado  = p.tag==='Sellado' || p.tag==='Nuevo';
-    const name       = (p.name||'').toLowerCase();
+    const badgeClass=
+      p.tag==='Sellado'||p.tag==='Nuevo'
+      ? 'nuevo'
+      : '';
+
+    const name=(p.name||'').toLowerCase();
 
     let modelClass='';
+
     if(name.includes('iphone 13')) modelClass='iphone13';
     if(name.includes('iphone 14')) modelClass='iphone14';
     if(name.includes('iphone 15')) modelClass='iphone15';
     if(name.includes('iphone 16')) modelClass='iphone16u';
     if(name.includes('iphone 17')) modelClass='iphone17u';
 
-    const batStr  = (p.specs&&p.specs['Batería']) || '100%';
-    const batPct  = parseInt(batStr) || 100;
-    const batClass= batPct>=90?'bat-high':batPct>=80?'bat-mid':'bat-low';
-    const chipVal = (p.specs&&p.specs['Chip']) || '';
-    const storVal = (p.specs&&p.specs['Almacenamiento']) || '';
-    const colorVal= (p.specs&&p.specs['Color']) || '';
-    const barClass= isSellado?'sellado':'usado';
+    // Build battery chip class
+    const batPct = parseInt((p.specs&&p.specs['Batería'])||'100');
+    const batClass = batPct>=90?'bat-high':batPct>=80?'bat-mid':'bat-low';
+    const batVal = (p.specs&&p.specs['Batería'])||'100%';
+    const chipVal = (p.specs&&p.specs['Chip'])||'';
+    const storVal = (p.specs&&p.specs['Almacenamiento'])||'';
+    const colorVal = (p.specs&&p.specs['Color'])||'';
+    const isSold = isSellado;
+    const barClass = isSold?'sellado':'usado';
 
-    const displayColor = colorVal || (()=>{
-      const m=(p.storage||'').match(/·\s*([^·]+?)\s*·/);
+    // Parse color from storage string if not in specs
+    const displayColor = colorVal || (() => {
+      const m = (p.storage||'').match(/·\s*([^·]+?)\s*·/);
       return m?m[1].trim():'';
     })();
 
-    const storageEscape = (p.storage||'').replace(/'/g,"\\'");
-
     const cardHTML=`
-      <div class="prod-card reveal custom-card ${modelClass}" onclick="openDetail('${pid}')">
+      <div class="prod-card reveal custom-card ${modelClass}" onclick="openDetail('${p.id}')">
         <div class="prod-card-bar ${barClass}"></div>
+
         <div class="prod-card-body">
-          <div class="prod-model-icon">
-            <img src="${p.image||''}" alt="${p.name}" onerror="this.style.display='none';this.parentElement.textContent='📱'">
-          </div>
+          <div class="prod-model-icon">📱</div>
           <div class="prod-info">
             <div class="prod-name">${p.name}</div>
             <div class="prod-chips">
-              <span class="prod-chip ${isSellado?'sellado-chip':'usado-chip'}">${p.tag||'Nuevo'}</span>
+              <span class="prod-chip ${isSold?'sellado-chip':'usado-chip'}">${p.tag||'Nuevo'}</span>
               ${storVal?`<span class="prod-chip chip-accent">${storVal}</span>`:''}
-              ${!isSellado?`<span class="prod-chip ${batClass}">🔋 ${batStr}</span>`:''}
+              ${batVal&&!isSold?`<span class="prod-chip ${batClass}">🔋 ${batVal}</span>`:''}
               ${chipVal?`<span class="prod-chip">${chipVal}</span>`:''}
               ${displayColor?`<span class="prod-chip">${displayColor}</span>`:''}
             </div>
           </div>
         </div>
+
         <div class="prod-card-right">
           <div>
             <div class="prod-price">${money(pricePesos)}</div>
             <div class="prod-usd">${p.usd?'USD '+p.usd:''}</div>
           </div>
           <div class="prod-actions">
-            <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('${pid}')">Ver</button>
-            <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('${p.name} ${storageEscape}','📱',${pricePesos})">+ Carrito</button>
+            <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('${p.id}')">Ver</button>
+            <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('${p.name} ${p.storage}','📱',${pricePesos})">+ Carrito</button>
           </div>
         </div>
       </div>
     `;
 
-    const target = isSellado ? selladosGrid : usedGrid;
-    target.insertAdjacentHTML('beforeend', cardHTML);
+    const isSellado=
+      p.tag==='Sellado'||p.tag==='Nuevo';
+
+    const target=
+      isSellado
+      ? selladosGrid
+      : usedGrid;
+
+    target.insertAdjacentHTML('beforeend',cardHTML);
 
   });
 
-  document.querySelectorAll('.custom-card').forEach(el=>observer.observe(el));
+  document
+    .querySelectorAll('.custom-card')
+    .forEach(el=>observer.observe(el));
 
 }
 // ── DÓLAR ──
@@ -885,17 +924,7 @@ const products={
 // ── DETAIL ──
 function openDetail(id){
   const p=products[id];if(!p)return;
-  const imgEl=document.getElementById('detailImg');
-  const imgWrap=document.querySelector('.detail-img-wrap');
-  imgEl.src='';
-  if(p.image){
-    imgWrap.style.display='flex';
-    imgEl.src=p.image;
-    imgEl.onerror=()=>{imgWrap.style.display='none'};
-    imgEl.onload=()=>{imgWrap.style.display='flex'};
-  } else {
-    imgWrap.style.display='none';
-  }
+  // image removed
   document.getElementById('detailTag').textContent=p.tag||'Sellado';
   document.getElementById('detailName').textContent=p.name;
   document.getElementById('detailStorage').textContent=p.storage||'';
