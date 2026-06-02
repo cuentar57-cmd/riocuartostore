@@ -801,6 +801,8 @@ function renderCustomCards(){
     const chipVal = (p.specs&&p.specs['Chip'])||'';
     const storVal = (p.specs&&p.specs['Almacenamiento'])||'';
     const colorVal = (p.specs&&p.specs['Color'])||'';
+    const isSellado=
+      p.tag==='Sellado'||p.tag==='Nuevo';
     const isSold = isSellado;
     const barClass = isSold?'sellado':'usado';
 
@@ -840,9 +842,6 @@ function renderCustomCards(){
         </div>
       </div>
     `;
-
-    const isSellado=
-      p.tag==='Sellado'||p.tag==='Nuevo';
 
     const target=
       isSellado
