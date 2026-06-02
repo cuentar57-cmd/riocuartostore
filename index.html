@@ -781,7 +781,7 @@ function renderCustomCards(){
   selladosGrid.innerHTML='';
   usedGrid.innerHTML='';
 
-  Object.values(customProducts).forEach(p=>{
+  Object.values(customProducts).sort((a,b)=>(a.usd||0)-(b.usd||0)).forEach(p=>{
 
     if(hiddenIds.has(p.id)) return;
 
