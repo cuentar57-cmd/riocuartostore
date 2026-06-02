@@ -454,8 +454,8 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
       </div>
     </div>
     <ul>
-      <li><a href="#sellados" onclick="showPage('storePage')">Sellados</a></li>
       <li><a href="#seminuevos" onclick="showPage('storePage')">Seminuevos</a></li>
+      <li><a href="#sellados" onclick="showPage('storePage')">Sellados</a></li>
       <li><a href="#accesorios" onclick="showPage('storePage')">Accesorios</a></li>
       <li><a href="#clientes" onclick="showPage('storePage')">Clientes</a></li>
       <li><a href="#ubicacion" onclick="showPage('storePage')">Ubicación</a></li>
@@ -490,8 +490,8 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
       <div class="hero-city-tag">Río Cuarto · Córdoba</div>
       <p class="hero-desc">Sellados y seminuevos seleccionados con garantía real, financiación y envío a todo el país. La experiencia Apple que merecés, al precio que querés.</p>
       <div class="hero-actions">
-        <a href="#sellados" class="btn-blue" onclick="showPage('storePage')">Ver Sellados</a>
-        <a href="#seminuevos" class="btn-glass" onclick="showPage('storePage')">Ver Seminuevos</a>
+        <a href="#seminuevos" class="btn-blue" onclick="showPage('storePage')">Ver Seminuevos</a>
+        <a href="#sellados" class="btn-glass" onclick="showPage('storePage')">Ver Sellados</a>
         <a href="#resenas" class="btn-glass" onclick="showPage('storePage')">Qué dicen los clientes</a>
         <a href="#ubicacion" class="btn-glass" onclick="showPage('storePage')">Ubicación</a>
       </div>
@@ -521,16 +521,6 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
   </div>
 </section>
 
-<section id="sellados">
-  <div class="sec-head reveal">
-    <div class="sec-label">Colección premium</div>
-    <h2>iPhone <span>Sellados</span></h2>
-    <p>Equipos nuevos, de fábrica, con caja y accesorios originales.</p>
-  </div>
-  <div class="products-grid" id="selladosGrid"></div>
-    
-</section>
-
 <section id="seminuevos">
   <div class="sec-head reveal">
     <div class="sec-label">Selección curada</div>
@@ -558,6 +548,16 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
   <div class="used-grid" id="usedGrid">
    
   </div>
+</section>
+
+<section id="sellados">
+  <div class="sec-head reveal">
+    <div class="sec-label">Colección premium</div>
+    <h2>iPhone <span>Sellados</span></h2>
+    <p>Equipos nuevos, de fábrica, con caja y accesorios originales.</p>
+  </div>
+  <div class="products-grid" id="selladosGrid"></div>
+    
 </section>
 
 <section id="accesorios">
@@ -988,7 +988,7 @@ function filterUsed(type,btn){
 
     if(type==='all'){
 
-      card.style.display='block';
+      card.style.display='grid';
 
       return;
 
@@ -996,7 +996,7 @@ function filterUsed(type,btn){
 
     if(card.classList.contains(type)){
 
-      card.style.display='block';
+      card.style.display='grid';
 
     }else{
 
