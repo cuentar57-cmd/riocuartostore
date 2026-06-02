@@ -150,7 +150,7 @@ section{padding:90px 5%;position:relative;z-index:1}
   border-radius:4px 0 0 4px;
   flex-shrink:0;
 }
-.prod-card-bar.usado{background:linear-gradient(180deg,#f59e0b,#f97316)}
+.prod-card-bar.usado{background:linear-gradient(180deg,var(--accent),#6366f1)}
 .prod-card-bar.sellado{background:linear-gradient(180deg,var(--accent),#6366f1)}
 
 /* Main content area */
@@ -539,11 +539,21 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
   </div>
   <div class="filter-bar">
     <button class="filter-btn active" onclick="filterUsed('all',this)">Todos</button>
-    <button class="filter-btn" onclick="filterUsed('iphone13',this)">iPhone 13</button>
-    <button class="filter-btn" onclick="filterUsed('iphone14',this)">iPhone 14</button>
-    <button class="filter-btn" onclick="filterUsed('iphone15',this)">iPhone 15</button>
-    <button class="filter-btn" onclick="filterUsed('iphone16u',this)">iPhone 16</button>
-    <button class="filter-btn" onclick="filterUsed('iphone17u',this)">iPhone 17</button>
+    <button class="filter-btn" onclick="filterUsed('iphone13',this)">13</button>
+    <button class="filter-btn" onclick="filterUsed('iphone13pro',this)">13 Pro</button>
+    <button class="filter-btn" onclick="filterUsed('iphone13promax',this)">13 Pro Max</button>
+    <button class="filter-btn" onclick="filterUsed('iphone14',this)">14</button>
+    <button class="filter-btn" onclick="filterUsed('iphone14pro',this)">14 Pro</button>
+    <button class="filter-btn" onclick="filterUsed('iphone14promax',this)">14 Pro Max</button>
+    <button class="filter-btn" onclick="filterUsed('iphone15',this)">15</button>
+    <button class="filter-btn" onclick="filterUsed('iphone15pro',this)">15 Pro</button>
+    <button class="filter-btn" onclick="filterUsed('iphone15promax',this)">15 Pro Max</button>
+    <button class="filter-btn" onclick="filterUsed('iphone16',this)">16</button>
+    <button class="filter-btn" onclick="filterUsed('iphone16pro',this)">16 Pro</button>
+    <button class="filter-btn" onclick="filterUsed('iphone16promax',this)">16 Pro Max</button>
+    <button class="filter-btn" onclick="filterUsed('iphone17',this)">17</button>
+    <button class="filter-btn" onclick="filterUsed('iphone17pro',this)">17 Pro</button>
+    <button class="filter-btn" onclick="filterUsed('iphone17promax',this)">17 Pro Max</button>
   </div>
   <div class="used-grid" id="usedGrid">
    
@@ -788,11 +798,21 @@ function renderCustomCards(){
 
     let modelClass='';
 
-    if(name.includes('iphone 13')) modelClass='iphone13';
-    if(name.includes('iphone 14')) modelClass='iphone14';
-    if(name.includes('iphone 15')) modelClass='iphone15';
-    if(name.includes('iphone 16')) modelClass='iphone16u';
-    if(name.includes('iphone 17')) modelClass='iphone17u';
+    if(name.includes('iphone 13 pro max'))      modelClass='iphone13promax';
+    else if(name.includes('iphone 13 pro'))     modelClass='iphone13pro';
+    else if(name.includes('iphone 13'))         modelClass='iphone13';
+    else if(name.includes('iphone 14 pro max')) modelClass='iphone14promax';
+    else if(name.includes('iphone 14 pro'))     modelClass='iphone14pro';
+    else if(name.includes('iphone 14'))         modelClass='iphone14';
+    else if(name.includes('iphone 15 pro max')) modelClass='iphone15promax';
+    else if(name.includes('iphone 15 pro'))     modelClass='iphone15pro';
+    else if(name.includes('iphone 15'))         modelClass='iphone15';
+    else if(name.includes('iphone 16 pro max')) modelClass='iphone16promax';
+    else if(name.includes('iphone 16 pro'))     modelClass='iphone16pro';
+    else if(name.includes('iphone 16'))         modelClass='iphone16';
+    else if(name.includes('iphone 17 pro max')) modelClass='iphone17promax';
+    else if(name.includes('iphone 17 pro'))     modelClass='iphone17pro';
+    else if(name.includes('iphone 17'))         modelClass='iphone17';
 
     // Build battery chip class
     const batPct = parseInt((p.specs&&p.specs['Batería'])||'100');
