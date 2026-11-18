@@ -1214,7 +1214,7 @@ function renderCustomCards(){
     cartButton.title='Agregar al carrito';
     cartButton.addEventListener('click',event=>{
       event.stopPropagation();
-      addToCart((p.name||'iPhone')+' '+(p.storage||''),'📱',pricePesos);
+      addToCart((p.name||'iPhone')+' '+(p.storage||''),'📱',pricePesos,cartButton);
     });
     actions.append(detailsButton,cartButton);
     right.append(pricePanel,guarantee,actions);
@@ -1245,13 +1245,17 @@ function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.
 function updateBadge(){const n=cart.reduce((s,i)=>s+i.qty,0);const b=document.getElementById('cartBadge');b.textContent=n;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}
 function saveCart(){localStorage.setItem('cart_rc',JSON.stringify(cart))}
 
-function addToCart(name,icon,price){
+function addToCart(name,icon,price,button){
   const item=cart.find(i=>i.name===name);
   if(item)item.qty++;else cart.push({name,icon,price,qty:1});
   saveCart();updateBadge();
-  const btn=event.target;const orig=btn.textContent;
-  btn.textContent='✓ Agregado';btn.style.background='linear-gradient(135deg,#16a34a,#22c55e)';
-  setTimeout(()=>{btn.textContent=orig;btn.style.background=''},1400);
+  const btn=button||(typeof event!=='undefined'?event.target:null);
+  if(btn){
+    const orig=btn.textContent;
+    btn.textContent='✓ Agregado';
+    btn.style.background='linear-gradient(135deg,#16a34a,#22c55e)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.background=''},1400);
+  }
 }
 
 // ── PRODUCTS DATA ──
