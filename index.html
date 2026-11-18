@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -422,6 +422,278 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
 
 }
 
+
+/* ══ REDISEÑO IPHONE CLUB · REFERENCIA MÓVIL CELESTE / BLANCO ══ */
+[data-theme="dark"],[data-theme="light"]{
+  --bg:#f4faff;--bg2:#eaf6ff;--bg3:#ffffff;--surface:#ffffff;--surface2:#f4faff;
+  --border:#dceaf3;--border2:#c9dfed;--txt:#172d42;--txt2:#637c90;--txt3:#8799a8;
+  --accent:#078bd2;--accent2:#20b7ed;--accent-glow:rgba(7,139,210,.18);--accent-dim:#e4f5ff;
+  --nav-bg:rgba(250,253,255,.94);--card-bg:#ffffff;--hero-line:rgba(255,255,255,.12);
+  --shadow:0 20px 60px rgba(19,75,110,.12);--shadow-card:0 5px 22px rgba(19,75,110,.08);
+}
+html{scroll-padding-top:76px}
+body{background:#f4faff;color:#172d42}
+nav{position:sticky;top:0;z-index:300;background:rgba(250,253,255,.94);border-bottom:1px solid #dceaf3;backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4)}
+.nav-inner{height:70px;max-width:1440px;padding:0 5%;position:relative;justify-content:flex-start}
+.logo-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);gap:9px}
+.logo-wrap:hover{transform:translate(-50%,-50%) scale(.98)}
+.logo-img{width:44px;height:44px;border:0;border-radius:12px;object-fit:contain;box-shadow:none}
+.logo-name{font-size:1rem;color:#15324a;font-weight:850}
+.logo-city{font-size:.53rem;letter-spacing:2.5px;color:#7390a5}
+nav ul{display:flex;gap:1.2rem;margin-right:auto}
+nav ul a{color:#607b91;font-weight:700}
+.nav-right{margin-left:auto;gap:7px}
+.theme-btn{display:none}
+.nav-btn{width:38px;height:38px;border-radius:13px;background:#fff;color:#1689c2;border:1px solid #dceaf3}
+.nav-btn:hover{background:#e8f7ff;color:#087eb9;border-color:#b9e4f7}
+.cart-badge{border-color:#fff;background:#078bd2}
+#storePage{background:#f4faff}
+#storePage>.hero{min-height:0;display:block;position:relative;overflow:hidden;padding:38px 5% 40px;color:#fff;background:radial-gradient(ellipse at 78% 40%,rgba(26,177,231,.40),transparent 38%),radial-gradient(ellipse at 10% 90%,rgba(99,208,245,.22),transparent 36%),linear-gradient(155deg,#071d32 0%,#0a3a60 50%,#087db7 100%)}
+.hero-glow{position:absolute;border-radius:50%;pointer-events:none}
+.hero-glow-one{width:370px;height:370px;right:-160px;top:30px;border:1px solid rgba(255,255,255,.15);box-shadow:0 0 0 35px rgba(255,255,255,.035),0 0 0 72px rgba(255,255,255,.025)}
+.hero-glow-two{width:260px;height:260px;left:-150px;bottom:-130px;background:rgba(107,218,255,.13);filter:blur(45px)}
+.hero-grid,.hero-scan,.hero-orb,.hero-scroll{display:none!important}
+.hero-inner{position:relative;z-index:2;width:min(100%,1000px);margin:0 auto;text-align:center}
+.reference-kicker{display:inline-flex;align-items:center;gap:9px;color:#bcecff;font-size:.66rem;font-weight:900;letter-spacing:1.8px;text-transform:uppercase}
+.reference-dot{width:8px;height:8px;border-radius:50%;background:#4ee0a0;box-shadow:0 0 0 5px rgba(78,224,160,.13)}
+.reference-title{max-width:790px;margin:18px auto 12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(2.6rem,6vw,4.8rem);font-weight:900;line-height:1.02;letter-spacing:-2.8px;color:#fff}
+.reference-title span{background:linear-gradient(90deg,#b6efff,#45c9f4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.reference-copy{max-width:690px;margin:0 auto;color:rgba(242,250,255,.84);font-size:clamp(.94rem,2vw,1.12rem);line-height:1.65}
+.finance-stage{position:relative;width:min(500px,100%);margin:29px auto 0;padding:0 10px 8px}
+.finance-card-back{position:absolute;inset:8px 4px 0 27px;border-radius:25px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.17);transform:rotate(3.5deg)}
+.finance-card{position:relative;overflow:hidden;min-height:190px;padding:22px 24px;border-radius:25px;text-align:left;color:#fff;background:linear-gradient(120deg,#31c4ef 0%,#078bd2 54%,#075b9f 100%);border:1px solid rgba(255,255,255,.35);box-shadow:0 22px 48px rgba(0,16,35,.25),0 0 42px rgba(22,181,235,.2)}
+.finance-card:before{content:"";position:absolute;width:245px;height:245px;right:-80px;top:-125px;border:1px solid rgba(255,255,255,.24);border-radius:50%;box-shadow:0 0 0 24px rgba(255,255,255,.055),0 0 0 48px rgba(255,255,255,.035)}
+.finance-card-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.64rem;letter-spacing:1.35px;font-weight:900}
+.finance-card-chip{padding:7px 10px;border:1px solid rgba(255,255,255,.32);border-radius:999px;background:rgba(255,255,255,.16);font-size:.57rem}
+.finance-card-main{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin-top:24px}
+.finance-card-label{font-size:.58rem;letter-spacing:1.5px;font-weight:900;color:rgba(255,255,255,.86)}
+.finance-card-main strong{display:block;margin-top:5px;font-size:clamp(2.3rem,5vw,3.25rem);font-weight:950;letter-spacing:-2px;line-height:1}
+.finance-card-main span{display:block;margin-top:8px;color:rgba(255,255,255,.9);font-size:.78rem;font-weight:650}
+.finance-card-symbol{width:67px;height:67px;flex:0 0 67px;display:grid;place-items:center;border-radius:17px;background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.28)}
+.finance-card-symbol svg{width:42px;height:32px}
+.hero-under{position:relative;z-index:1;margin:17px auto 0;color:#e3f6ff;font-size:.84rem;line-height:1.5;font-weight:650}
+.hero-actions{position:relative;z-index:1;display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;max-width:none;margin:17px auto 0}
+.reference-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:175px;padding:13px 22px;border:1px solid rgba(255,255,255,.48);border-radius:999px;background:rgba(255,255,255,.17);color:#fff;text-decoration:none;font-size:.87rem;font-weight:900;backdrop-filter:blur(8px);transition:.2s}
+.reference-button:hover{background:rgba(255,255,255,.27);transform:translateY(-2px)}
+.reference-button span{font-size:1.35rem;line-height:.7}
+.reference-button-secondary{background:transparent}
+.reference-benefits{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:34px auto 0}
+.reference-benefit{display:flex;align-items:center;gap:10px;min-width:0;padding:13px 12px;border:1px solid rgba(222,245,255,.23);border-radius:16px;background:rgba(255,255,255,.12);text-align:left;backdrop-filter:blur(9px)}
+.reference-benefit-icon{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.17);color:#fff;font-size:.76rem;font-weight:950}
+.reference-benefit strong{display:block;color:#fff;font-size:.69rem;font-weight:900;line-height:1.25}
+.reference-benefit small{display:block;margin-top:4px;color:rgba(240,250,255,.76);font-size:.57rem;line-height:1.35}
+#seminuevos,#sellados{padding:38px 5% 48px;background:linear-gradient(180deg,#eaf7ff 0%,#f5fbff 60%,#f5fbff 100%)}
+#sellados{border-top:1px solid #e1eef6;background:linear-gradient(180deg,#f1f9ff,#fff)}
+#accesorios,#clientes,#ubicacion{padding:52px 5%;background:#f4faff}
+.sec-head{max-width:1100px;margin:0 auto 18px}
+.sec-label{color:#1688bf;font-size:.65rem;letter-spacing:1.7px;font-weight:900;text-transform:uppercase}
+.sec-head h2{font-size:clamp(1.65rem,3vw,2.3rem);color:#19354d;letter-spacing:-1px}
+.sec-head h2 span{color:#078bd2}
+.sec-head p{max-width:640px;margin-top:7px;color:#70869a;font-size:.86rem;line-height:1.6}
+.catalog-toolbar{max-width:1100px;margin:0 auto 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.catalog-toolbar-left{display:flex;align-items:center;gap:12px;min-width:0}
+.catalog-filter-trigger{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 17px;border:1px solid #d3e4ef;border-radius:999px;background:#fff;color:#1b3348;font-size:.84rem;font-weight:850;box-shadow:0 4px 13px rgba(19,72,105,.05)}
+.catalog-filter-trigger svg{width:17px;height:17px}
+.catalog-filter-trigger:hover{border-color:#8ed4f2;background:#f7fcff}
+.catalog-count{font-size:.82rem;color:#73899b;white-space:nowrap}
+.catalog-count strong{color:#1a3349;font-weight:950}
+.catalog-sort{display:flex;align-items:center;gap:8px;color:#7b8e9d;font-size:.75rem}
+.catalog-sort select,.catalog-extra-filters select{min-height:44px;padding:0 34px 0 13px;border:1px solid #d3e4ef;border-radius:999px;background:#fff;color:#20394e;font-size:.8rem;font-weight:800;outline:none}
+.filter-panel{display:none;max-width:1100px;margin:0 auto 16px;padding:14px;border:1px solid #dcebf4;border-radius:18px;background:#fff;box-shadow:0 8px 25px rgba(20,74,109,.06)}
+.filter-panel.open{display:block;animation:fadeIn .18s ease}
+.filter-bar{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 12px}
+.filter-btn{padding:7px 14px;border-radius:999px;font-size:.72rem;font-weight:800;border:1px solid #d9e8f1;background:#f6fbff;color:#5d7589;backdrop-filter:none}
+.filter-btn:hover{border-color:#91d6f1;color:#087fb9}
+.filter-btn.active{background:#078bd2;color:#fff;border-color:#078bd2;box-shadow:0 4px 12px rgba(7,139,210,.17)}
+.catalog-extra-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.catalog-extra-filters select{min-width:170px}
+.filter-clear{min-height:42px;padding:0 13px;border:0;border-radius:999px;background:#edf8ff;color:#167cae;font-size:.74rem;font-weight:850}
+.used-grid,.products-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;max-width:1100px;margin:0 auto}
+.prod-card{display:flex;flex-direction:column;min-width:0;overflow:hidden;padding:0;border:1px solid #e0ebf3;border-radius:21px;background:#fff;box-shadow:0 8px 25px rgba(21,75,112,.065);backdrop-filter:none;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s}
+.prod-card:hover{transform:translateY(-3px);border-color:#b8e4f7;background:#fff;box-shadow:0 15px 32px rgba(21,75,112,.12)}
+.prod-card-bar{display:none}
+.prod-photo-wrap{position:relative;height:clamp(170px,22vw,230px);display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(145deg,#f8fcff,#edf8ff)}
+.prod-photo{width:100%;height:100%;display:block;object-fit:contain;padding:9px;mix-blend-mode:multiply}
+.prod-photo-fallback{display:none;position:absolute;inset:0;place-items:center;color:#8bb6cf;font-size:1rem;font-weight:900;background:linear-gradient(145deg,#f8fcff,#edf8ff)}
+.prod-status-tag{position:absolute;z-index:2;top:11px;left:11px;padding:6px 9px;border:1px solid #d7edf8;border-radius:999px;background:rgba(255,255,255,.94);color:#247eae;font-size:.56rem;font-weight:950;letter-spacing:.6px;text-transform:uppercase}
+.prod-card-body{display:block;min-width:0;padding:14px 14px 0}
+.prod-model-icon{display:none}
+.prod-info{min-width:0}
+.prod-name{font-size:1rem;font-weight:950;line-height:1.2;letter-spacing:-.35px;color:#1b3044}
+.prod-color-line{display:flex;align-items:center;gap:7px;margin-top:7px;color:#6e8293;font-size:.78rem}
+.prod-color-dot{width:10px;height:10px;flex:0 0 10px;border:1px solid rgba(0,0,0,.13);border-radius:50%;background:#9bcde5}
+.prod-meta{margin-top:6px;color:#7b8d9b;font-size:.72rem;line-height:1.45}
+.prod-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.prod-chip{padding:4px 7px;border:1px solid #dcecf5;border-radius:999px;background:#f2f9fd;color:#638096;font-size:.57rem;font-weight:800}
+.prod-chip.sellado-chip{background:#e8f7ff;border-color:#c8e9f8;color:#147fb6}
+.prod-chip.usado-chip{background:#f1f7fb;border-color:#dce8f0;color:#647c8e}
+.prod-chip.bat-high{background:#edf8f0;border-color:#d5ebdb;color:#3d8051}
+.prod-chip.bat-mid{background:#fff8e9;border-color:#f5e6bf;color:#9a7227}
+.prod-chip.bat-low{background:#fff0ed;border-color:#f3d7d0;color:#a15d50}
+.prod-card-right{display:flex;flex-direction:column;align-items:stretch;gap:9px;padding:12px 14px 14px}
+.prod-price-panel{padding:11px 12px 10px;border:1px solid #d8edf8;border-radius:14px;background:linear-gradient(145deg,#f0f9ff,#e8f6ff)}
+.prod-price-label{color:#267ca8;font-size:.58rem;font-weight:950;letter-spacing:1.2px;text-transform:uppercase}
+.prod-price{margin-top:4px;color:#172f44;font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(1.15rem,2vw,1.45rem);font-weight:950;line-height:1.12;letter-spacing:-.45px}
+.prod-usd{margin-top:4px;color:#6e8191;font-size:.74rem;font-weight:800}
+.prod-price-note{margin-top:5px;color:#8394a1;font-size:.6rem}
+.prod-guarantee{display:flex;align-items:center;gap:6px;color:#607e92;font-size:.65rem;font-weight:800}
+.prod-guarantee b{color:#2587b8;font-size:.9rem}
+.prod-actions{display:grid;grid-template-columns:1fr 43px;gap:7px;align-items:stretch}
+.prod-btn{min-height:40px;padding:8px 10px;border-radius:11px;font-size:.7rem;font-weight:900;letter-spacing:.1px;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
+.prod-btn-ghost{background:#eaf7ff;border:1px solid #d0eaf7;color:#087db8}
+.prod-btn-ghost:hover{background:#d9f1ff;border-color:#a8ddf3;color:#056da5}
+.prod-btn-main{background:linear-gradient(100deg,#078bd2,#20b7ed);color:#fff;border:0;box-shadow:0 4px 12px rgba(7,139,210,.18)}
+.prod-btn-main:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.catalog-empty{max-width:1100px;margin:12px auto 0;padding:24px;border:1px dashed #c9e2f0;border-radius:17px;background:#fff;color:#6f8799;text-align:center;font-size:.84rem}
+.catalog-empty[hidden]{display:none!important}
+#accesorios .acc-card,#clientes .review-card,#ubicacion .ubi-map{background:#fff;border:1px solid #e0ebf3;box-shadow:0 8px 25px rgba(21,75,112,.05)}
+.acc-card h3,.review-card .rev-name,.ubi-detail strong{color:#1c354b}
+.acc-card p,.review-text,.rev-date,.ubi-detail p{color:#71889b}
+.acc-icon{color:#078bd2}
+.stat-item{background:#fff;border:1px solid #e0ebf3}
+.stat-num{color:#078bd2}
+.stat-label{color:#74899a}
+#detailPage,#cartPage,#checkoutPage{background:#f4faff;min-height:calc(100vh - 70px)}
+.inner-back{padding-top:24px;color:#087eb9}
+.detail-wrap,.cart-wrap,.checkout-wrap{padding:25px 5% 100px}
+.detail-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:30px;max-width:1050px;align-items:start}
+.detail-media{position:sticky;top:95px;min-height:390px;display:flex;align-items:center;justify-content:center;padding:25px;border:1px solid #e0ebf3;border-radius:24px;background:linear-gradient(145deg,#f8fcff,#eaf7ff)}
+.detail-media img{width:100%;height:360px;object-fit:contain;mix-blend-mode:multiply}
+.detail-info{padding:25px;border:1px solid #e0ebf3;border-radius:24px;background:#fff;box-shadow:0 8px 25px rgba(21,75,112,.05)}
+.detail-tag{color:#087eb9;border-color:#d1ebf8;background:#eaf7ff}
+.detail-name{color:#19364e}
+.detail-storage,.detail-usd{color:#73899b}
+.detail-price{color:#087fb9}
+.detail-desc{color:#627b90}
+.spec-card,.installment-item{background:#f4faff;border-color:#e0edf5}
+.spec-card span{color:#8296a5}
+.spec-card strong,.installment-item strong{color:#1b3449}
+.detail-benefits li{color:#5d778c;border-color:#e7f0f6}
+.detail-mobile-bar{display:none}
+.cart-title{color:#1b3449}
+.cart-item,.cart-summary,.order-summary-card,.cart-empty{background:#fff;border-color:#e0ebf3;box-shadow:0 7px 20px rgba(21,75,112,.045)}
+.cart-item-info h3,.summary-title,.summary-total{color:#1b3449}
+.cart-item-info p,.summary-row{color:#74899a}
+.form-group label{color:#71889b}
+.form-group input,.form-group select,.form-group textarea{background:#fff;border-color:#dceaf3;color:#20394e}
+footer{background:#fff;border-color:#e0ebf3}
+.foot-logo-name{color:#1b3449}
+.foot-links a,.foot-copy{color:#74899a}
+#loaderScreen{background:linear-gradient(150deg,#071d32,#0a4771,#078bd2)}
+.loader-text{color:#fff}
+.loader-bar{background:rgba(255,255,255,.18)}
+.loader-progress{background:linear-gradient(90deg,#fff,#9ee9ff)}
+.wa-btn{bottom:20px;right:18px;width:58px;height:58px;box-shadow:0 8px 24px rgba(37,211,102,.28)}
+@media(max-width:960px){
+  .nav-inner{height:66px}
+  nav ul{display:none}
+  .hero-layout{display:block}
+  .hero{min-height:0;padding:0}
+  .hero-visual{display:none}
+  .detail-layout{grid-template-columns:1fr}
+  .detail-media{position:relative;top:auto;min-height:250px}
+  .detail-media img{height:230px}
+}
+@media(max-width:700px){
+  html{scroll-padding-top:68px}
+  .nav-inner{height:68px;padding:0 14px}
+  .logo-img{width:39px;height:39px}
+  .logo-name{font-size:.87rem}
+  .logo-city{font-size:.48rem;letter-spacing:2px}
+  .nav-right{right:14px}
+  .nav-cart{width:37px;height:37px}
+  #storePage>.hero{padding:31px 14px 30px}
+  .reference-kicker{font-size:.55rem;letter-spacing:1.2px}
+  .reference-title{font-size:clamp(2.35rem,9.6vw,3.15rem);letter-spacing:-1.8px;margin:17px auto 11px}
+  .reference-copy{font-size:.9rem;line-height:1.58}
+  .finance-stage{margin-top:24px;padding:0 7px 7px}
+  .finance-card{min-height:174px;padding:18px 18px;border-radius:22px}
+  .finance-card-top{font-size:.53rem;letter-spacing:1px}
+  .finance-card-chip{font-size:.48rem;padding:6px 8px}
+  .finance-card-main{margin-top:22px}
+  .finance-card-main strong{font-size:2.35rem}
+  .finance-card-main span{font-size:.67rem;max-width:210px}
+  .finance-card-symbol{width:56px;height:56px;flex-basis:56px;border-radius:14px}
+  .finance-card-symbol svg{width:36px}
+  .hero-under{font-size:.73rem;margin-top:15px}
+  .hero-actions{gap:8px;margin-top:14px}
+  .reference-button{min-width:0;flex:1;padding:12px 14px;font-size:.77rem}
+  .reference-benefits{display:flex;overflow-x:auto;gap:9px;margin:26px -14px 0;padding:0 14px 5px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .reference-benefits::-webkit-scrollbar{display:none}
+  .reference-benefit{flex:0 0 220px;padding:11px 10px;scroll-snap-align:start}
+  .reference-benefit-icon{width:34px;height:34px;flex-basis:34px;font-size:.7rem}
+  .reference-benefit strong{font-size:.65rem}
+  .reference-benefit small{font-size:.54rem}
+  #seminuevos,#sellados{padding:29px 14px 35px}
+  #accesorios,#clientes,#ubicacion{padding:40px 14px}
+  .sec-head{margin-bottom:15px}
+  .sec-head h2{font-size:1.55rem}
+  .sec-head p{font-size:.76rem;line-height:1.5}
+  .catalog-toolbar{gap:9px;margin-bottom:12px}
+  .catalog-toolbar-left{width:100%;gap:9px}
+  .catalog-filter-trigger{min-height:43px;padding:0 15px;font-size:.76rem}
+  .catalog-count{font-size:.68rem}
+  .catalog-sort{width:100%;gap:7px;font-size:.68rem}
+  .catalog-sort select{min-height:42px;flex:1;font-size:.72rem}
+  .filter-panel{padding:11px;margin-bottom:13px;border-radius:15px}
+  .filter-bar{gap:6px;margin-bottom:10px}
+  .filter-btn{padding:6px 10px;font-size:.63rem}
+  .catalog-extra-filters{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .catalog-extra-filters select{min-width:0;width:100%;min-height:40px;font-size:.65rem;padding-left:9px;padding-right:22px}
+  .filter-clear{grid-column:1/-1;min-height:37px}
+  .used-grid,.products-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .prod-card{border-radius:17px}
+  .prod-photo-wrap{height:clamp(130px,39vw,175px)}
+  .prod-photo{padding:5px}
+  .prod-status-tag{top:7px;left:7px;padding:5px 7px;font-size:.47rem}
+  .prod-card-body{padding:10px 9px 0}
+  .prod-name{font-size:.79rem;letter-spacing:-.25px}
+  .prod-color-line{font-size:.63rem;margin-top:5px;gap:5px}
+  .prod-color-dot{width:8px;height:8px;flex-basis:8px}
+  .prod-meta{font-size:.58rem;margin-top:4px}
+  .prod-chips{gap:4px;margin-top:6px}
+  .prod-chip{font-size:.47rem;padding:3px 5px}
+  .prod-card-right{padding:9px 9px 10px;gap:7px}
+  .prod-price-panel{padding:8px 8px 7px;border-radius:11px}
+  .prod-price-label{font-size:.46rem;letter-spacing:.8px}
+  .prod-price{font-size:clamp(.93rem,4.2vw,1.16rem);letter-spacing:-.35px}
+  .prod-usd{font-size:.6rem;margin-top:3px}
+  .prod-price-note{font-size:.49rem;margin-top:4px}
+  .prod-guarantee{font-size:.52rem;gap:4px}
+  .prod-guarantee b{font-size:.7rem}
+  .prod-actions{grid-template-columns:1fr 35px;gap:5px}
+  .prod-btn{min-height:36px;padding:6px 6px;font-size:.57rem;border-radius:9px}
+  .detail-wrap,.cart-wrap,.checkout-wrap{padding:20px 14px 90px}
+  .detail-layout{gap:12px}
+  .detail-media{min-height:220px;padding:12px;border-radius:18px}
+  .detail-media img{height:205px}
+  .detail-info{padding:18px;border-radius:18px}
+  .detail-name{font-size:2rem}
+  .detail-price{font-size:1.9rem}
+  .detail-mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:350;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px calc(11px + env(safe-area-inset-bottom));border-top:1px solid #e0ebf3;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);box-shadow:0 -7px 22px rgba(21,75,112,.08)}
+  .detail-mobile-bar strong{display:block;color:#172f44;font-size:1.08rem;font-weight:950}
+  .detail-mobile-bar span{display:block;margin-top:2px;color:#758b9c;font-size:.63rem}
+  .detail-mobile-bar a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 19px;border-radius:13px;background:linear-gradient(100deg,#078bd2,#20b7ed);color:#fff;text-decoration:none;font-size:.78rem;font-weight:950;white-space:nowrap}
+  .detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-bottom:10px}
+  .cart-layout,.checkout-layout{grid-template-columns:1fr;gap:18px}
+  .cart-item{flex-wrap:wrap;padding:13px}
+  .cart-summary,.order-summary-card{position:static;padding:19px}
+  footer{padding:30px 16px;gap:18px}
+  .foot-links{gap:13px}
+  .foot-links a{font-size:.61rem}
+  .wa-btn{width:53px;height:53px;right:13px;bottom:14px}
+}
+@media(max-width:370px){
+  .reference-title{font-size:2.25rem}
+  .reference-benefit{flex-basis:205px}
+  .prod-card-body{padding-left:8px;padding-right:8px}
+  .prod-card-right{padding-left:8px;padding-right:8px}
+  .prod-name{font-size:.73rem}
+  .prod-price{font-size:.9rem}
+  .prod-btn{font-size:.53rem}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -446,10 +718,10 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
 
 <nav>
   <div class="nav-inner">
-    <div class="logo-wrap" onclick="showPage('storePage')">
-      
+    <div class="logo-wrap" onclick="showPage('storePage')" aria-label="iPhone Club Río Cuarto">
+      <img class="logo-img" src="https://i.postimg.cc/5y5jXskf/IMG-0126.jpg" alt="Logo iPhone Club">
       <div class="logo-text-block">
-        <span class="logo-name">IPhone Club</span>
+        <span class="logo-name">iPhone Club</span>
         <span class="logo-city">Río Cuarto</span>
       </div>
     </div>
@@ -462,14 +734,11 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
     </ul>
     <div class="nav-right">
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
-      <a href="https://www.instagram.com/iphoneclub.r4/" target="_blank" class="nav-btn" title="Instagram">
+      <a href="https://www.instagram.com/iphoneclub.r4/" target="_blank" rel="noopener" class="nav-btn nav-instagram" title="Instagram">
         <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
       </a>
-      <a href="https://wa.me/5493584015415" target="_blank" class="nav-btn" title="WhatsApp">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      </a>
-      <button class="nav-btn" onclick="openCartPage()" title="Carrito" style="position:relative">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;fill:none"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <button class="nav-btn nav-cart" onclick="openCartPage()" title="Carrito" style="position:relative">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;fill:none"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         <span class="cart-badge" id="cartBadge">0</span>
       </button>
     </div>
@@ -479,85 +748,103 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
 <div id="storePage" class="page active">
 
 <section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-scan"></div>
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-layout">
-    <div class="hero-text">
-      <div class="hero-chip"><span class="chip-dot"></span><span class="chip-txt">Tienda oficial · Río Cuarto</span></div>
-      <h1 class="hero-headline"><span class="line1">iPhone</span><span class="line2">Club</span><span class="line3">RC</span></h1>
-      <div class="hero-city-tag">Río Cuarto · Córdoba</div>
-      <p class="hero-desc">Sellados y seminuevos seleccionados con garantía real, financiación y envío a todo el país. La experiencia Apple que merecés, al precio que querés.</p>
-      <div class="hero-actions">
-        <a href="#seminuevos" class="btn-blue" onclick="showPage('storePage')">Ver Seminuevos</a>
-        <a href="#sellados" class="btn-glass" onclick="showPage('storePage')">Ver Sellados</a>
-        <a href="#resenas" class="btn-glass" onclick="showPage('storePage')">Qué dicen los clientes</a>
-        <a href="#ubicacion" class="btn-glass" onclick="showPage('storePage')">Ubicación</a>
+  <div class="hero-glow hero-glow-one"></div>
+  <div class="hero-glow hero-glow-two"></div>
+  <div class="hero-inner">
+    <div class="reference-kicker"><span class="reference-dot"></span> STOCK DISPONIBLE · RÍO CUARTO</div>
+    <h1 class="reference-title">Encontrá tu próximo <span>iPhone.</span></h1>
+    <p class="reference-copy">Equipos sellados y seminuevos seleccionados. Elegí el modelo, compará las opciones y encontrá el iPhone que estás buscando.</p>
+    <div class="finance-stage">
+      <div class="finance-card-back"></div>
+      <div class="finance-card">
+        <div class="finance-card-top">
+          <span>IPHONE CLUB · RÍO CUARTO</span>
+          <span class="finance-card-chip">FINANCIACIÓN</span>
+        </div>
+        <div class="finance-card-main">
+          <div>
+            <div class="finance-card-label">OPCIONES DISPONIBLES</div>
+            <strong>3 · 6 · 12</strong>
+            <span>Cuotas para elegir tu próximo equipo</span>
+          </div>
+          <div class="finance-card-symbol" aria-hidden="true">
+            <svg viewBox="0 0 64 48" fill="none"><rect x="3" y="4" width="58" height="40" rx="8" stroke="white" stroke-width="3"/><path d="M4 16h56" stroke="white" stroke-width="3"/><path d="M13 32h16" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="hero-ring hero-ring-2"></div>
-      <div class="hero-ring"></div>
-      <div class="hero-phone-card">
-        <img class="phone-card-img" src="https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png" alt="iPhone 17 Pro">
-        <div class="phone-card-name">iPhone 17 Pro</div>
-        <div class="phone-card-sub">512 GB · Silver · Sellado</div>
-        <div class="phone-card-price"><div class="phone-card-price-label">Desde</div><div class="phone-card-price-val">USD 1400</div></div>
-      </div>
-      <div class="hero-badge hero-badge-1"><div class="hb-label">Equipos vendidos</div><div class="hb-val">500+</div></div>
-      <div class="hero-badge hero-badge-2"><div class="hb-label">Calificación</div><div class="hb-val">5 ★ promedio</div></div>
+    <p class="hero-under">Consultá disponibilidad, medios de pago y financiación.</p>
+    <div class="hero-actions">
+      <a href="#seminuevos" class="reference-button" onclick="showPage('storePage')">Ver equipos <span>›</span></a>
+      <a href="#sellados" class="reference-button reference-button-secondary" onclick="showPage('storePage')">Ver sellados</a>
+    </div>
+    <div class="reference-benefits">
+      <div class="reference-benefit"><span class="reference-benefit-icon">500+</span><div><strong>Equipos vendidos</strong><small>Experiencia y confianza</small></div></div>
+      <div class="reference-benefit"><span class="reference-benefit-icon">✓</span><div><strong>Garantía incluida</strong><small>En todos los equipos</small></div></div>
+      <div class="reference-benefit"><span class="reference-benefit-icon">↗</span><div><strong>Envíos a todo el país</strong><small>Consultá las opciones</small></div></div>
+      <div class="reference-benefit"><span class="reference-benefit-icon">5★</span><div><strong>Clientes satisfechos</strong><small>Atención personalizada</small></div></div>
     </div>
   </div>
-  <div class="hero-scroll"><div class="hero-scroll-dot"></div><span class="hero-scroll-txt">Scroll</span></div>
 </section>
 
-<section style="padding:0 5% 60px">
-  <div class="stats-row reveal">
-    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Equipos vendidos</div></div>
-    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Garantía incluida</div></div>
-    <div class="stat-item"><div class="stat-num">24h</div><div class="stat-label">Envíos al país</div></div>
-    <div class="stat-item"><div class="stat-num">5★</div><div class="stat-label">Calificación promedio</div></div>
-  </div>
-</section>
+
 
 <section id="seminuevos">
   <div class="sec-head reveal">
-    <div class="sec-label">Selección curada</div>
+    <div class="sec-label">Elegí tu equipo</div>
     <h2>iPhone <span>Seminuevos</span></h2>
-    <p>Revisados y garantizados. Todos con funda, templado y cargador completo de regalo.</p>
+    <p>Equipos revisados y seleccionados. Consultá los detalles, la batería y la disponibilidad de cada uno.</p>
   </div>
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="filterUsed('all',this)">Todos</button>
-    <button class="filter-btn" onclick="filterUsed('iphone13',this)">13</button>
-    <button class="filter-btn" onclick="filterUsed('iphone13pro',this)">13 Pro</button>
-    <button class="filter-btn" onclick="filterUsed('iphone13promax',this)">13 Pro Max</button>
-    <button class="filter-btn" onclick="filterUsed('iphone14',this)">14</button>
-    <button class="filter-btn" onclick="filterUsed('iphone14pro',this)">14 Pro</button>
-    <button class="filter-btn" onclick="filterUsed('iphone14promax',this)">14 Pro Max</button>
-    <button class="filter-btn" onclick="filterUsed('iphone15',this)">15</button>
-    <button class="filter-btn" onclick="filterUsed('iphone15pro',this)">15 Pro</button>
-    <button class="filter-btn" onclick="filterUsed('iphone15promax',this)">15 Pro Max</button>
-    <button class="filter-btn" onclick="filterUsed('iphone16',this)">16</button>
-    <button class="filter-btn" onclick="filterUsed('iphone16pro',this)">16 Pro</button>
-    <button class="filter-btn" onclick="filterUsed('iphone16promax',this)">16 Pro Max</button>
-    <button class="filter-btn" onclick="filterUsed('iphone17',this)">17</button>
-    <button class="filter-btn" onclick="filterUsed('iphone17pro',this)">17 Pro</button>
-    <button class="filter-btn" onclick="filterUsed('iphone17promax',this)">17 Pro Max</button>
+  <div class="catalog-toolbar">
+    <div class="catalog-toolbar-left">
+      <button class="catalog-filter-trigger" id="usedFilterToggle" type="button" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>Filtros
+      </button>
+      <div class="catalog-count"><strong id="usedModelCount">— modelos</strong><span> · </span><span id="usedItemCount">— equipos</span></div>
+    </div>
+    <div class="catalog-sort"><span>Ordenar</span><select id="usedSort" aria-label="Ordenar seminuevos"><option value="recommended">Recomendados</option><option value="price-low">Precio menor</option><option value="price-high">Precio mayor</option><option value="model">Modelo A-Z</option></select></div>
   </div>
-  <div class="used-grid" id="usedGrid">
-   
+  <div class="filter-panel" id="usedFilterPanel">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterUsed('all',this)">Todos</button>
+      <button class="filter-btn" onclick="filterUsed('iphone13',this)">13</button>
+      <button class="filter-btn" onclick="filterUsed('iphone13pro',this)">13 Pro</button>
+      <button class="filter-btn" onclick="filterUsed('iphone13promax',this)">13 Pro Max</button>
+      <button class="filter-btn" onclick="filterUsed('iphone14',this)">14</button>
+      <button class="filter-btn" onclick="filterUsed('iphone14pro',this)">14 Pro</button>
+      <button class="filter-btn" onclick="filterUsed('iphone14promax',this)">14 Pro Max</button>
+      <button class="filter-btn" onclick="filterUsed('iphone15',this)">15</button>
+      <button class="filter-btn" onclick="filterUsed('iphone15pro',this)">15 Pro</button>
+      <button class="filter-btn" onclick="filterUsed('iphone15promax',this)">15 Pro Max</button>
+      <button class="filter-btn" onclick="filterUsed('iphone16',this)">16</button>
+      <button class="filter-btn" onclick="filterUsed('iphone16pro',this)">16 Pro</button>
+      <button class="filter-btn" onclick="filterUsed('iphone16promax',this)">16 Pro Max</button>
+      <button class="filter-btn" onclick="filterUsed('iphone17',this)">17</button>
+      <button class="filter-btn" onclick="filterUsed('iphone17pro',this)">17 Pro</button>
+      <button class="filter-btn" onclick="filterUsed('iphone17promax',this)">17 Pro Max</button>
+    </div>
+    <div class="catalog-extra-filters">
+      <select id="usedCapacityFilter" aria-label="Filtrar por capacidad"><option value="all">Todas las capacidades</option></select>
+      <select id="usedColorFilter" aria-label="Filtrar por color"><option value="all">Todos los colores</option></select>
+      <button type="button" class="filter-clear" id="usedFilterClear">Limpiar filtros</button>
+    </div>
   </div>
+  <div class="used-grid" id="usedGrid"></div>
+  <div class="catalog-empty" id="usedEmpty" hidden>No hay equipos que coincidan con esos filtros. Probá con otra selección.</div>
 </section>
 
 <section id="sellados">
   <div class="sec-head reveal">
-    <div class="sec-label">Colección premium</div>
+    <div class="sec-label">Nuevos de fábrica</div>
     <h2>iPhone <span>Sellados</span></h2>
-    <p>Equipos nuevos, de fábrica, con caja y accesorios originales.</p>
+    <p>Equipos nuevos, sellados de fábrica. Consultá colores, capacidades y disponibilidad.</p>
+  </div>
+  <div class="catalog-toolbar sealed-toolbar">
+    <div class="catalog-count"><strong id="sealedModelCount">— modelos</strong><span> · </span><span id="sealedItemCount">— equipos</span></div>
+    <div class="catalog-sort"><span>Ordenar</span><select id="sealedSort" aria-label="Ordenar sellados"><option value="recommended">Recomendados</option><option value="price-low">Precio menor</option><option value="price-high">Precio mayor</option><option value="model">Modelo A-Z</option></select></div>
   </div>
   <div class="products-grid" id="selladosGrid"></div>
-    
+  <div class="catalog-empty" id="sealedEmpty" hidden>En este momento no hay equipos sellados publicados.</div>
 </section>
 
 <section id="accesorios">
@@ -614,7 +901,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
   <div class="inner-back" onclick="showPage('storePage')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Volver a la tienda</div>
   <div class="detail-wrap">
     <div class="detail-layout">
-      
+      <div class="detail-media"><img id="detailImage" src="" alt="Imagen del equipo seleccionado"></div>
       <div class="detail-info">
         <div class="detail-tag" id="detailTag">Sellado</div>
         <div class="detail-name" id="detailName"></div>
@@ -627,10 +914,14 @@ footer{background:var(--surface);border-top:1px solid var(--border);backdrop-fil
         <div class="installments" id="installmentsBox"></div>
         <div class="detail-actions" style="margin-top:20px">
           <button id="detailAddBtn" class="btn-blue">Agregar al carrito</button>
-          <a href="https://wa.me/5493584015415" target="_blank" class="btn-glass">Consultar por WhatsApp</a>
+          <a id="detailWhatsApp" href="https://wa.me/5493584015415" target="_blank" rel="noopener" class="btn-glass">Consultar por WhatsApp</a>
         </div>
       </div>
     </div>
+  </div>
+  <div class="detail-mobile-bar">
+    <div><strong id="detailStickyPrice"></strong><span id="detailStickyUsd"></span></div>
+    <a id="detailStickyContact" href="https://wa.me/5493584015415" target="_blank" rel="noopener">Consultar ↗</a>
   </div>
 </div>
 
@@ -774,30 +1065,18 @@ function applyHiddenToStaticCards(){
 }
 
 function renderCustomCards(){
-
   const selladosGrid=document.getElementById('selladosGrid');
   const usedGrid=document.getElementById('usedGrid');
-
   selladosGrid.innerHTML='';
   usedGrid.innerHTML='';
 
-  Object.values(customProducts).sort((a,b)=>(a.usd||0)-(b.usd||0)).forEach(p=>{
-
+  Object.values(customProducts).sort((a,b)=>(a.usd||0)-(b.usd||0)).forEach((p,index)=>{
     if(hiddenIds.has(p.id)) return;
-
     products[p.id]=p;
 
     const pricePesos=Math.round((p.usd||0)*dolarBlue);
-
-    const badgeClass=
-      p.tag==='Sellado'||p.tag==='Nuevo'
-      ? 'nuevo'
-      : '';
-
-    const name=(p.name||'').toLowerCase();
-
+    const name=(p.name||'iPhone').toLowerCase();
     let modelClass='';
-
     if(name.includes('iphone 13 pro max'))      modelClass='iphone13promax';
     else if(name.includes('iphone 13 pro'))     modelClass='iphone13pro';
     else if(name.includes('iphone 13'))         modelClass='iphone13';
@@ -814,70 +1093,58 @@ function renderCustomCards(){
     else if(name.includes('iphone 17 pro'))     modelClass='iphone17pro';
     else if(name.includes('iphone 17'))         modelClass='iphone17';
 
-    // Build battery chip class
-    const batPct = parseInt((p.specs&&p.specs['Batería'])||'100');
-    const batClass = batPct>=90?'bat-high':batPct>=80?'bat-mid':'bat-low';
-    const batVal = (p.specs&&p.specs['Batería'])||'100%';
-    const chipVal = (p.specs&&p.specs['Chip'])||'';
-    const storVal = (p.specs&&p.specs['Almacenamiento'])||'';
-    const colorVal = (p.specs&&p.specs['Color'])||'';
-    const isSellado=
-      p.tag==='Sellado'||p.tag==='Nuevo';
-    const isSold = isSellado;
-    const barClass = isSold?'sellado':'usado';
-
-    // Parse color from storage string if not in specs
-    const displayColor = colorVal || (() => {
-      const m = (p.storage||'').match(/·\s*([^·]+?)\s*·/);
+    const batVal=(p.specs&&p.specs['Batería'])||'';
+    const chipVal=(p.specs&&p.specs['Chip'])||'';
+    const storVal=(p.specs&&p.specs['Almacenamiento'])||'';
+    const colorVal=(p.specs&&p.specs['Color'])||'';
+    const isSellado=p.tag==='Sellado'||p.tag==='Nuevo';
+    const displayColor=colorVal||(()=>{
+      const m=(p.storage||'').match(/·\s*([^·]+?)\s*·/);
       return m?m[1].trim():'';
     })();
+    const capacity=storVal||((p.storage||'').split('·')[0]||'').trim();
+    const batteryNumber=parseInt(batVal)||100;
+    const batClass=batteryNumber>=90?'bat-high':batteryNumber>=80?'bat-mid':'bat-low';
+    const status=p.tag||(isSellado?'Sellado':'Usado');
+    const cardHTML=
+      '<article class="prod-card reveal custom-card '+modelClass+'"'+
+        ' data-model="'+modelClass+'" data-model-name="'+(p.name||'iPhone')+'"'+
+        ' data-capacity="'+capacity+'" data-color="'+displayColor+'"'+
+        ' data-state="'+(isSellado?'sellado':'seminuevo')+'" data-price="'+pricePesos+'"'+
+        ' data-order="'+index+'" onclick="openDetail(\\''+p.id+'\\')">'+
+        '<div class="prod-photo-wrap">'+
+          '<span class="prod-status-tag">'+status+'</span>'+
+          '<img class="prod-photo" src="'+(p.image||'')+'" alt="'+(p.name||'iPhone')+' '+displayColor+'" loading="lazy" onerror="this.style.display=\\'none\\';this.nextElementSibling.style.display=\\'grid\\'">'+
+          '<div class="prod-photo-fallback" aria-hidden="true">iPhone</div>'+
+        '</div>'+
+        '<div class="prod-card-body"><div class="prod-info">'+
+          '<div class="prod-name">'+(p.name||'iPhone')+'</div>'+
+          '<div class="prod-color-line"><span class="prod-color-dot"></span>'+(displayColor||'Consultar color')+'</div>'+
+          '<div class="prod-meta">'+(capacity||p.storage||'')+(batVal?' · Batería '+batVal:'')+'</div>'+
+          '<div class="prod-chips"><span class="prod-chip '+(isSellado?'sellado-chip':'usado-chip')+'">'+status+'</span>'+
+          (chipVal?'<span class="prod-chip">'+chipVal+'</span>':'')+
+          '</div></div></div>'+
+        '<div class="prod-card-right">'+
+          '<div class="prod-price-panel"><div class="prod-price-label">Precio publicado</div>'+
+            '<div class="prod-price">'+money(pricePesos)+'</div>'+
+            '<div class="prod-usd">'+(p.usd?'USD '+p.usd:'')+'</div>'+
+            '<div class="prod-price-note">Precio en pesos actualizado</div></div>'+
+          '<div class="prod-guarantee"><b>✓</b> Garantía incluida</div>'+
+          '<div class="prod-actions">'+
+            '<button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail(\\''+p.id+'\\')">Ver detalles ›</button>'+
+            '<button class="prod-btn prod-btn-main" aria-label="Agregar al carrito" title="Agregar al carrito" onclick="event.stopPropagation();addToCart(\\''+p.name+' '+p.storage+'\\',\\'📱\\','+pricePesos+')">+</button>'+
+          '</div></div></article>';
 
-    const cardHTML=`
-      <div class="prod-card reveal custom-card ${modelClass}" onclick="openDetail('${p.id}')">
-        <div class="prod-card-bar ${barClass}"></div>
-
-        <div class="prod-card-body">
-          <div class="prod-model-icon">📱</div>
-          <div class="prod-info">
-            <div class="prod-name">${p.name}</div>
-            <div class="prod-chips">
-              <span class="prod-chip ${isSold?'sellado-chip':'usado-chip'}">${p.tag||'Nuevo'}</span>
-              ${storVal?`<span class="prod-chip chip-accent">${storVal}</span>`:''}
-              ${batVal&&!isSold?`<span class="prod-chip ${batClass}">🔋 ${batVal}</span>`:''}
-              ${chipVal?`<span class="prod-chip">${chipVal}</span>`:''}
-              ${displayColor?`<span class="prod-chip">${displayColor}</span>`:''}
-            </div>
-          </div>
-        </div>
-
-        <div class="prod-card-right">
-          <div>
-            <div class="prod-price">${money(pricePesos)}</div>
-            <div class="prod-usd">${p.usd?'USD '+p.usd:''}</div>
-          </div>
-          <div class="prod-actions">
-            <button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail('${p.id}')">Ver</button>
-            <button class="prod-btn prod-btn-main" onclick="event.stopPropagation();addToCart('${p.name} ${p.storage}','📱',${pricePesos})">+ Carrito</button>
-          </div>
-        </div>
-      </div>
-    `;
-
-    const target=
-      isSellado
-      ? selladosGrid
-      : usedGrid;
-
+    const target=isSellado?selladosGrid:usedGrid;
     target.insertAdjacentHTML('beforeend',cardHTML);
-
   });
 
-  document
-    .querySelectorAll('.custom-card')
-    .forEach(el=>observer.observe(el));
-
-}
-// ── DÓLAR ──
+  document.querySelectorAll('.custom-card').forEach(el=>observer.observe(el));
+  populateUsedFilterOptions();
+  updateCatalogCounts();
+  sortCatalogGrid('usedGrid',document.getElementById('usedSort')?.value||'recommended');
+  sortCatalogGrid('selladosGrid',document.getElementById('sealedSort')?.value||'recommended');
+}// ── DÓLAR ──
 async function fetchDolar(){
   try{const r=await fetch('https://dolarapi.com/v1/dolares/blue');const d=await r.json();dolarBlue=d.venta+25;}catch(e){dolarBlue=1425;}
   document.querySelectorAll('.prod-price[data-usd]').forEach(el=>{el.textContent=money(Number(el.dataset.usd)*dolarBlue)});
@@ -943,7 +1210,13 @@ const products={
 // ── DETAIL ──
 function openDetail(id){
   const p=products[id];if(!p)return;
-  // image removed
+  const image=document.getElementById('detailImage');
+  image.style.display=p.image?'block':'none';
+  image.src=p.image||'';
+  image.alt=p.name||'iPhone';
+  image.onerror=()=>{image.style.display='none'};
+  image.onload=()=>{image.style.display='block'};
+
   document.getElementById('detailTag').textContent=p.tag||'Sellado';
   document.getElementById('detailName').textContent=p.name;
   document.getElementById('detailStorage').textContent=p.storage||'';
@@ -952,17 +1225,25 @@ function openDetail(id){
   document.getElementById('detailUsd').textContent=p.usd?'USD '+p.usd:'';
   document.getElementById('detailDesc').textContent=p.description||'';
   const specs=p.specs||{};
-  document.getElementById('detailSpecs').innerHTML=Object.entries(specs).map(([k,v])=>`<div class="spec-card"><span>${k}</span><strong>${v}</strong></div>`).join('');
+  document.getElementById('detailSpecs').innerHTML=Object.entries(specs).map(([k,v])=>'<div class="spec-card"><span>'+k+'</span><strong>'+v+'</strong></div>').join('');
   const benefits=p.benefits||[];
-  document.getElementById('detailBenefits').innerHTML=benefits.map(b=>`<li>${b}</li>`).join('');
+  document.getElementById('detailBenefits').innerHTML=benefits.map(b=>'<li>'+b+'</li>').join('');
   if(pricePesos>0){
     const base=pricePesos*1.10;
-    document.getElementById('installmentsBox').innerHTML=`<div style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px;font-weight:600">Financiación disponible</div><div class="installment-item"><span>3 cuotas</span><strong>${money((base*1.21)/3)} / mes</strong></div><div class="installment-item"><span>6 cuotas</span><strong>${money((base*1.35)/6)} / mes</strong></div><div class="installment-item"><span>12 cuotas</span><strong>${money((base*1.70)/12)} / mes</strong></div>`;
+    document.getElementById('installmentsBox').innerHTML=
+      '<div style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px;font-weight:600">Financiación disponible</div>'+
+      '<div class="installment-item"><span>3 cuotas</span><strong>'+money((base*1.21)/3)+' / mes</strong></div>'+
+      '<div class="installment-item"><span>6 cuotas</span><strong>'+money((base*1.35)/6)+' / mes</strong></div>'+
+      '<div class="installment-item"><span>12 cuotas</span><strong>'+money((base*1.70)/12)+' / mes</strong></div>';
   }else{document.getElementById('installmentsBox').innerHTML='';}
   document.getElementById('detailAddBtn').onclick=()=>{addToCartDirect(p.name+' '+p.storage,'📱',pricePesos)};
+  const contactUrl='https://wa.me/5493584015415?text='+encodeURIComponent('Hola, quiero consultar por '+p.name+' '+(p.storage||'')+'. ¿Sigue disponible?');
+  document.getElementById('detailWhatsApp').href=contactUrl;
+  document.getElementById('detailStickyContact').href=contactUrl;
+  document.getElementById('detailStickyPrice').textContent=money(pricePesos);
+  document.getElementById('detailStickyUsd').textContent=p.usd?'USD '+p.usd:'';
   showPage('detailPage');
-}
-function addToCartDirect(name,icon,price){
+}function addToCartDirect(name,icon,price){
   const item=cart.find(i=>i.name===name);
   if(item)item.qty++;else cart.push({name,icon,price,qty:1});
   saveCart();updateBadge();
@@ -972,43 +1253,32 @@ function addToCartDirect(name,icon,price){
 }
 
 // ── FILTER ──
+let activeUsedModel='all';
+
 function filterUsed(type,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-
-  const cards = document.querySelectorAll('#usedGrid .prod-card');
-  let visible = 0;
-
-  cards.forEach(card=>{
-    if(type==='all' || card.classList.contains(type)){
-      card.style.display='grid'; visible++;
-    } else {
-      card.style.display='none';
-    }
-  });
-
-  const existing = document.getElementById('usedEmptyState');
-  if(existing) existing.remove();
-
-  if(visible===0 && type!=='all'){
-    const label = btn.textContent;
-    const div = document.createElement('div');
-    div.id = 'usedEmptyState';
-    div.innerHTML = `
-      <div style="text-align:center;padding:52px 20px">
-        <div style="font-size:2.8rem;margin-bottom:16px;opacity:.45">📭</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--txt);margin-bottom:8px">Sin stock por ahora</div>
-        <div style="font-size:.82rem;color:var(--txt3);max-width:300px;margin:0 auto;line-height:1.7">No tenemos <strong style="color:var(--accent2)">iPhone ${label}</strong> seminuevos disponibles en este momento. Consultanos y te avisamos cuando llegue.</div>
-        <a href="https://wa.me/5493584015415" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:22px;padding:10px 22px;border-radius:99px;background:var(--accent-dim);border:1px solid rgba(59,130,246,.2);color:var(--accent2);font-size:.75rem;font-weight:600;text-decoration:none;letter-spacing:.3px">
-          <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Avisar cuando llegue
-        </a>
-      </div>`;
-    document.getElementById('usedGrid').after(div);
-  }
+  activeUsedModel=type;
+  document.querySelectorAll('#usedFilterPanel .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  applyUsedFilters();
 }
 
-// ── CART ──
+function applyUsedFilters(){
+  const capacity=document.getElementById('usedCapacityFilter')?.value||'all';
+  const color=document.getElementById('usedColorFilter')?.value||'all';
+  const cards=[...document.querySelectorAll('#usedGrid .prod-card')];
+  let visible=0;
+  cards.forEach(card=>{
+    const modelOk=activeUsedModel==='all'||card.classList.contains(activeUsedModel);
+    const capacityOk=capacity==='all'||card.dataset.capacity===capacity;
+    const colorOk=color==='all'||card.dataset.color===color;
+    const show=modelOk&&capacityOk&&colorOk;
+    card.style.display=show?'flex':'none';
+    if(show)visible++;
+  });
+  const empty=document.getElementById('usedEmpty');
+  if(empty)empty.hidden=visible!==0;
+  updateCatalogCounts();
+}// ── CART ──
 function openCartPage(){saveCart();renderCart();showPage('cartPage')}
 function openCheckoutPage(){if(!cart.length)return;saveCart();renderCheckout();showPage('checkoutPage')}
 function renderCart(){
@@ -1046,6 +1316,76 @@ function sendOrder(){
   const msg=`Hola! Quiero finalizar mi compra:%0A%0A${lines}%0A%0ATotal: ${money(total)}%0A%0ACliente: ${name}%0ATel: ${phone}%0ADirección: ${address}%0APago: ${payment}%0AComentario: ${notes||'—'}`;
   window.open(`https://wa.me/5493584015415?text=${msg}`,'_blank');
 }
+
+
+function populateUsedFilterOptions(){
+  const cards=[...document.querySelectorAll('#usedGrid .prod-card')];
+  const capacitySelect=document.getElementById('usedCapacityFilter');
+  const colorSelect=document.getElementById('usedColorFilter');
+  if(!capacitySelect||!colorSelect)return;
+  const oldCapacity=capacitySelect.value||'all';
+  const oldColor=colorSelect.value||'all';
+  const capacities=[...new Set(cards.map(c=>c.dataset.capacity).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  const colors=[...new Set(cards.map(c=>c.dataset.color).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  capacitySelect.innerHTML='<option value="all">Todas las capacidades</option>'+capacities.map(v=>'<option value="'+v+'">'+v+'</option>').join('');
+  colorSelect.innerHTML='<option value="all">Todos los colores</option>'+colors.map(v=>'<option value="'+v+'">'+v+'</option>').join('');
+  capacitySelect.value=capacities.includes(oldCapacity)?oldCapacity:'all';
+  colorSelect.value=colors.includes(oldColor)?oldColor:'all';
+}
+
+function updateCatalogCounts(){
+  const used=[...document.querySelectorAll('#usedGrid .prod-card')];
+  const sealed=[...document.querySelectorAll('#selladosGrid .prod-card')];
+  const usedVisible=used.filter(c=>c.style.display!=='none');
+  const sealedVisible=sealed.filter(c=>c.style.display!=='none');
+  const usedModels=new Set(usedVisible.map(c=>c.dataset.modelName).filter(Boolean));
+  const sealedModels=new Set(sealedVisible.map(c=>c.dataset.modelName).filter(Boolean));
+  const um=document.getElementById('usedModelCount');
+  const ui=document.getElementById('usedItemCount');
+  const sm=document.getElementById('sealedModelCount');
+  const si=document.getElementById('sealedItemCount');
+  if(um)um.textContent=usedModels.size+' modelos';
+  if(ui)ui.textContent=usedVisible.length+' equipos';
+  if(sm)sm.textContent=sealedModels.size+' modelos';
+  if(si)si.textContent=sealedVisible.length+' equipos';
+  const ue=document.getElementById('usedEmpty');
+  const se=document.getElementById('sealedEmpty');
+  if(ue&&used.length===0)ue.hidden=false;
+  if(se&&sealed.length===0)se.hidden=false;
+}
+
+function sortCatalogGrid(gridId,mode){
+  const grid=document.getElementById(gridId);
+  if(!grid)return;
+  const cards=[...grid.querySelectorAll('.prod-card')];
+  cards.sort((a,b)=>{
+    if(mode==='price-low')return Number(a.dataset.price)-Number(b.dataset.price);
+    if(mode==='price-high')return Number(b.dataset.price)-Number(a.dataset.price);
+    if(mode==='model')return (a.dataset.modelName||'').localeCompare(b.dataset.modelName||'','es');
+    return Number(a.dataset.order)-Number(b.dataset.order);
+  });
+  cards.forEach(card=>grid.appendChild(card));
+}
+
+document.getElementById('usedFilterToggle')?.addEventListener('click',()=>{
+  const panel=document.getElementById('usedFilterPanel');
+  const button=document.getElementById('usedFilterToggle');
+  const opened=panel.classList.toggle('open');
+  button.setAttribute('aria-expanded',String(opened));
+});
+document.getElementById('usedCapacityFilter')?.addEventListener('change',applyUsedFilters);
+document.getElementById('usedColorFilter')?.addEventListener('change',applyUsedFilters);
+document.getElementById('usedFilterClear')?.addEventListener('click',()=>{
+  activeUsedModel='all';
+  document.querySelectorAll('#usedFilterPanel .filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('#usedFilterPanel .filter-btn')?.classList.add('active');
+  document.getElementById('usedCapacityFilter').value='all';
+  document.getElementById('usedColorFilter').value='all';
+  applyUsedFilters();
+});
+document.getElementById('usedSort')?.addEventListener('change',e=>sortCatalogGrid('usedGrid',e.target.value));
+document.getElementById('sealedSort')?.addEventListener('change',e=>sortCatalogGrid('selladosGrid',e.target.value));
+
 
 // ── SCROLL REVEAL ──
 const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.08});
