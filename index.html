@@ -982,6 +982,73 @@ body.page-entering nav{animation:navEntrance .72s cubic-bezier(.2,.82,.25,1) bot
   .reference-benefits-track{animation:benefitsMarquee 46s linear 0s infinite!important;transform:translate3d(0,0,0)!important}
 }
 
+
+
+/* ══ FIX DE SCROLL + LEGIBILIDAD REAL EN CELULARES ══ */
+/* Las tarjetas dinámicas quedan visibles como fallback; solo se ocultan cuando el observer las prepara. */
+.reveal{opacity:1!important;transform:none!important;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.82,.25,1)!important}
+.reveal.reveal-pending{opacity:0!important;transform:translate3d(0,16px,0)!important}
+.reveal.reveal-pending.visible{opacity:1!important;transform:translate3d(0,0,0)!important}
+
+/* Evita el parpadeo de la cinta al repintar durante el scroll en Safari/iOS. */
+.reference-benefits{-webkit-mask-image:none!important;mask-image:none!important;isolation:isolate!important}
+.reference-benefits-track{will-change:auto!important;backface-visibility:hidden!important;transform:translateX(0)!important}
+@keyframes benefitsMarquee{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+/* Beneficios: tipografía más grande y contraste más alto. */
+.reference-benefit{background:#fff!important;border-color:#cfe3ef!important}
+.reference-benefit strong{font-size:1rem!important;line-height:1.3!important;color:#173b55!important}
+.reference-benefit small{font-size:.82rem!important;line-height:1.4!important;color:#536f83!important}
+.reference-benefit-icon{font-size:.94rem!important;font-weight:950!important}
+
+/* Catálogo: texto de cada equipo legible sin hacer zoom. */
+.prod-name{font-size:1.02rem!important;line-height:1.3!important;color:#173b55!important;letter-spacing:-.15px!important}
+.prod-color-line{font-size:.82rem!important;line-height:1.4!important;color:#4f6e83!important}
+.prod-meta{font-size:.78rem!important;line-height:1.4!important;color:#526f83!important}
+.prod-chip{font-size:.68rem!important;line-height:1.3!important;padding:4px 7px!important;letter-spacing:0!important}
+.prod-status-tag{font-size:.62rem!important;padding:5px 8px!important;letter-spacing:.35px!important}
+.prod-price-label{font-size:.66rem!important;letter-spacing:.45px!important}
+.prod-price{font-size:1.24rem!important;line-height:1.2!important}
+.prod-usd{font-size:.78rem!important;line-height:1.35!important}
+.prod-price-note{font-size:.72rem!important;line-height:1.35!important}
+.prod-btn{font-size:.8rem!important;line-height:1.2!important;min-height:42px!important;padding:9px 10px!important}
+.catalog-count,.catalog-sort,.catalog-sort select,.catalog-filter-trigger{font-size:.82rem!important}
+.filter-panel-heading{font-size:.76rem!important}
+.filter-btn{font-size:.76rem!important;padding:8px 12px!important}
+
+@media(max-width:700px){
+  .reference-benefit strong{font-size:1rem!important}
+  .reference-benefit small{font-size:.82rem!important}
+  .reference-benefit-icon{font-size:.9rem!important}
+  .prod-photo-wrap{height:clamp(148px,40vw,180px)!important}
+  .prod-card-body{padding:10px 10px 0!important}
+  .prod-card-right{padding:9px 10px 11px!important;gap:8px!important}
+  .prod-price-panel{padding:9px!important}
+  .prod-name{font-size:1rem!important;line-height:1.3!important}
+  .prod-color-line{font-size:.78rem!important;line-height:1.35!important}
+  .prod-meta{font-size:.74rem!important;line-height:1.4!important}
+  .prod-chip{font-size:.64rem!important;padding:4px 7px!important}
+  .prod-status-tag{font-size:.59rem!important;padding:5px 8px!important}
+  .prod-price-label{font-size:.62rem!important}
+  .prod-price{font-size:1.18rem!important}
+  .prod-usd{font-size:.73rem!important}
+  .prod-price-note{font-size:.67rem!important}
+  .prod-btn{font-size:.76rem!important;min-height:41px!important;padding:9px 8px!important}
+  .catalog-count,.catalog-sort,.catalog-sort select,.catalog-filter-trigger{font-size:.78rem!important}
+  .filter-panel-heading{font-size:.73rem!important}
+  .filter-btn{font-size:.72rem!important;padding:8px 10px!important}
+}
+@media(max-width:370px){
+  .prod-name{font-size:.94rem!important}
+  .prod-color-line,.prod-meta{font-size:.7rem!important}
+  .prod-chip{font-size:.6rem!important}
+  .prod-price{font-size:1.1rem!important}
+  .prod-btn{font-size:.72rem!important}
+}
+
 </style>
 </head>
 <body class="loading">
@@ -1829,9 +1896,44 @@ document.getElementById('usedFilterClear')?.addEventListener('click',()=>{
 document.getElementById('usedSort')?.addEventListener('change',e=>sortCatalogGrid('usedGrid',e.target.value));
 
 
-// ── SCROLL REVEAL ──
-const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+// ── SCROLL REVEAL: estáticos + tarjetas agregadas dinámicamente ──
+if('IntersectionObserver' in window){
+  const revealObserver=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.01,rootMargin:'0px 0px 110px 0px'});
+
+  function observeRevealElements(root){
+    if(!root)return;
+    const elements=[];
+    if(root.nodeType===1&&root.matches&&root.matches('.reveal'))elements.push(root);
+    if(root.querySelectorAll)elements.push(...root.querySelectorAll('.reveal'));
+    elements.forEach(el=>{
+      if(el.classList.contains('visible'))return;
+      el.classList.add('reveal-pending');
+      revealObserver.observe(el);
+    });
+  }
+
+  observeRevealElements(document);
+
+  if('MutationObserver' in window){
+    const revealMutationObserver=new MutationObserver(records=>{
+      records.forEach(record=>{
+        record.addedNodes.forEach(node=>{
+          if(node.nodeType===1)observeRevealElements(node);
+        });
+      });
+    });
+    revealMutationObserver.observe(document.body,{childList:true,subtree:true});
+  }
+}else{
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
+}
 
 // ── INIT ──
 updateBadge();
