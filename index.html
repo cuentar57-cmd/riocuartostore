@@ -853,6 +853,135 @@ body.page-entering nav{animation:navEntrance .72s cubic-bezier(.2,.82,.25,1) bot
   .hero-feature-card:after{animation:none!important}
 }
 
+
+
+/* ══ AJUSTE DE LEGIBILIDAD + CARRUSEL HORIZONTAL CONTINUO ══ */
+.reference-trust{position:relative!important;width:100%!important;margin:31px auto 0!important;padding-top:21px!important;border-top:1px solid rgba(7,139,210,.11)!important}
+.reference-trust-heading{display:flex!important;flex-direction:column!important;align-items:center!important;gap:6px!important;margin:0 auto 16px!important;text-align:center!important}
+.reference-trust-eyebrow{color:#1989bc!important;font-size:.68rem!important;font-weight:950!important;letter-spacing:1.8px!important}
+.reference-trust-heading h2{margin:0!important;color:#1c405a!important;font-family:'Plus Jakarta Sans',sans-serif!important;font-size:clamp(1.45rem,3vw,1.9rem)!important;font-weight:950!important;line-height:1.15!important;letter-spacing:-.65px!important}
+.reference-trust-heading p{margin:0!important;color:#69869a!important;font-size:.91rem!important;font-weight:600!important;line-height:1.5!important}
+.reference-benefits{
+  position:relative!important;display:block!important;width:min(100%,1120px)!important;
+  margin:0 auto!important;padding:3px 0 10px!important;overflow:hidden!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%)!important;
+  mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%)!important;
+}
+.reference-benefits-track{
+  display:flex!important;align-items:stretch!important;width:max-content!important;max-width:none!important;
+  gap:0!important;transform:translate3d(0,0,0)!important;will-change:transform!important;
+  animation:benefitsMarquee 30s linear 0s infinite!important;
+}
+.reference-benefits-group{
+  display:flex!important;align-items:stretch!important;gap:13px!important;
+  flex:0 0 auto!important;width:max-content!important;padding:0 13px 0 0!important;
+}
+.reference-benefit{
+  display:flex!important;align-items:center!important;gap:12px!important;
+  flex:0 0 258px!important;width:258px!important;min-width:258px!important;min-height:78px!important;
+  padding:13px 15px!important;border:1px solid #d7eaf4!important;border-radius:17px!important;
+  background:linear-gradient(145deg,#fff 0%,#f8fcff 100%)!important;text-align:left!important;
+  box-shadow:0 8px 22px rgba(20,78,111,.065)!important;
+  transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease!important;
+}
+.reference-benefit:hover{transform:translateY(-3px)!important;border-color:#9bd8f1!important;box-shadow:0 12px 26px rgba(20,78,111,.11)!important}
+.reference-benefit-icon{
+  display:grid!important;place-items:center!important;width:43px!important;height:43px!important;flex:0 0 43px!important;
+  border:1px solid #d4edf8!important;border-radius:13px!important;
+  background:linear-gradient(145deg,#eaf8ff,#d9f2fc)!important;color:#087fb8!important;
+  font-family:'Plus Jakarta Sans',sans-serif!important;font-size:.86rem!important;font-weight:950!important;
+}
+.reference-benefit strong{display:block!important;color:#20435c!important;font-size:.88rem!important;font-weight:950!important;line-height:1.28!important;letter-spacing:-.16px!important}
+.reference-benefit small{display:block!important;margin-top:4px!important;color:#6f899b!important;font-size:.73rem!important;font-weight:600!important;line-height:1.35!important}
+@keyframes benefitsMarquee{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-50%,0,0)}
+}
+/* Tipografía más legible en portada, filtros y catálogo */
+.reference-kicker{font-size:.68rem!important;letter-spacing:1.3px!important;padding:8px 14px!important}
+.reference-title{font-size:clamp(2.8rem,6.5vw,4.8rem)!important;letter-spacing:-2.1px!important}
+.reference-copy{font-size:clamp(1rem,1.9vw,1.15rem)!important;line-height:1.7!important}
+.hero-under{font-size:.88rem!important}
+.reference-button{font-size:.86rem!important;min-height:48px!important}
+.catalog-count{font-size:.8rem!important}
+.catalog-filter-trigger{font-size:.82rem!important}
+.filter-panel-heading{font-size:.68rem!important}
+.filter-btn{font-size:.73rem!important;padding:8px 13px!important}
+.catalog-sort{font-size:.75rem!important}
+.catalog-sort select,.catalog-extra-filters select{font-size:.76rem!important}
+.prod-name{font-size:.96rem!important;line-height:1.3!important}
+.prod-color-line{font-size:.73rem!important}
+.prod-meta{font-size:.68rem!important}
+.prod-chip{font-size:.57rem!important;padding:4px 7px!important}
+.prod-price-label{font-size:.56rem!important}
+.prod-price{font-size:1.22rem!important}
+.prod-usd{font-size:.7rem!important}
+.prod-price-note{font-size:.6rem!important}
+.prod-btn{font-size:.7rem!important;min-height:40px!important}
+@media(min-width:760px){
+  .reference-trust{margin-top:37px!important;padding-top:25px!important}
+  .reference-trust-heading{margin-bottom:20px!important}
+  .reference-benefit{flex-basis:278px!important;width:278px!important;min-width:278px!important;min-height:84px!important;padding:14px 17px!important}
+  .reference-benefits-group{gap:15px!important;padding-right:15px!important}
+  .reference-benefit-icon{width:46px!important;height:46px!important;flex-basis:46px!important}
+  .reference-benefit strong{font-size:.93rem!important}
+  .reference-benefit small{font-size:.76rem!important}
+  .reference-benefits-track{animation-duration:34s!important}
+}
+@media(max-width:700px){
+  #storePage>.hero{padding:30px 14px 27px!important}
+  .reference-kicker{font-size:.62rem!important;letter-spacing:1.05px!important;padding:8px 12px!important}
+  .reference-title{font-size:clamp(2.55rem,10vw,3.35rem)!important;letter-spacing:-1.7px!important;line-height:1.04!important}
+  .reference-copy{font-size:.98rem!important;line-height:1.65!important}
+  .hero-feature-copy>span:last-child{font-size:.72rem!important}
+  .hero-under{font-size:.82rem!important;line-height:1.55!important}
+  .reference-button{font-size:.82rem!important;min-height:46px!important}
+  .reference-trust{margin:25px -14px 0!important;padding:19px 0 0!important;width:calc(100% + 28px)!important}
+  .reference-trust-heading{padding:0 14px!important;margin-bottom:14px!important;gap:6px!important}
+  .reference-trust-eyebrow{font-size:.61rem!important;letter-spacing:1.35px!important}
+  .reference-trust-heading h2{font-size:1.42rem!important;letter-spacing:-.4px!important}
+  .reference-trust-heading p{font-size:.86rem!important;line-height:1.5!important}
+  .reference-benefits{width:100%!important;margin:0!important;padding:4px 0 10px!important}
+  .reference-benefits-group{gap:10px!important;padding-right:10px!important}
+  .reference-benefit{
+    flex-basis:252px!important;width:252px!important;min-width:252px!important;min-height:78px!important;
+    gap:12px!important;padding:12px 13px!important;border-radius:16px!important;
+  }
+  .reference-benefit-icon{width:42px!important;height:42px!important;flex-basis:42px!important;font-size:.84rem!important}
+  .reference-benefit strong{font-size:.88rem!important}
+  .reference-benefit small{font-size:.72rem!important}
+  .reference-benefits-track{animation-duration:28s!important;animation-delay:0s!important}
+  .catalog-toolbar{gap:11px!important}
+  .catalog-filter-trigger{min-height:45px!important;font-size:.79rem!important}
+  .catalog-count{font-size:.73rem!important}
+  .catalog-sort{font-size:.72rem!important}
+  .catalog-sort select{font-size:.74rem!important}
+  .filter-panel-heading{font-size:.66rem!important}
+  .filter-btn{font-size:.68rem!important;padding:7px 10px!important}
+  .prod-photo-wrap{height:clamp(140px,39vw,175px)!important}
+  .prod-card-body{padding:9px 9px 0!important}
+  .prod-name{font-size:.83rem!important;line-height:1.3!important}
+  .prod-color-line{font-size:.66rem!important}
+  .prod-meta{font-size:.61rem!important}
+  .prod-chip{font-size:.51rem!important;padding:3px 6px!important}
+  .prod-card-right{padding:8px 9px 10px!important}
+  .prod-price-label{font-size:.51rem!important}
+  .prod-price{font-size:1rem!important}
+  .prod-usd{font-size:.62rem!important}
+  .prod-price-note{font-size:.53rem!important}
+  .prod-btn{font-size:.62rem!important;min-height:37px!important}
+}
+@media(max-width:370px){
+  .reference-title{font-size:2.4rem!important}
+  .reference-benefit{flex-basis:238px!important;width:238px!important;min-width:238px!important}
+  .prod-name{font-size:.78rem!important}
+  .prod-price{font-size:.94rem!important}
+}
+@media(prefers-reduced-motion:reduce){
+  /* El usuario pidió explícitamente que esta cinta siga moviéndose. */
+  .reference-benefits-track{animation:benefitsMarquee 46s linear 0s infinite!important;transform:translate3d(0,0,0)!important}
+}
+
 </style>
 </head>
 <body class="loading">
@@ -929,19 +1058,32 @@ body.page-entering nav{animation:navEntrance .72s cubic-bezier(.2,.82,.25,1) bot
       <a href="#seminuevos" class="reference-button" onclick="showPage('storePage')">Ver equipos <span>›</span></a>
       <a href="https://wa.me/5493584015415" target="_blank" rel="noopener" class="reference-button reference-button-secondary">Consultar <span>↗</span></a>
     </div>
-    <div class="reference-benefits hero-entry" style="--entry-delay:960ms" role="region" aria-label="Beneficios de iPhone Club">
-      <div class="reference-benefits-track">
-        <div class="reference-benefits-group" role="list" aria-label="Beneficios">
+    <div class="reference-trust hero-entry" style="--entry-delay:960ms">
+      <div class="reference-trust-heading">
+        <span class="reference-trust-eyebrow">IPHONE CLUB · RÍO CUARTO</span>
+        <h2>Comprá con confianza.</h2>
+        <p>Te acompañamos para que encuentres el iPhone indicado.</p>
+      </div>
+      <div class="reference-benefits" role="region" aria-label="Beneficios de comprar en iPhone Club">
+        <div class="reference-benefits-track">
+        <div class="reference-benefits-group" role="list" aria-label="Beneficios de compra">
           <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">500+</span><div><strong>Equipos vendidos</strong><small>Experiencia y confianza</small></div></div>
-          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">✓</span><div><strong>Garantía incluida</strong><small>En todos los equipos</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">✓</span><div><strong>Garantía incluida</strong><small>Consultá las condiciones</small></div></div>
           <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">↗</span><div><strong>Envíos a todo el país</strong><small>Consultá las opciones</small></div></div>
-          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">5★</span><div><strong>Clientes satisfechos</strong><small>Atención personalizada</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">WA</span><div><strong>Atención por WhatsApp</strong><small>Te ayudamos a elegir</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">$</span><div><strong>Opciones de financiación</strong><small>Consultá medios y condiciones</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">STK</span><div><strong>Stock actualizado</strong><small>Preguntá por disponibilidad</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">5★</span><div><strong>Clientes satisfechos</strong><small>Opiniones de compradores</small></div></div>
         </div>
         <div class="reference-benefits-group" role="list" aria-hidden="true">
           <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">500+</span><div><strong>Equipos vendidos</strong><small>Experiencia y confianza</small></div></div>
-          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">✓</span><div><strong>Garantía incluida</strong><small>En todos los equipos</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">✓</span><div><strong>Garantía incluida</strong><small>Consultá las condiciones</small></div></div>
           <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">↗</span><div><strong>Envíos a todo el país</strong><small>Consultá las opciones</small></div></div>
-          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">5★</span><div><strong>Clientes satisfechos</strong><small>Atención personalizada</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">WA</span><div><strong>Atención por WhatsApp</strong><small>Te ayudamos a elegir</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">$</span><div><strong>Opciones de financiación</strong><small>Consultá medios y condiciones</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">STK</span><div><strong>Stock actualizado</strong><small>Preguntá por disponibilidad</small></div></div>
+          <div class="reference-benefit" role="listitem"><span class="reference-benefit-icon">5★</span><div><strong>Clientes satisfechos</strong><small>Opiniones de compradores</small></div></div>
+        </div>
         </div>
       </div>
     </div>
