@@ -1093,58 +1093,145 @@ function renderCustomCards(){
     else if(name.includes('iphone 17 pro'))     modelClass='iphone17pro';
     else if(name.includes('iphone 17'))         modelClass='iphone17';
 
-    const batVal=(p.specs&&p.specs['Batería'])||'';
-    const chipVal=(p.specs&&p.specs['Chip'])||'';
-    const storVal=(p.specs&&p.specs['Almacenamiento'])||'';
-    const colorVal=(p.specs&&p.specs['Color'])||'';
-    const isSellado=p.tag==='Sellado'||p.tag==='Nuevo';
-    const displayColor=colorVal||(()=>{
+    const battery=(p.specs&&p.specs['Batería'])||'';
+    const chip=(p.specs&&p.specs['Chip'])||'';
+    const storage=(p.specs&&p.specs['Almacenamiento'])||((p.storage||'').split('·')[0]||'').trim();
+    const color=(p.specs&&p.specs['Color'])||(()=>{
       const m=(p.storage||'').match(/·\s*([^·]+?)\s*·/);
       return m?m[1].trim():'';
     })();
-    const capacity=storVal||((p.storage||'').split('·')[0]||'').trim();
-    const batteryNumber=parseInt(batVal)||100;
-    const batClass=batteryNumber>=90?'bat-high':batteryNumber>=80?'bat-mid':'bat-low';
-    const status=p.tag||(isSellado?'Sellado':'Usado');
-    const cardHTML=
-      '<article class="prod-card reveal custom-card '+modelClass+'"'+
-        ' data-model="'+modelClass+'" data-model-name="'+(p.name||'iPhone')+'"'+
-        ' data-capacity="'+capacity+'" data-color="'+displayColor+'"'+
-        ' data-state="'+(isSellado?'sellado':'seminuevo')+'" data-price="'+pricePesos+'"'+
-        ' data-order="'+index+'" onclick="openDetail(\\''+p.id+'\\')">'+
-        '<div class="prod-photo-wrap">'+
-          '<span class="prod-status-tag">'+status+'</span>'+
-          '<img class="prod-photo" src="'+(p.image||'')+'" alt="'+(p.name||'iPhone')+' '+displayColor+'" loading="lazy" onerror="this.style.display=\\'none\\';this.nextElementSibling.style.display=\\'grid\\'">'+
-          '<div class="prod-photo-fallback" aria-hidden="true">iPhone</div>'+
-        '</div>'+
-        '<div class="prod-card-body"><div class="prod-info">'+
-          '<div class="prod-name">'+(p.name||'iPhone')+'</div>'+
-          '<div class="prod-color-line"><span class="prod-color-dot"></span>'+(displayColor||'Consultar color')+'</div>'+
-          '<div class="prod-meta">'+(capacity||p.storage||'')+(batVal?' · Batería '+batVal:'')+'</div>'+
-          '<div class="prod-chips"><span class="prod-chip '+(isSellado?'sellado-chip':'usado-chip')+'">'+status+'</span>'+
-          (chipVal?'<span class="prod-chip">'+chipVal+'</span>':'')+
-          '</div></div></div>'+
-        '<div class="prod-card-right">'+
-          '<div class="prod-price-panel"><div class="prod-price-label">Precio publicado</div>'+
-            '<div class="prod-price">'+money(pricePesos)+'</div>'+
-            '<div class="prod-usd">'+(p.usd?'USD '+p.usd:'')+'</div>'+
-            '<div class="prod-price-note">Precio en pesos actualizado</div></div>'+
-          '<div class="prod-guarantee"><b>✓</b> Garantía incluida</div>'+
-          '<div class="prod-actions">'+
-            '<button class="prod-btn prod-btn-ghost" onclick="event.stopPropagation();openDetail(\\''+p.id+'\\')">Ver detalles ›</button>'+
-            '<button class="prod-btn prod-btn-main" aria-label="Agregar al carrito" title="Agregar al carrito" onclick="event.stopPropagation();addToCart(\\''+p.name+' '+p.storage+'\\',\\'📱\\','+pricePesos+')">+</button>'+
-          '</div></div></article>';
+    const isSealed=p.tag==='Sellado'||p.tag==='Nuevo';
+    const status=p.tag||(isSealed?'Sellado':'Usado');
+    const batteryNumber=parseInt(battery)||100;
+    const batteryClass=batteryNumber>=90?'bat-high':batteryNumber>=80?'bat-mid':'bat-low';
 
-    const target=isSellado?selladosGrid:usedGrid;
-    target.insertAdjacentHTML('beforeend',cardHTML);
+    const card=document.createElement('article');
+    card.className='prod-card reveal custom-card '+modelClass;
+    card.dataset.productId=p.id;
+    card.dataset.model=modelClass;
+    card.dataset.modelName=p.name||'iPhone';
+    card.dataset.capacity=storage;
+    card.dataset.color=color;
+    card.dataset.state=isSealed?'sellado':'seminuevo';
+    card.dataset.price=String(pricePesos);
+    card.dataset.order=String(index);
+    card.addEventListener('click',()=>openDetail(p.id));
+
+    const photoWrap=document.createElement('div');
+    photoWrap.className='prod-photo-wrap';
+    const statusTag=document.createElement('span');
+    statusTag.className='prod-status-tag';
+    statusTag.textContent=status;
+    const photo=document.createElement('img');
+    photo.className='prod-photo';
+    photo.src=p.image||'';
+    photo.alt=(p.name||'iPhone')+' '+color;
+    photo.loading='lazy';
+    const fallback=document.createElement('div');
+    fallback.className='prod-photo-fallback';
+    fallback.textContent='iPhone';
+    photo.addEventListener('error',()=>{
+      photo.style.display='none';
+      fallback.style.display='grid';
+    },{once:true});
+    photoWrap.append(statusTag,photo,fallback);
+
+    const body=document.createElement('div');
+    body.className='prod-card-body';
+    const info=document.createElement('div');
+    info.className='prod-info';
+    const title=document.createElement('div');
+    title.className='prod-name';
+    title.textContent=p.name||'iPhone';
+    const colorLine=document.createElement('div');
+    colorLine.className='prod-color-line';
+    const colorDot=document.createElement('span');
+    colorDot.className='prod-color-dot';
+    colorLine.append(colorDot,document.createTextNode(color||'Consultar color'));
+    const meta=document.createElement('div');
+    meta.className='prod-meta';
+    meta.textContent=(storage||p.storage||'')+(battery?' · Batería '+battery:'');
+    const chips=document.createElement('div');
+    chips.className='prod-chips';
+    const statusChip=document.createElement('span');
+    statusChip.className='prod-chip '+(isSealed?'sellado-chip':'usado-chip');
+    statusChip.textContent=status;
+    chips.appendChild(statusChip);
+    if(chip){
+      const chipInfo=document.createElement('span');
+      chipInfo.className='prod-chip';
+      chipInfo.textContent=chip;
+      chips.appendChild(chipInfo);
+    }
+    if(battery&&!isSealed){
+      const batteryChip=document.createElement('span');
+      batteryChip.className='prod-chip '+batteryClass;
+      batteryChip.textContent='🔋 '+battery;
+      chips.appendChild(batteryChip);
+    }
+    info.append(title,colorLine,meta,chips);
+    body.appendChild(info);
+
+    const right=document.createElement('div');
+    right.className='prod-card-right';
+    const pricePanel=document.createElement('div');
+    pricePanel.className='prod-price-panel';
+    const priceLabel=document.createElement('div');
+    priceLabel.className='prod-price-label';
+    priceLabel.textContent='Precio publicado';
+    const price=document.createElement('div');
+    price.className='prod-price';
+    price.textContent=money(pricePesos);
+    const usd=document.createElement('div');
+    usd.className='prod-usd';
+    usd.textContent=p.usd?'USD '+p.usd:'';
+    const priceNote=document.createElement('div');
+    priceNote.className='prod-price-note';
+    priceNote.textContent='Precio en pesos actualizado';
+    pricePanel.append(priceLabel,price,usd,priceNote);
+
+    const guarantee=document.createElement('div');
+    guarantee.className='prod-guarantee';
+    const check=document.createElement('b');
+    check.textContent='✓';
+    guarantee.append(check,document.createTextNode(' Garantía incluida'));
+
+    const actions=document.createElement('div');
+    actions.className='prod-actions';
+    const detailsButton=document.createElement('button');
+    detailsButton.type='button';
+    detailsButton.className='prod-btn prod-btn-ghost';
+    detailsButton.textContent='Ver detalles ›';
+    detailsButton.addEventListener('click',event=>{
+      event.stopPropagation();
+      openDetail(p.id);
+    });
+    const cartButton=document.createElement('button');
+    cartButton.type='button';
+    cartButton.className='prod-btn prod-btn-main';
+    cartButton.textContent='+';
+    cartButton.setAttribute('aria-label','Agregar al carrito');
+    cartButton.title='Agregar al carrito';
+    cartButton.addEventListener('click',event=>{
+      event.stopPropagation();
+      addToCart((p.name||'iPhone')+' '+(p.storage||''),'📱',pricePesos);
+    });
+    actions.append(detailsButton,cartButton);
+    right.append(pricePanel,guarantee,actions);
+    card.append(photoWrap,body,right);
+
+    const target=isSealed?selladosGrid:usedGrid;
+    target.appendChild(card);
+    observer.observe(card);
   });
 
-  document.querySelectorAll('.custom-card').forEach(el=>observer.observe(el));
   populateUsedFilterOptions();
   updateCatalogCounts();
   sortCatalogGrid('usedGrid',document.getElementById('usedSort')?.value||'recommended');
   sortCatalogGrid('selladosGrid',document.getElementById('sealedSort')?.value||'recommended');
-}// ── DÓLAR ──
+}
+
+// ── DÓLAR ──
 async function fetchDolar(){
   try{const r=await fetch('https://dolarapi.com/v1/dolares/blue');const d=await r.json();dolarBlue=d.venta+25;}catch(e){dolarBlue=1425;}
   document.querySelectorAll('.prod-price[data-usd]').forEach(el=>{el.textContent=money(Number(el.dataset.usd)*dolarBlue)});
