@@ -1156,6 +1156,116 @@ body.page-entering nav{animation:navEntrance .72s cubic-bezier(.2,.82,.25,1) bot
   #detailPage .detail-mobile-bar a{padding:0 12px!important;font-size:.78rem!important}
 }
 
+
+/* ══ BOTTOM SHEET DE FILTROS · IPHONE CLUB ══ */
+.catalog-filter-trigger{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:9px!important;
+  min-height:42px!important;padding:0 15px!important;border:1px solid #d5eaf5!important;border-radius:999px!important;
+  background:#fff!important;color:#187ca9!important;font-size:.75rem!important;font-weight:900!important;
+  box-shadow:0 4px 13px rgba(22,83,121,.045)!important;cursor:pointer!important;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease!important;
+}
+.catalog-filter-trigger:hover{transform:translateY(-1px)!important;background:#f0faff!important;border-color:#b8e2f3!important}
+.catalog-filter-trigger svg{width:17px!important;height:17px!important;stroke:currentColor!important;fill:none!important}
+.filter-active-count{display:inline-grid!important;place-items:center!important;min-width:19px!important;height:19px!important;padding:0 5px!important;border-radius:99px!important;background:#078bd2!important;color:#fff!important;font-size:.58rem!important;font-weight:950!important}
+.filter-active-count[hidden]{display:none!important}
+.filter-sheet-overlay{
+  position:fixed!important;inset:0!important;z-index:9999!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;
+  padding:20px 0 0!important;background:rgba(13,35,52,.38)!important;
+  -webkit-backdrop-filter:blur(5px)!important;backdrop-filter:blur(5px)!important;
+  opacity:0!important;visibility:hidden!important;pointer-events:none!important;
+  transition:opacity .25s ease,visibility .25s ease!important;
+}
+.filter-sheet-overlay.open{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
+.filter-sheet{
+  display:flex!important;flex-direction:column!important;width:min(100%,760px)!important;max-height:min(91vh,850px)!important;
+  overflow:hidden!important;border:1px solid rgba(215,235,246,.95)!important;border-bottom:0!important;
+  border-radius:27px 27px 0 0!important;background:#fff!important;
+  box-shadow:0 -16px 55px rgba(10,55,83,.18)!important;
+  transform:translateY(38px)!important;transition:transform .34s cubic-bezier(.2,.85,.25,1)!important;
+}
+.filter-sheet-overlay.open .filter-sheet{transform:translateY(0)!important}
+.filter-sheet-handle{width:49px!important;height:5px!important;flex:0 0 5px!important;margin:10px auto 15px!important;border-radius:99px!important;background:#d6e2e9!important}
+.filter-sheet-head{
+  display:grid!important;grid-template-columns:1fr auto 42px!important;align-items:center!important;gap:12px!important;
+  padding:0 20px 16px!important;border-bottom:1px solid #e8f0f5!important;
+}
+.filter-sheet-head h2{margin:0!important;color:#1c3b53!important;font-size:1.5rem!important;font-weight:950!important;letter-spacing:-.7px!important}
+.filter-clear-btn{border:0!important;background:transparent!important;color:#078bd2!important;font-size:.75rem!important;font-weight:900!important;cursor:pointer!important}
+.filter-clear-btn:hover{text-decoration:underline!important}
+.filter-close-btn{display:grid!important;place-items:center!important;width:40px!important;height:40px!important;border:0!important;border-radius:50%!important;background:#eff7fb!important;color:#55778c!important;font-size:1.7rem!important;line-height:1!important;cursor:pointer!important;transition:background .2s ease,transform .2s ease!important}
+.filter-close-btn:hover{background:#e1f3fb!important;transform:rotate(90deg)!important}
+.filter-sheet-body{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain!important;padding:17px 20px 18px!important}
+.filter-sheet-group{padding:5px 0 17px!important;margin:0 0 15px!important;border-bottom:1px solid #eaf1f5!important}
+.filter-sheet-group:last-child{margin-bottom:0!important;border-bottom:0!important}
+.filter-sheet-group h3{margin:0 0 10px!important;color:#7a91a2!important;font-size:.65rem!important;font-weight:950!important;letter-spacing:1.5px!important}
+.sheet-options{display:grid!important;grid-template-columns:1fr!important;gap:1px!important}
+.sheet-radio,.sheet-check{
+  position:relative!important;display:grid!important;grid-template-columns:29px minmax(0,1fr) auto!important;align-items:center!important;gap:11px!important;
+  min-height:49px!important;padding:4px 2px!important;color:#29485e!important;cursor:pointer!important;
+}
+.sheet-radio input,.sheet-check input{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.custom-radio,.custom-check{position:relative!important;display:block!important;width:22px!important;height:22px!important;border:1.8px solid #bdcbd5!important;border-radius:50%!important;background:#fff!important;transition:border-color .18s ease,background .18s ease,box-shadow .18s ease!important}
+.custom-check{border-radius:6px!important}
+.sheet-radio input:checked+.custom-radio{border-color:#078bd2!important;box-shadow:inset 0 0 0 5px #fff!important;background:#078bd2!important}
+.sheet-check input:checked+.custom-check{border-color:#078bd2!important;background:#078bd2!important}
+.sheet-check input:checked+.custom-check:after{content:"✓"!important;position:absolute!important;inset:0!important;display:grid!important;place-items:center!important;color:#fff!important;font-size:.8rem!important;font-weight:950!important}
+.sheet-radio input:focus-visible+.custom-radio,.sheet-check input:focus-visible+.custom-check{outline:3px solid rgba(7,139,210,.18)!important;outline-offset:3px!important}
+.sheet-option-label{min-width:0!important;color:#29485e!important;font-size:.88rem!important;font-weight:750!important;line-height:1.3!important}
+.sheet-radio strong,.sheet-check strong{min-width:29px!important;padding:4px 8px!important;border-radius:99px!important;background:#f0f6fa!important;color:#8b9eaa!important;font-size:.68rem!important;font-weight:850!important;text-align:center!important}
+.sheet-search{position:relative!important;margin:0 0 9px!important}
+.sheet-search svg{position:absolute!important;left:14px!important;top:50%!important;width:17px!important;height:17px!important;transform:translateY(-50%)!important;fill:none!important;stroke:#8aa1b1!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;pointer-events:none!important}
+.sheet-search input{width:100%!important;height:46px!important;padding:0 15px 0 41px!important;border:1px solid #dceaf2!important;border-radius:13px!important;outline:none!important;background:#f8fcff!important;color:#29485e!important;font-family:inherit!important;font-size:.8rem!important;font-weight:650!important}
+.sheet-search input::placeholder{color:#9aabb7!important;font-weight:500!important}
+.sheet-search input:focus{border-color:#71c8e9!important;background:#fff!important;box-shadow:0 0 0 3px rgba(7,139,210,.09)!important}
+.sheet-model-options{display:grid!important;grid-template-columns:1fr!important;gap:0!important;max-height:245px!important;overflow:auto!important;overscroll-behavior:contain!important}
+.sheet-model-options .sheet-check{min-height:46px!important;border-bottom:1px solid #f0f4f7!important}
+.sheet-model-options .sheet-check:last-child{border-bottom:0!important}
+.sheet-model-options .sheet-check[hidden]{display:none!important}
+.sheet-empty{padding:13px 2px!important;color:#8b9eaa!important;font-size:.75rem!important}
+.sheet-empty[hidden]{display:none!important}
+.sheet-select-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important}
+.sheet-select-field{display:flex!important;flex-direction:column!important;gap:6px!important;color:#7a91a2!important;font-size:.61rem!important;font-weight:900!important;letter-spacing:.7px!important;text-transform:uppercase!important}
+.sheet-select-field select{width:100%!important;min-width:0!important;height:43px!important;padding:0 10px!important;border:1px solid #dceaf2!important;border-radius:11px!important;background:#f8fcff!important;color:#29485e!important;font-family:inherit!important;font-size:.72rem!important;font-weight:750!important;letter-spacing:0!important;text-transform:none!important;outline:none!important}
+.sheet-select-field select:focus{border-color:#71c8e9!important;box-shadow:0 0 0 3px rgba(7,139,210,.09)!important}
+.filter-sheet-footer{flex:0 0 auto!important;padding:12px 20px calc(15px + env(safe-area-inset-bottom))!important;border-top:1px solid #e8f0f5!important;background:rgba(255,255,255,.97)!important}
+.filter-apply-btn{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:51px!important;border:0!important;border-radius:14px!important;background:linear-gradient(100deg,#078bd2,#28bce8)!important;color:#fff!important;font-family:inherit!important;font-size:.88rem!important;font-weight:950!important;box-shadow:0 8px 19px rgba(7,139,210,.19)!important;cursor:pointer!important;transition:transform .2s ease,box-shadow .2s ease!important}
+.filter-apply-btn:hover{transform:translateY(-1px)!important;box-shadow:0 11px 23px rgba(7,139,210,.24)!important}
+@media(min-width:760px){
+  .filter-sheet-overlay{align-items:center!important;padding:20px!important}
+  .filter-sheet{width:min(100%,590px)!important;max-height:86vh!important;border:1px solid #dcecf5!important;border-radius:25px!important}
+  .filter-sheet-footer{border-radius:0 0 25px 25px!important}
+}
+@media(max-width:430px){
+  .filter-sheet-head{padding-left:16px!important;padding-right:16px!important}
+  .filter-sheet-head h2{font-size:1.38rem!important}
+  .filter-sheet-body{padding-left:17px!important;padding-right:17px!important}
+  .filter-sheet-footer{padding-left:16px!important;padding-right:16px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .filter-sheet-overlay,.filter-sheet,.filter-apply-btn,.catalog-filter-trigger{transition:none!important}
+}
+
+/* ══ BRILLO BLANCO CONTINUO SOBRE LA TARJETA PRINCIPAL ══ */
+.hero-feature-card{isolation:isolate!important}
+.hero-feature-card:after{
+  content:""!important;position:absolute!important;top:-20%!important;left:-36%!important;z-index:3!important;
+  width:38%!important;height:140%!important;pointer-events:none!important;
+  background:linear-gradient(112deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.10) 30%,rgba(255,255,255,.72) 50%,rgba(255,255,255,.12) 70%,rgba(255,255,255,0) 100%)!important;
+  transform:rotate(12deg) translateX(-150%)!important;opacity:0!important;
+  mix-blend-mode:screen!important;animation:iphoneCardShine 3.6s ease-in-out infinite!important;
+}
+@keyframes iphoneCardShine{
+  0%{transform:rotate(12deg) translateX(-150%);opacity:0}
+  8%{opacity:.9}
+  40%{opacity:.85}
+  54%{transform:rotate(12deg) translateX(450%);opacity:0}
+  100%{transform:rotate(12deg) translateX(450%);opacity:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-feature-card:after{animation:none!important;display:none!important}
+}
+
 </style>
 </head>
 <body class="loading">
@@ -1269,47 +1379,53 @@ body.page-entering nav{animation:navEntrance .72s cubic-bezier(.2,.82,.25,1) bot
 <section id="seminuevos" class="catalog-section">
   <div class="catalog-toolbar">
     <div class="catalog-toolbar-left">
-      <button class="catalog-filter-trigger" id="usedFilterToggle" type="button" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>Filtros
+      <button class="catalog-filter-trigger" id="usedFilterToggle" type="button" aria-expanded="false" aria-controls="filterSheetOverlay">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>
+        Filtros
+        <span class="filter-active-count" id="filterActiveCount" hidden>0</span>
       </button>
       <div class="catalog-count"><strong id="usedModelCount">— modelos</strong><span> · </span><span id="usedItemCount">— equipos</span></div>
     </div>
     <div class="catalog-sort"><span>Ordenar</span><select id="usedSort" aria-label="Ordenar equipos"><option value="recommended">Recomendados</option><option value="price-low">Precio menor</option><option value="price-high">Precio mayor</option><option value="model">Modelo A-Z</option></select></div>
   </div>
-  <div class="filter-panel" id="usedFilterPanel">
-    <div class="filter-panel-heading">Tipo de equipo</div>
-    <div class="filter-state-bar">
-      <button class="filter-btn active" onclick="filterUsedState('all',this)">Todos</button>
-      <button class="filter-btn" onclick="filterUsedState('seminuevo',this)">Seminuevos</button>
-      <button class="filter-btn" onclick="filterUsedState('sellado',this)">Sellados</button>
-    </div>
-    <div class="filter-panel-heading">Modelo</div>
-    <div class="filter-bar model-filter">
-      <button class="filter-btn active" onclick="filterUsed('all',this)">Todos</button>
-      <button class="filter-btn" onclick="filterUsed('iphone13',this)">13</button>
-      <button class="filter-btn" onclick="filterUsed('iphone13pro',this)">13 Pro</button>
-      <button class="filter-btn" onclick="filterUsed('iphone13promax',this)">13 Pro Max</button>
-      <button class="filter-btn" onclick="filterUsed('iphone14',this)">14</button>
-      <button class="filter-btn" onclick="filterUsed('iphone14pro',this)">14 Pro</button>
-      <button class="filter-btn" onclick="filterUsed('iphone14promax',this)">14 Pro Max</button>
-      <button class="filter-btn" onclick="filterUsed('iphone15',this)">15</button>
-      <button class="filter-btn" onclick="filterUsed('iphone15pro',this)">15 Pro</button>
-      <button class="filter-btn" onclick="filterUsed('iphone15promax',this)">15 Pro Max</button>
-      <button class="filter-btn" onclick="filterUsed('iphone16',this)">16</button>
-      <button class="filter-btn" onclick="filterUsed('iphone16pro',this)">16 Pro</button>
-      <button class="filter-btn" onclick="filterUsed('iphone16promax',this)">16 Pro Max</button>
-      <button class="filter-btn" onclick="filterUsed('iphone17',this)">17</button>
-      <button class="filter-btn" onclick="filterUsed('iphone17pro',this)">17 Pro</button>
-      <button class="filter-btn" onclick="filterUsed('iphone17promax',this)">17 Pro Max</button>
-    </div>
-    <div class="filter-panel-heading">Capacidad y color</div>
-    <div class="catalog-extra-filters">
-      <select id="usedCapacityFilter" aria-label="Filtrar por capacidad"><option value="all">Todas las capacidades</option></select>
-      <select id="usedColorFilter" aria-label="Filtrar por color"><option value="all">Todos los colores</option></select>
-      <button type="button" class="filter-clear" id="usedFilterClear">Limpiar filtros</button>
+  <span id="sellados" class="catalog-anchor" aria-hidden="true"></span>
+
+  <div class="filter-sheet-overlay" id="filterSheetOverlay" aria-hidden="true">
+    <div class="filter-sheet" role="dialog" aria-modal="true" aria-labelledby="filterSheetTitle" tabindex="-1">
+      <div class="filter-sheet-handle" aria-hidden="true"></div>
+      <div class="filter-sheet-head">
+        <h2 id="filterSheetTitle">Filtros</h2>
+        <button class="filter-clear-btn" id="clearAllFilters" type="button">Limpiar todo</button>
+        <button class="filter-close-btn" id="closeFilterSheet" type="button" aria-label="Cerrar filtros">×</button>
+      </div>
+      <div class="filter-sheet-body">
+        <section class="filter-sheet-group">
+          <h3>ESTADO</h3>
+          <div class="sheet-options" id="filterStateOptions"></div>
+        </section>
+        <section class="filter-sheet-group">
+          <h3>MODELO</h3>
+          <div class="sheet-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="filterModelSearch" type="search" placeholder="Buscar modelo" autocomplete="off" aria-label="Buscar modelo">
+          </div>
+          <div class="sheet-model-options" id="filterModelOptions"></div>
+          <p class="sheet-empty" id="filterModelEmpty" hidden>No hay modelos que coincidan con la búsqueda.</p>
+        </section>
+        <section class="filter-sheet-group">
+          <h3>CAPACIDAD Y COLOR</h3>
+          <div class="sheet-select-grid">
+            <label class="sheet-select-field"><span>Capacidad</span><select id="usedCapacityFilter" aria-label="Filtrar por capacidad"><option value="all">Todas</option></select></label>
+            <label class="sheet-select-field"><span>Color</span><select id="usedColorFilter" aria-label="Filtrar por color"><option value="all">Todos</option></select></label>
+          </div>
+        </section>
+      </div>
+      <div class="filter-sheet-footer">
+        <button class="filter-apply-btn" id="applyFilterSheet" type="button">Ver 0 equipos</button>
+      </div>
     </div>
   </div>
-  <span id="sellados" class="catalog-anchor" aria-hidden="true"></span>
+
   <div class="used-grid" id="usedGrid"></div>
   <div class="catalog-empty" id="usedEmpty" hidden>No hay equipos que coincidan con esos filtros.</div>
   <div id="selladosGrid" hidden></div>
@@ -1721,6 +1837,7 @@ function renderCustomCards(){
   });
 
   populateUsedFilterOptions();
+  renderFilterSheet();
   applyUsedFilters();
   updateCatalogCounts();
   sortCatalogGrid('usedGrid',document.getElementById('usedSort')?.value||'recommended');
@@ -2019,41 +2136,225 @@ function addToCartDirect(name,icon,price){
   setTimeout(()=>{btn.textContent=orig;btn.style.background=''},1400);
 }
 
-// ── FILTER ──
-let activeUsedModel='all';
+// ── FILTER SHEET + CATALOG FILTERING ──
+let activeUsedModels=new Set();
 let activeUsedState='all';
 
-function filterUsed(type,btn){
-  activeUsedModel=type;
-  document.querySelectorAll('#usedFilterPanel .model-filter .filter-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  applyUsedFilters();
+function getCardModelKey(card){
+  return [...card.classList].find(name=>/^iphone\d+(?:promax|pro|max|plus)?$/i.test(name))||'other';
 }
 
-function filterUsedState(type,btn){
-  activeUsedState=type;
-  document.querySelectorAll('#usedFilterPanel .filter-state-bar .filter-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  applyUsedFilters();
+function getCardModelLabel(key){
+  if(key==='other')return 'Otros modelos';
+  const match=key.match(/^iphone(\d+)(promax|pro|max|plus)?$/i);
+  if(!match)return key;
+  const suffix={promax:'Pro Max',pro:'Pro',max:'Max',plus:'Plus'}[(match[2]||'').toLowerCase()]||'';
+  return 'iPhone '+match[1]+(suffix?' '+suffix:'');
+}
+
+function getFilteredProductCards(options={}){
+  const ignoreState=options.ignoreState===true;
+  const ignoreModels=options.ignoreModels===true;
+  const capacity=document.getElementById('usedCapacityFilter')?.value||'all';
+  const color=document.getElementById('usedColorFilter')?.value||'all';
+  return [...document.querySelectorAll('#usedGrid .prod-card')].filter(card=>{
+    const modelOk=ignoreModels||activeUsedModels.size===0||activeUsedModels.has(getCardModelKey(card));
+    const stateOk=ignoreState||activeUsedState==='all'||card.dataset.state===activeUsedState;
+    const capacityOk=capacity==='all'||card.dataset.capacity===capacity;
+    const colorOk=color==='all'||card.dataset.color===color;
+    return modelOk&&stateOk&&capacityOk&&colorOk;
+  });
 }
 
 function applyUsedFilters(){
-  const capacity=document.getElementById('usedCapacityFilter')?.value||'all';
-  const color=document.getElementById('usedColorFilter')?.value||'all';
-  const cards=[...document.querySelectorAll('#usedGrid .prod-card')];
-  let visible=0;
-  cards.forEach(card=>{
-    const modelOk=activeUsedModel==='all'||card.classList.contains(activeUsedModel);
-    const stateOk=activeUsedState==='all'||card.dataset.state===activeUsedState;
-    const capacityOk=capacity==='all'||card.dataset.capacity===capacity;
-    const colorOk=color==='all'||card.dataset.color===color;
-    const show=modelOk&&stateOk&&capacityOk&&colorOk;
-    card.style.display=show?'flex':'none';
-    if(show)visible++;
+  const visibleCards=new Set(getFilteredProductCards());
+  document.querySelectorAll('#usedGrid .prod-card').forEach(card=>{
+    card.style.display=visibleCards.has(card)?'flex':'none';
   });
-  const empty=document.getElementById('usedEmpty');
-  if(empty)empty.hidden=visible!==0;
   updateCatalogCounts();
+  updateFilterSheetCounts();
+}
+
+function updateCatalogCounts(){
+  const visible=[...document.querySelectorAll('#usedGrid .prod-card')].filter(card=>card.style.display!=='none');
+  const models=new Set(visible.map(getCardModelKey));
+  const modelLabel=document.getElementById('usedModelCount');
+  const itemLabel=document.getElementById('usedItemCount');
+  if(modelLabel)modelLabel.textContent=models.size+' modelos';
+  if(itemLabel)itemLabel.textContent=visible.length+' equipos';
+  const empty=document.getElementById('usedEmpty');
+  if(empty)empty.hidden=visible.length!==0;
+}
+
+function renderFilterSheet(){
+  const cards=[...document.querySelectorAll('#usedGrid .prod-card')];
+  const stateContainer=document.getElementById('filterStateOptions');
+  const modelContainer=document.getElementById('filterModelOptions');
+  if(!stateContainer||!modelContainer)return;
+
+  stateContainer.innerHTML='';
+  const stateOptions=[
+    {value:'all',label:'Todos'},
+    {value:'seminuevo',label:'Seminuevos'},
+    {value:'sellado',label:'Nuevos y sellados'}
+  ];
+  stateOptions.forEach((option,index)=>{
+    const row=document.createElement('label');
+    row.className='sheet-radio';
+    const input=document.createElement('input');
+    input.type='radio';
+    input.name='filter-state';
+    input.value=option.value;
+    input.checked=activeUsedState===option.value;
+    input.id='filterState'+index;
+    const mark=document.createElement('span');
+    mark.className='custom-radio';
+    const label=document.createElement('span');
+    label.className='sheet-option-label';
+    label.textContent=option.label;
+    const count=document.createElement('strong');
+    count.dataset.stateCount=option.value;
+    count.textContent='0';
+    row.append(input,mark,label,count);
+    input.addEventListener('change',()=>{
+      activeUsedState=option.value;
+      applyUsedFilters();
+    });
+    stateContainer.appendChild(row);
+  });
+
+  const models=new Map();
+  cards.forEach(card=>{
+    const key=getCardModelKey(card);
+    if(!models.has(key))models.set(key,getCardModelLabel(key));
+  });
+  modelContainer.innerHTML='';
+  [...models.entries()].sort((a,b)=>a[1].localeCompare(b[1],'es',{numeric:true})).forEach(([key,label])=>{
+    const row=document.createElement('label');
+    row.className='sheet-check';
+    row.dataset.modelOption=key;
+    row.dataset.modelLabel=label.toLowerCase();
+    const input=document.createElement('input');
+    input.type='checkbox';
+    input.name='filter-model';
+    input.value=key;
+    input.checked=activeUsedModels.has(key);
+    const mark=document.createElement('span');
+    mark.className='custom-check';
+    const text=document.createElement('span');
+    text.className='sheet-option-label';
+    text.textContent=label;
+    const count=document.createElement('strong');
+    count.dataset.modelCount=key;
+    count.textContent='0';
+    row.append(input,mark,text,count);
+    input.addEventListener('change',()=>{
+      if(input.checked)activeUsedModels.add(key);
+      else activeUsedModels.delete(key);
+      applyUsedFilters();
+    });
+    modelContainer.appendChild(row);
+  });
+
+  const search=document.getElementById('filterModelSearch');
+  if(search){
+    search.value='';
+    search.oninput=()=>{
+      const term=search.value.trim().toLocaleLowerCase('es');
+      let shown=0;
+      modelContainer.querySelectorAll('[data-model-option]').forEach(row=>{
+        const match=row.dataset.modelLabel.includes(term);
+        row.hidden=!match;
+        if(match)shown++;
+      });
+      const empty=document.getElementById('filterModelEmpty');
+      if(empty)empty.hidden=shown!==0;
+    };
+  }
+  updateFilterSheetCounts();
+}
+
+function updateFilterSheetCounts(){
+  const stateBase=getFilteredProductCards({ignoreState:true});
+  document.querySelectorAll('[data-state-count]').forEach(node=>{
+    const value=node.dataset.stateCount;
+    const count=value==='all'?stateBase.length:stateBase.filter(card=>card.dataset.state===value).length;
+    node.textContent=String(count);
+  });
+
+  const modelBase=getFilteredProductCards({ignoreModels:true});
+  document.querySelectorAll('[data-model-count]').forEach(node=>{
+    const key=node.dataset.modelCount;
+    node.textContent=String(modelBase.filter(card=>getCardModelKey(card)===key).length);
+  });
+
+  const total=getFilteredProductCards().length;
+  const applyButton=document.getElementById('applyFilterSheet');
+  if(applyButton)applyButton.textContent='Ver '+total+' '+(total===1?'equipo':'equipos');
+
+  const activeCount=(activeUsedState!=='all'?1:0)+activeUsedModels.size+
+    ((document.getElementById('usedCapacityFilter')?.value||'all')!=='all'?1:0)+
+    ((document.getElementById('usedColorFilter')?.value||'all')!=='all'?1:0);
+  const activeBadge=document.getElementById('filterActiveCount');
+  if(activeBadge){
+    activeBadge.textContent=String(activeCount);
+    activeBadge.hidden=activeCount===0;
+  }
+}
+
+function openFilterSheet(){
+  const overlay=document.getElementById('filterSheetOverlay');
+  if(!overlay)return;
+  updateFilterSheetCounts();
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  document.getElementById('closeFilterSheet')?.focus({preventScroll:true});
+}
+
+function closeFilterSheet(){
+  const overlay=document.getElementById('filterSheetOverlay');
+  if(!overlay)return;
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  document.getElementById('usedFilterToggle')?.focus({preventScroll:true});
+}
+
+function clearAllFilters(){
+  activeUsedModels.clear();
+  activeUsedState='all';
+  const capacity=document.getElementById('usedCapacityFilter');
+  const color=document.getElementById('usedColorFilter');
+  const search=document.getElementById('filterModelSearch');
+  if(capacity)capacity.value='all';
+  if(color)color.value='all';
+  if(search)search.value='';
+  document.querySelectorAll('#filterStateOptions input[type="radio"]').forEach(input=>{input.checked=input.value==='all'});
+  document.querySelectorAll('#filterModelOptions input[type="checkbox"]').forEach(input=>{input.checked=false});
+  document.querySelectorAll('#filterModelOptions [data-model-option]').forEach(row=>{row.hidden=false});
+  const empty=document.getElementById('filterModelEmpty');
+  if(empty)empty.hidden=true;
+  applyUsedFilters();
+}
+
+function applyFilterSheet(){
+  applyUsedFilters();
+  closeFilterSheet();
+  document.getElementById('usedGrid')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function sortCatalogGrid(gridId,mode){
+  const grid=document.getElementById(gridId);
+  if(!grid)return;
+  const cards=[...grid.querySelectorAll('.prod-card')];
+  cards.sort((a,b)=>{
+    if(mode==='price-low')return Number(a.dataset.price)-Number(b.dataset.price);
+    if(mode==='price-high')return Number(b.dataset.price)-Number(a.dataset.price);
+    if(mode==='model')return (a.dataset.modelName||'').localeCompare(b.dataset.modelName||'','es');
+    return Number(a.dataset.order)-Number(b.dataset.order);
+  });
+  cards.forEach(card=>grid.appendChild(card));
 }
 
 // ── CART ──
@@ -2111,51 +2412,19 @@ function populateUsedFilterOptions(){
   colorSelect.value=colors.includes(oldColor)?oldColor:'all';
 }
 
-function updateCatalogCounts(){
-  const cards=[...document.querySelectorAll('#usedGrid .prod-card')];
-  const visible=cards.filter(c=>c.style.display!=='none');
-  const models=new Set(visible.map(c=>c.dataset.modelName).filter(Boolean));
-  const modelLabel=document.getElementById('usedModelCount');
-  const itemLabel=document.getElementById('usedItemCount');
-  if(modelLabel)modelLabel.textContent=models.size+' modelos';
-  if(itemLabel)itemLabel.textContent=visible.length+' equipos';
-  const empty=document.getElementById('usedEmpty');
-  if(empty)empty.hidden=visible.length!==0;
-}
-
-function sortCatalogGrid(gridId,mode){
-  const grid=document.getElementById(gridId);
-  if(!grid)return;
-  const cards=[...grid.querySelectorAll('.prod-card')];
-  cards.sort((a,b)=>{
-    if(mode==='price-low')return Number(a.dataset.price)-Number(b.dataset.price);
-    if(mode==='price-high')return Number(b.dataset.price)-Number(a.dataset.price);
-    if(mode==='model')return (a.dataset.modelName||'').localeCompare(b.dataset.modelName||'','es');
-    return Number(a.dataset.order)-Number(b.dataset.order);
-  });
-  cards.forEach(card=>grid.appendChild(card));
-}
-
-document.getElementById('usedFilterToggle')?.addEventListener('click',()=>{
-  const panel=document.getElementById('usedFilterPanel');
-  const button=document.getElementById('usedFilterToggle');
-  const opened=panel.classList.toggle('open');
-  button.setAttribute('aria-expanded',String(opened));
+document.getElementById('usedFilterToggle')?.addEventListener('click',openFilterSheet);
+document.getElementById('closeFilterSheet')?.addEventListener('click',closeFilterSheet);
+document.getElementById('clearAllFilters')?.addEventListener('click',clearAllFilters);
+document.getElementById('applyFilterSheet')?.addEventListener('click',applyFilterSheet);
+document.getElementById('filterSheetOverlay')?.addEventListener('click',event=>{
+  if(event.target===event.currentTarget)closeFilterSheet();
+});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&document.getElementById('filterSheetOverlay')?.classList.contains('open'))closeFilterSheet();
 });
 document.getElementById('usedCapacityFilter')?.addEventListener('change',applyUsedFilters);
 document.getElementById('usedColorFilter')?.addEventListener('change',applyUsedFilters);
-document.getElementById('usedFilterClear')?.addEventListener('click',()=>{
-  activeUsedModel='all';
-  activeUsedState='all';
-  document.querySelectorAll('#usedFilterPanel .filter-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('#usedFilterPanel .filter-state-bar .filter-btn')?.classList.add('active');
-  document.querySelector('#usedFilterPanel .model-filter .filter-btn')?.classList.add('active');
-  document.getElementById('usedCapacityFilter').value='all';
-  document.getElementById('usedColorFilter').value='all';
-  applyUsedFilters();
-});
-document.getElementById('usedSort')?.addEventListener('change',e=>sortCatalogGrid('usedGrid',e.target.value));
-
+document.getElementById('usedSort')?.addEventListener('change',event=>sortCatalogGrid('usedGrid',event.target.value));
 
 // ── SCROLL REVEAL: estáticos + tarjetas agregadas dinámicamente ──
 if('IntersectionObserver' in window){
