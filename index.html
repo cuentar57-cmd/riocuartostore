@@ -2236,58 +2236,72 @@ body:not(.intro-ready) .hero-feature-card{
   animation-play-state:paused!important;
 }
 
-/* ══ BRILLO RECONSTRUIDO: CAPA REAL, SIN TRANSFORM NI OPACITY !important ══
-   Las reglas antiguas fijaban opacity:0!important y transform!important
-   en ::after, anulando los fotogramas de la animación. */
-#storePage .hero-feature-card::after{
-  display:none!important;
-}
-#storePage .hero-feature-card{
+/* ══ TARJETA SUAVE: UN MOVIMIENTO PRINCIPAL + BRILLO INDEPENDIENTE ══
+   El barrido usa solo transform/opacity: evita repintados de blur y
+   evita que las animaciones de entrada compitan con la flotación. */
+#storePage .hero-feature-card::after{display:none!important}
+#storePage .hero-feature-card,
+#storePage.entering .hero-feature-card{
   position:relative!important;
-  isolation:isolate!important;
   overflow:hidden!important;
+  isolation:isolate!important;
+  animation:clubCardGentleFloat 8s ease-in-out infinite!important;
+}
+@keyframes clubCardGentleFloat{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-2px,0)}
+}
+#storePage.entering .hero-feature-stage.hero-entry{
+  animation:clubStageAppear .76s cubic-bezier(.22,.78,.22,1) .28s both!important;
+}
+@keyframes clubStageAppear{
+  from{opacity:0;transform:translate3d(0,15px,0) scale(.992)}
+  to{opacity:1;transform:translate3d(0,0,0) scale(1)}
 }
 #storePage .hero-feature-card .hero-live-shine{
   position:absolute;
   z-index:30;
   display:block;
   pointer-events:none;
-  top:-35%;
-  bottom:-35%;
-  left:-55%;
-  width:50%;
-  height:170%;
-  border-radius:40%;
+  top:-28%;
+  left:-60%;
+  width:48%;
+  height:156%;
+  border-radius:0;
   background:linear-gradient(
     108deg,
     rgba(255,255,255,0) 0%,
-    rgba(255,255,255,.09) 23%,
-    rgba(255,255,255,.55) 44%,
-    rgba(255,255,255,.95) 50%,
-    rgba(255,255,255,.5) 57%,
-    rgba(255,255,255,.08) 76%,
+    rgba(255,255,255,.07) 25%,
+    rgba(255,255,255,.40) 43%,
+    rgba(255,255,255,.76) 50%,
+    rgba(255,255,255,.38) 57%,
+    rgba(255,255,255,.06) 75%,
     rgba(255,255,255,0) 100%
   );
-  filter:blur(2px);
-  mix-blend-mode:screen;
+  filter:none;
+  mix-blend-mode:normal;
+  backface-visibility:hidden;
   will-change:transform,opacity;
-  animation:clubLiveShine 3.6s ease-in-out 0s infinite;
-  animation-play-state:paused;
   opacity:0;
-  transform:translateX(-140%) skewX(-16deg);
+  transform:translate3d(0,0,0) skewX(-16deg);
+  animation:clubLiveShineSmooth 3.9s linear infinite;
+  animation-play-state:paused;
 }
 #storePage .hero-feature-card.shine-active .hero-live-shine{
   animation-play-state:running;
 }
-@keyframes clubLiveShine{
-  0%,6%{opacity:0;transform:translateX(-140%) skewX(-16deg)}
-  14%{opacity:.9}
-  34%{opacity:1;transform:translateX(215%) skewX(-16deg)}
-  50%{opacity:.76;transform:translateX(540%) skewX(-16deg)}
-  54%,100%{opacity:0;transform:translateX(540%) skewX(-16deg)}
+@keyframes clubLiveShineSmooth{
+  0%{transform:translate3d(0,0,0) skewX(-16deg);opacity:0}
+  14%{opacity:.85}
+  59%{opacity:.85}
+  80%{opacity:0}
+  100%{transform:translate3d(420%,0,0) skewX(-16deg);opacity:0}
 }
 @media(prefers-reduced-motion:reduce){
+  #storePage .hero-feature-card,
+  #storePage.entering .hero-feature-card{animation:none!important}
   #storePage .hero-feature-card .hero-live-shine{animation:none!important;opacity:0!important}
+  #storePage.entering .hero-feature-stage.hero-entry{animation:none!important;opacity:1!important;transform:none!important}
 }
 
 </style>
@@ -2866,12 +2880,8 @@ function showPage(id){
   document.querySelectorAll('.page').forEach(page=>page.classList.remove('active','entering'));
   next.classList.add('active');
   if(id==='storePage'){
-    const card=next.querySelector('.hero-feature-card');
-    if(card){
-      card.classList.remove('shine-active');
-      void card.offsetWidth;
-      card.classList.add('shine-active');
-    }
+    // Mantener la animación activa al regresar sin reiniciarla ni forzar reflow.
+    next.querySelector('.hero-feature-card')?.classList.add('shine-active');
   }
   document.body.classList.remove('page-entering');
   void document.body.offsetWidth;
@@ -3496,12 +3506,6 @@ function startInitialEntrance(){
     if(loader)loader.remove();
 
     if(!home)return;
-    const heroCard=home.querySelector('.hero-feature-card');
-    if(heroCard){
-      heroCard.classList.remove('shine-active');
-      void heroCard.offsetWidth;
-      heroCard.classList.add('shine-active');
-    }
     home.classList.remove('entering');
     document.body.classList.remove('page-entering');
     void home.offsetWidth;
@@ -3512,6 +3516,12 @@ function startInitialEntrance(){
       window.requestAnimationFrame(()=>{
         document.body.classList.add('intro-ready','page-entering');
         home.classList.add('entering');
+        // La luz comienza cuando la tarjeta ya está entrando en pantalla.
+        window.setTimeout(()=>{
+          if(home.classList.contains('active')){
+            home.querySelector('.hero-feature-card')?.classList.add('shine-active');
+          }
+        },500);
         window.setTimeout(()=>{
           home.classList.remove('entering');
           document.body.classList.remove('page-entering');
