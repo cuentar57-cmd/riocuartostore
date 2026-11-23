@@ -235,10 +235,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .toast.warning{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.07)}
 .toast-msg{font-size:.79rem;font-weight:600;color:var(--txt)}
 
-/* ══ SHEETS PANEL ═══════════════════════════════════ */
-.sheets-panel{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px}
-.sheets-panel h3{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:7px}
-.sheets-panel p{font-size:.8rem;color:var(--txt2);line-height:1.7;margin-bottom:12px}
+/* ══ SUPABASE PANEL ═══════════════════════════════════ */
+.supabase-panel{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px}
+.supabase-panel h3{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:7px}
+.supabase-panel p{font-size:.8rem;color:var(--txt2);line-height:1.7;margin-bottom:12px}
 .url-display{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border2);border-radius:9px;padding:9px 12px;margin-bottom:12px}
 .url-display code{flex:1;font-size:.7rem;color:var(--accent2);word-break:break-all;font-family:monospace}
 .url-copy-btn{padding:5px 12px;border-radius:7px;border:1px solid rgba(59,130,246,.2);background:var(--accent-dim);color:var(--accent2);font-size:.7rem;font-weight:600;cursor:pointer;transition:.2s;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif}
@@ -305,27 +305,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 </head>
 <body>
 
-<!-- ══ SETUP SCREEN (primera vez) ══════════════════════════════ -->
-<div id="setupScreen">
-  <div class="setup-card">
-    <div class="setup-icon">🔗</div>
-    <div class="setup-title">Configuración inicial</div>
-    <div class="setup-sub">Ingresá la URL de tu Google Apps Script para conectar el panel con tu planilla de productos.</div>
-    <input type="url" id="setupUrl" class="setup-input" placeholder="https://script.google.com/macros/s/.../exec" oninput="this.value=this.value.trim()">
-    <div id="setupError" class="setup-error">URL inválida. Debe empezar con https://script.google.com</div>
-    <button class="setup-btn" onclick="doSetup()">Conectar con Google Sheets →</button>
-  </div>
-</div>
-
 <!-- ══ LOGIN SCREEN ═════════════════════════════════════════════ -->
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-logo">📱</div>
     <div class="login-title">Panel Admin</div>
     <div class="login-sub">iPhone Club · Río Cuarto</div>
-    <input type="password" id="pwInput" class="login-input" placeholder="Contraseña de acceso" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="email" id="adminEmail" class="login-input" placeholder="Correo de administrador" autocomplete="username" required>
+    <input type="password" id="pwInput" class="login-input" placeholder="Contraseña de Supabase" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">Ingresar →</button>
-    <div id="loginError" class="login-error">❌ Contraseña incorrecta</div>
+    <div id="loginError" class="login-error">No se pudo iniciar sesión</div>
   </div>
 </div>
 
@@ -400,9 +389,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
           Agregar producto
         </button>
-        <button class="sb-btn" onclick="resetApiUrl()">
+        <button class="sb-btn" onclick="showView('instrucciones')">
           <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>
-          Cambiar URL API
+          Conexión Supabase
         </button>
       </div>
     </aside>
@@ -468,12 +457,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
 
       <div id="view-instrucciones" style="display:none">
-        <div class="sheets-panel">
-          <h3>Conexión con Google Sheets</h3>
-          <p>URL de la API conectada:</p>
+        <div class="supabase-panel">
+          <h3>Conexión segura con Supabase</h3>
+          <p>Los productos, las imágenes, el stock y los precios se administran desde esta base de datos. Solo los usuarios habilitados pueden realizar cambios.</p>
+          <p>Proyecto conectado:</p>
           <div class="url-display">
             <code id="connectedUrl">—</code>
-            <button class="url-copy-btn" onclick="copyApiUrl()">Copiar</button>
+            <button class="url-copy-btn" onclick="copyApiUrl()">Copiar URL</button>
           </div>
         </div>
       </div>
@@ -510,6 +500,24 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <div class="form-group">
           <label class="form-label">Descripción corta</label>
           <input type="text" class="form-input" id="f-storage" placeholder="128 GB · Negro · Bat. 95%">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Stock disponible</label>
+          <input type="number" class="form-input" id="f-stock" placeholder="0" min="0" step="1" value="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Publicación</label>
+          <label style="display:flex;align-items:center;gap:10px;min-height:45px;cursor:pointer;color:var(--txt2);font-size:.82rem">
+            <input type="checkbox" id="f-active" style="width:18px;height:18px;accent-color:#3b82f6"> Visible en la tienda
+          </label>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label class="form-label">URL HTTPS de imagen del producto</label>
+          <input type="url" class="form-input" id="f-image" placeholder="https://...imagen.jpg" inputmode="url">
         </div>
       </div>
       <div class="form-row full">
@@ -558,7 +566,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <button class="cancel-btn" onclick="closeModal()">Cancelar</button>
       <button class="save-btn" id="saveBtn" onclick="saveProduct()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Guardar en Sheets
+        Guardar en Supabase
       </button>
     </div>
   </div>
@@ -572,156 +580,147 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 <script>
 
-// ═══════════════════════════════════════════════════════════════
-//  CONFIG
-// ═══════════════════════════════════════════════════════════════
-const API_URL_KEY = 'iphoneclub_api_url';
-const AUTH_KEY    = 'iphoneclub_admin_auth';
-let API_URL = '';
 
-// ═══════════════════════════════════════════════════════════════
-//  SETUP
-// ═══════════════════════════════════════════════════════════════
-function doSetup(){
-  const url = document.getElementById('setupUrl').value.trim();
-  if(!url.startsWith('https://script.google.com')){
-    document.getElementById('setupError').style.display='block';
-    return;
-  }
-  localStorage.setItem(API_URL_KEY, url);
-  API_URL = url;
-  document.getElementById('setupScreen').style.display='none';
-  document.getElementById('loginScreen').classList.add('show');
-  document.getElementById('pwInput').focus();
+/* ── SUPABASE AUTH + REST: SIN GOOGLE SHEETS ── */
+const SUPABASE_URL='https://wlvfpogzbwbbrgodxmlt.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_HXGsxu9MUg4FEfqKfJpE6Q_yH2k7NjM";
+const SESSION_KEY='iphoneclub_supabase_auth_session';
+let authSession=null;
+function escapeHtml(value){
+  return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 }
-
-function resetApiUrl(){
-  if(!confirm('¿Cambiar la URL de la API? Tendrás que ingresar la contraseña de nuevo.')) return;
-  localStorage.removeItem(API_URL_KEY);
-  localStorage.removeItem(AUTH_KEY);
-  location.reload();
+function saveAuthSession(s){
+  authSession=s;
+  if(s)sessionStorage.setItem(SESSION_KEY,JSON.stringify(s));
+  else sessionStorage.removeItem(SESSION_KEY);
 }
-
-// ═══════════════════════════════════════════════════════════════
-//  AUTH
-// ═══════════════════════════════════════════════════════════════
-async function doLogin(){
-  const pw = document.getElementById('pwInput').value;
-  if(!pw){ showLoginError('Ingresá la contraseña'); return; }
-
-  setSyncStatus('syncing','Verificando...');
-  try {
-    const res = await api('auth', {password: pw});
-    if(res.ok){
-      sessionStorage.setItem(AUTH_KEY, '1');
-      document.getElementById('loginScreen').classList.remove('show');
-      document.getElementById('appShell').style.display='block';
-      document.getElementById('connectedUrl').textContent = API_URL;
-      await refreshAll();
-    } else {
-      showLoginError(res.message || 'Contraseña incorrecta');
-      setSyncStatus('error','Error');
-    }
-  } catch(e){
-    showLoginError('No se pudo conectar con la API. Verificá la URL.');
-    setSyncStatus('error','Sin conexión');
-  }
-}
-
-function showLoginError(msg){
-  const el = document.getElementById('loginError');
-  el.textContent = '❌ ' + msg;
+function showLoginError(message){
+  const el=document.getElementById('loginError');
+  el.textContent=message;
   el.style.display='block';
-  setTimeout(()=>el.style.display='none', 3000);
+  setTimeout(()=>el.style.display='none',6000);
 }
-
-function doLogout(){
-  sessionStorage.removeItem(AUTH_KEY);
-  location.reload();
-}
-
-// ═══════════════════════════════════════════════════════════════
-//  API
-// ═══════════════════════════════════════════════════════════════
-async function api(action, body = {}) {
-
-  const response = await fetch(API_URL, {
-
-    method: "POST",
-
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
-    },
-
-    body: JSON.stringify({
-      action,
-      ...body
-    })
-
+async function loginRequest(url,payload){
+  const response=await fetch(SUPABASE_URL+url,{
+    method:'POST',
+    headers:{'apikey':SUPABASE_PUBLISHABLE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
   });
-
-  return await response.json();
-
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.msg||data.error_description||data.message||'No se pudo autenticar');
+  return data;
 }
-// ═══════════════════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════════════════
+async function getAccessToken(){
+  if(!authSession?.access_token)throw new Error('Iniciá sesión para administrar productos');
+  if((Number(authSession.expires_at)||0)-Date.now()/1000>60)return authSession.access_token;
+  if(!authSession.refresh_token)throw new Error('La sesión expiró. Ingresá nuevamente.');
+  const refreshed=await loginRequest('/auth/v1/token?grant_type=refresh_token',{refresh_token:authSession.refresh_token});
+  saveAuthSession({...refreshed,expires_at:Math.floor(Date.now()/1000)+Number(refreshed.expires_in||3600)});
+  return authSession.access_token;
+}
+async function supabaseRequest(method,endpoint,payload=null,opts={}){
+  const token=await getAccessToken();
+  const headers={
+    'apikey':SUPABASE_PUBLISHABLE_KEY,
+    'Authorization':'Bearer '+token,
+    'Accept':'application/json',
+    ...(payload!==null?{'Content-Type':'application/json'}:{})
+  };
+  if(opts.prefer)headers['Prefer']=opts.prefer;
+  const response=await fetch(SUPABASE_URL+'/rest/v1/'+endpoint,{
+    method,headers,cache:'no-store',...(payload!==null?{body:JSON.stringify(payload)}:{})
+  });
+  const raw=await response.text();
+  let data=null;try{data=raw?JSON.parse(raw):null}catch{data=raw}
+  if(!response.ok)throw new Error((data&&data.message)||'Error HTTP '+response.status);
+  return data;
+}
+async function verifyAdmin(){
+  const token=await getAccessToken();
+  const response=await fetch(SUPABASE_URL+'/auth/v1/user',{
+    headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:'Bearer '+token},cache:'no-store'
+  });
+  if(!response.ok)throw new Error('La sesión no está vigente');
+  const user=await response.json();
+  if(!user?.id)throw new Error('No se pudo verificar la cuenta');
+  const rows=await supabaseRequest('GET','catalog_admins?select=user_id,role&user_id=eq.'+encodeURIComponent(user.id));
+  if(!Array.isArray(rows)||!rows.some(a=>['owner','editor'].includes(a.role))){
+    throw new Error('Esta cuenta todavía no está autorizada como administradora de iPhone Club.');
+  }
+  return user;
+}
+async function enterAdmin(){
+  await verifyAdmin();
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('appShell').style.display='block';
+  document.getElementById('connectedUrl').textContent=SUPABASE_URL;
+  await refreshAll();
+}
+async function doLogin(){
+  const email=document.getElementById('adminEmail').value.trim();
+  const password=document.getElementById('pwInput').value;
+  if(!email||!password){showLoginError('Ingresá el correo y la contraseña');return}
+  try{
+    const session=await loginRequest('/auth/v1/token?grant_type=password',{email,password});
+    saveAuthSession({...session,expires_at:Math.floor(Date.now()/1000)+Number(session.expires_in||3600)});
+    await enterAdmin();
+    document.getElementById('pwInput').value='';
+  }catch(error){
+    saveAuthSession(null);
+    showLoginError(error.message);
+  }
+}
+async function doLogout(){
+  try{
+    const token=authSession?.access_token;
+    if(token)await fetch(SUPABASE_URL+'/auth/v1/logout',{method:'POST',headers:{
+      apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:'Bearer '+token
+    }});
+  }catch(_e){}
+  saveAuthSession(null);
+  document.getElementById('appShell').style.display='none';
+  document.getElementById('loginScreen').classList.add('show');
+}
+function rowToProduct(r){
+  const specs=(r.specifications&&typeof r.specifications==='object'&&!Array.isArray(r.specifications))?r.specifications:{};
+  const extras=[r.storage,r.color].filter(Boolean).join(' · ');
+  return {id:r.id,tag:r.category==='sellado'?'Sellado':'Usado',name:r.name,
+    storage:extras,image:r.image_url||'',usd:Number(r.price_usd)||0,price:Number(r.price_ars)||0,
+    description:r.description||'',specs,benefits:Array.isArray(r.benefits)?r.benefits:[],
+    stock:Number(r.stock)||0,is_active:r.is_active};
+}
+
 let allProducts = {};   // {id: product}  (base + custom)
 let customProducts = {};
 let hiddenIds = [];
 let currentFilter = 'all';
 
 // Base products (hardcoded for display in admin)
-const BASE_PRODUCTS = {
-  iphone16_ultramarine:{name:'iPhone 16',storage:'128 GB · Ultramarine · Sellado',image:'https://i.postimg.cc/pLycpXq1/iphone-16-finish-select-202409-6-1inch-ultramarine-FMT-WHH-removebg-preview.png',usd:840,tag:'Sellado'},
-  iphone16_white:{name:'iPhone 16',storage:'128 GB · White · Sellado',image:'https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png',usd:840,tag:'Sellado'},
-  iphone16_black:{name:'iPhone 16',storage:'128 GB · Black · Sellado',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:840,tag:'Sellado'},
-  iphone16_pink:{name:'iPhone 16',storage:'128 GB · Pink · Sellado',image:'https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png',usd:840,tag:'Sellado'},
-  iphone17_white:{name:'iPhone 17',storage:'256 GB · White · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado'},
-  iphone17_lavender:{name:'iPhone 17',storage:'256 GB · Lavender · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado'},
-  iphone17_black:{name:'iPhone 17',storage:'256 GB · Black · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado'},
-  iphone17pro_256_orange:{name:'iPhone 17 Pro',storage:'256 GB · Cuatro Orange · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1370,tag:'Sellado'},
-  iphone17pro_256_silver:{name:'iPhone 17 Pro',storage:'256 GB · Silver · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1370,tag:'Sellado'},
-  iphone17pro_512_silver:{name:'iPhone 17 Pro',storage:'512 GB · Silver · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1600,tag:'Sellado'},
-  iphone17promax_256_silver:{name:'iPhone 17 Pro Max',storage:'256 GB · Silver · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado'},
-  iphone17promax_256_deepblue:{name:'iPhone 17 Pro Max',storage:'256 GB · Deep Blue · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado'},
-  iphone17promax_512_orange:{name:'iPhone 17 Pro Max',storage:'512 GB · Cuatro Orange · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado'},
-  iphone17promax_512_deepblue:{name:'iPhone 17 Pro Max',storage:'512 GB · Deep Blue · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1730,tag:'Sellado'},
-  u_iph13_blanco_87:{name:'iPhone 13',storage:'128 GB · Blanco · Bat. 87%',image:'https://i.postimg.cc/2jQZdPXQ/IPHONE-13-4-removebg-preview.png',usd:350,tag:'Usado'},
-  u_iph13_blanco_88:{name:'iPhone 13',storage:'128 GB · Blanco · Bat. 88% · Con Caja',image:'https://i.postimg.cc/2jQZdPXQ/IPHONE-13-4-removebg-preview.png',usd:360,tag:'Usado'},
-  u_iph14pro_morado_84:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 84%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado'},
-  u_iph14pro_morado_85a:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 85%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado'},
-  u_iph14pro_negro_85:{name:'iPhone 14 Pro',storage:'128 GB · Negro Espacial · Bat. 85%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado'},
-  u_iph14promax_negro_100:{name:'iPhone 14 Pro Max',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/1zJcsbwj/celular-apple-iphone-14-pro-128gb-recondicionado-155300-550x550-1-removebg-preview.png',usd:590,tag:'Usado'},
-  u_iph15_negro_90:{name:'iPhone 15',storage:'128 GB · Negro · Bat. 90%',image:'https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png',usd:515,tag:'Usado'},
-  u_iph15_negro_100:{name:'iPhone 15',storage:'128 GB · Negro · Bat. 100%',image:'https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png',usd:530,tag:'Usado'},
-  u_iph15pro_azulpac_100:{name:'iPhone 15 Pro',storage:'256 GB · Azul Pacífico · Bat. 100%',image:'https://i.postimg.cc/rp8N6q05/15promaxqw-5673c7228b1d4c7efb17245976970936-1024-1024-removebg-preview.png',usd:670,tag:'Usado'},
-  u_iph16_negro_93:{name:'iPhone 16',storage:'128 GB · Negro · Bat. 93% · Garantía Oficial',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:670,tag:'Usado'},
-  u_iph16pro_blancoti_92:{name:'iPhone 16 Pro',storage:'128 GB · Blanco Titanio · Bat. 92%',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:790,tag:'Usado'},
-  u_iph17pro_naranja_100:{name:'iPhone 17 Pro',storage:'256 GB · Naranja · Bat. 100% · Garantía Oficial',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1240,tag:'Usado'},
-};
+const BASE_PRODUCTS = {};
 
 // ═══════════════════════════════════════════════════════════════
 //  REFRESH
 // ═══════════════════════════════════════════════════════════════
+
 async function refreshAll(){
   setSyncStatus('syncing','Sincronizando...');
-  try {
-    const res = await api('getAll');
-    if(!res.ok) throw new Error(res.error || 'Error desconocido');
-
-    customProducts = res.products || {};
-    hiddenIds = res.hidden || [];
-    allProducts = {...BASE_PRODUCTS, ...customProducts};
-
-    renderStats();
-    renderGrid();
-    updateSidebarCounts();
-    setSyncStatus('synced', 'Sincronizado');
-    toast('success','✅','Datos actualizados desde Google Sheets');
-  } catch(e){
+  try{
+    let rows=[],offset=0,chunk=[];
+    do{
+      chunk=await supabaseRequest('GET','catalog_products?select=*&order=sort_order.asc,created_at.desc&limit=500&offset='+offset);
+      if(!Array.isArray(chunk))throw new Error('Respuesta de catálogo inválida');
+      rows.push(...chunk);offset+=chunk.length;
+    }while(chunk.length===500);
+    customProducts=Object.fromEntries(rows.map(r=>[r.id,rowToProduct(r)]));
+    allProducts={...customProducts};
+    hiddenIds=rows.filter(r=>!r.is_active).map(r=>r.id);
+    renderStats();renderGrid();updateSidebarCounts();
+    setSyncStatus('synced','Sincronizado');
+    return rows;
+  }catch(error){
     setSyncStatus('error','Sin conexión');
-    toast('error','❌','Error al conectar: ' + e.message);
+    toast('error','❌','Error de Supabase: '+error.message);
+    throw error;
   }
 }
 
@@ -769,7 +768,7 @@ function renderGrid(){
 })
 
 .forEach(([id, p]) => {
-    const isCustom = !!customProducts[id];
+    const isCustom = true;
     const isHidden = hiddenIds.includes(id);
 
     if(currentFilter === 'Sellado'  && p.tag !== 'Sellado') return;
@@ -794,15 +793,15 @@ function renderGrid(){
       <div class="pc-icon">📱</div>
       <div class="pc-info">
         <div class="pc-top">
-          <div class="pc-name">${p.name}</div>
-          <span class="chip ${p.tag==='Sellado'?'chip-sell':'chip-used'}">${p.tag}</span>
+          <div class="pc-name">${escapeHtml(p.name)}</div>
+          <span class="chip ${p.tag==='Sellado'?'chip-sell':'chip-used'}">${escapeHtml(p.tag)}</span>
           ${isCustom?'<span class="chip chip-custom">Custom</span>':''}
           ${isHidden?'<span class="chip chip-hidden">Oculto</span>':''}
         </div>
-        <div class="pc-storage">${p.storage||''}</div>
+        <div class="pc-storage">${escapeHtml(p.storage||'')}</div>
       </div>
       <div class="pc-right">
-        <div class="pc-price">USD ${p.usd||0}</div>
+        <div class="pc-price">USD ${escapeHtml(p.usd||0)}</div>
         <div class="pc-actions">${editBtn}${hideBtn}${delBtn}</div>
       </div>`;
 
@@ -865,49 +864,28 @@ function setFilter(f, el){
 // ═══════════════════════════════════════════════════════════════
 //  TOGGLE HIDE
 // ═══════════════════════════════════════════════════════════════
+
 async function toggleHide(id){
+  const currentlyHidden=hiddenIds.includes(id);
   setSyncStatus('syncing','Guardando...');
-  try {
-    const res = await api('toggleHidden', {id});
-    if(!res.ok) throw new Error(res.error);
-    if(res.action === 'hidden'){
-      if(!hiddenIds.includes(id)) hiddenIds.push(id);
-      toast('success','🙈','Producto ocultado en la tienda');
-    } else {
-      hiddenIds = hiddenIds.filter(h=>h!==id);
-      toast('success','👁','Producto visible en la tienda');
-    }
-    allProducts = {...BASE_PRODUCTS, ...customProducts};
-    renderGrid();
-    renderStats();
-    updateSidebarCounts();
-    setSyncStatus('synced','Sincronizado');
-  } catch(e){
-    setSyncStatus('error','Error');
-    toast('error','❌','Error: ' + e.message);
-  }
+  try{
+    await supabaseRequest('PATCH','catalog_products?id=eq.'+encodeURIComponent(id),{is_active:currentlyHidden},{prefer:'return=minimal'});
+    await refreshAll();
+    toast('success','✅',currentlyHidden?'Producto publicado':'Producto ocultado');
+  }catch(e){setSyncStatus('error','Error');toast('error','❌',e.message)}
 }
 
 // ═══════════════════════════════════════════════════════════════
 //  DELETE
 // ═══════════════════════════════════════════════════════════════
+
 async function deleteProduct(id){
-  if(!confirm('¿Eliminar este producto de Google Sheets? Esta acción no se puede deshacer.')) return;
-  setSyncStatus('syncing','Eliminando...');
-  try {
-    const res = await api('deleteProduct', {id});
-    if(!res.ok) throw new Error(res.error);
-    delete customProducts[id];
-    allProducts = {...BASE_PRODUCTS, ...customProducts};
-    renderGrid();
-    renderStats();
-    updateSidebarCounts();
-    setSyncStatus('synced','Sincronizado');
-    toast('error','🗑️','Producto eliminado de Sheets');
-  } catch(e){
-    setSyncStatus('error','Error');
-    toast('error','❌','Error: ' + e.message);
-  }
+  if(!confirm('¿Eliminar definitivamente este producto de Supabase? Esta acción no se puede deshacer.'))return;
+  try{
+    await supabaseRequest('DELETE','catalog_products?id=eq.'+encodeURIComponent(id),null,{prefer:'return=minimal'});
+    await refreshAll();
+    toast('success','✅','Producto eliminado de Supabase');
+  }catch(e){setSyncStatus('error','Error');toast('error','❌',e.message)}
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -917,30 +895,27 @@ let editingId = null;
 let benCount = 0;
 let specCount = 0;
 
+
 function openModal(id){
-  editingId = id || null;
-  document.getElementById('modalTitle').textContent = id ? 'Editar producto' : 'Nuevo producto';
+  editingId=id||null;
+  document.getElementById('modalTitle').textContent=id?'Editar producto':'Nuevo producto';
   clearForm();
-
-  if(id){
-    const p = customProducts[id] || BASE_PRODUCTS[id];
-    if(p){
-      document.getElementById('f-tag').value = p.tag||'Sellado';
-      document.getElementById('f-usd').value = p.usd||'';
-      document.getElementById('f-name').value = p.name||'';
-      document.getElementById('f-storage').value = p.storage||'';
-      const descEl = document.getElementById('f-desc');
-      if(descEl) descEl.value = p.description||'';
-      if(p.specs) Object.entries(p.specs).forEach(([k,v])=>addSpec(k,v));
-      else { addSpec('Pantalla','');addSpec('Chip','');addSpec('Almacenamiento',''); }
-      if(p.benefits) p.benefits.forEach(b=>addBen(b));
-      else { addBen('');addBen('');addBen(''); }
-    }
-  } else {
-    addSpec('Pantalla','');addSpec('Chip','');addSpec('Almacenamiento','');addSpec('Batería','');addSpec('Color','');
-    addBen('');addBen('');addBen('');
+  const p=id?customProducts[id]:null;
+  if(p){
+    document.getElementById('f-tag').value=p.tag||'Sellado';
+    document.getElementById('f-usd').value=p.usd||'';
+    document.getElementById('f-name').value=p.name||'';
+    document.getElementById('f-storage').value=p.storage||'';
+    document.getElementById('f-stock').value=p.stock??0;
+    document.getElementById('f-image').value=p.image||'';
+    document.getElementById('f-active').checked=!!p.is_active;
+    document.getElementById('f-desc').value=p.description||'';
+    if(p.specs)Object.entries(p.specs).forEach(([k,v])=>addSpec(String(k),String(v)));
+    if(p.benefits)p.benefits.forEach(b=>addBen(String(b)));
+  }else{
+    ['Pantalla','Chip','Almacenamiento','Batería','Color'].forEach(k=>addSpec(k,''));
+    for(let i=0;i<3;i++)addBen('');
   }
-
   document.getElementById('modalOverlay').classList.add('open');
   setTimeout(()=>document.getElementById('f-name').focus(),80);
 }
@@ -952,15 +927,17 @@ function closeModal(){
   editingId = null;
 }
 
+
 function clearForm(){
-  ['f-tag','f-usd','f-name','f-storage','f-desc'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    if(el.tagName==='SELECT') el.value = 'Sellado'; else el.value = '';
+  ['f-usd','f-name','f-storage','f-desc','f-image'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
   });
+  document.getElementById('f-tag').value='Sellado';
+  document.getElementById('f-stock').value='0';
+  document.getElementById('f-active').checked=false;
   document.getElementById('bensContainer').innerHTML='';
   document.getElementById('specsContainer').innerHTML='';
-  benCount = 0; specCount = 0;
+  benCount=0;specCount=0;
 }
 
 function addBen(val=''){
@@ -1006,157 +983,46 @@ function addSpec(key='',val='', focusVal=false){
 // ═══════════════════════════════════════════════════════════════
 //  SAVE PRODUCT → SHEETS
 // ═══════════════════════════════════════════════════════════════
+
 async function saveProduct(){
-
-  const name    = document.getElementById('f-name').value.trim();
-  const storage = document.getElementById('f-storage').value.trim();
-  const usd     = parseFloat(document.getElementById('f-usd').value)||0;
-  const tag     = document.getElementById('f-tag').value;
-  const descEl  = document.getElementById('f-desc');
-  const desc    = descEl ? descEl.value.trim() : '';
-
-  // VALIDACIONES
-
-  if(!name){
-    toast('warning','⚠️','Ingresá el nombre del equipo');
-    return;
-  }
-
-  if(!usd){
-    toast('warning','⚠️','Ingresá el precio en USD');
-    return;
-  }
-
-  // SPECS
-
-  const specs = {};
-
+  const name=document.getElementById('f-name').value.trim();
+  const storageText=document.getElementById('f-storage').value.trim();
+  const usd=Number(document.getElementById('f-usd').value);
+  const stock=Number(document.getElementById('f-stock').value);
+  const image=document.getElementById('f-image').value.trim();
+  const category=document.getElementById('f-tag').value==='Sellado'?'sellado':'seminuevo';
+  const active=document.getElementById('f-active').checked;
+  const description=document.getElementById('f-desc').value.trim();
+  if(name.length<2){toast('warning','⚠️','Ingresá el modelo del equipo');return}
+  if(!Number.isFinite(usd)||usd<=0){toast('warning','⚠️','Ingresá un precio USD válido');return}
+  if(!Number.isInteger(stock)||stock<0){toast('warning','⚠️','El stock debe ser un número entero igual o mayor a cero');return}
+  if(image&&!/^https:\/\//i.test(image)){toast('warning','⚠️','La imagen debe tener una URL HTTPS');return}
+  const specs={};
   document.querySelectorAll('#specsContainer .spec-pair').forEach(row=>{
-
-    const k = row.querySelector('.spec-key').value.trim();
-    const v = row.querySelector('.spec-val').value.trim();
-
-    if(k && v){
-      specs[k] = v;
-    }
+    const k=row.querySelector('.spec-key').value.trim();
+    const v=row.querySelector('.spec-val').value.trim();
+    if(k&&v)specs[k]=v;
   });
-
-  // BENEFITS
-
-  const benefits = [];
-
-  document.querySelectorAll('#bensContainer .list-input').forEach(inp=>{
-
-    const v = inp.value.trim();
-
-    if(v){
-      benefits.push(v);
-    }
-  });
-
-  // ID
-
-  const id =
-    editingId ||
-    (
-      'custom_' +
-      name.toLowerCase().replace(/[^a-z0-9]/g,'_') +
-      '_' +
-      Date.now()
-    );
-
-  // BUTTON
-
-  const btn = document.getElementById('saveBtn');
-
-  btn.disabled = true;
-
-  btn.innerHTML =
-    '<span class="spin">⟳</span> Guardando...';
-
-  setSyncStatus('syncing','Guardando...');
-
-  try {
-
-    const res = await api(
-      'saveProduct',
-      {
-        id,
-        name,
-        storage,
-        usd,
-        tag,
-        description: desc,
-        specs,
-        benefits,
-        _custom: true
-      }
-    );
-
-    if(!res.ok){
-      throw new Error(res.error);
-    }
-
-    customProducts[id] = {
-      id,
-      name,
-      storage,
-      usd,
-      tag,
-      description: desc,
-      specs,
-      benefits,
-      _custom: true
-    };
-
-    allProducts = {
-      ...BASE_PRODUCTS,
-      ...customProducts
-    };
-
+  const benefits=[...document.querySelectorAll('#bensContainer .list-input')].map(el=>el.value.trim()).filter(Boolean);
+  const storage=(specs['Almacenamiento']||storageText.split('·')[0]||'').trim();
+  const color=(specs['Color']||storageText.split('·')[1]||'').trim();
+  const batteryRaw=(specs['Batería']||storageText.match(/bat(?:ería)?\.?\s*(\d{2,3})%/i)?.[1]||'');
+  const batteryNumber=parseInt(String(batteryRaw).replace(/[^\d]/g,''),10);
+  const data={
+    name,category,storage,color,price_usd:usd,stock,image_url:image||null,
+    description,specifications:specs,benefits,is_active:active,
+    battery_percent:Number.isInteger(batteryNumber)&&batteryNumber>=0&&batteryNumber<=100?batteryNumber:null
+  };
+  const button=document.getElementById('saveBtn'),id=editingId,previous=button.innerHTML;
+  button.disabled=true;button.textContent='Guardando...';
+  try{
+    if(id)await supabaseRequest('PATCH','catalog_products?id=eq.'+encodeURIComponent(id),data,{prefer:'return=minimal'});
+    else await supabaseRequest('POST','catalog_products',data,{prefer:'return=minimal'});
     closeModal();
-
-    renderGrid();
-
-    renderStats();
-
-    updateSidebarCounts();
-
-    setSyncStatus('synced','Sincronizado');
-
-    toast(
-      'success',
-      '✅',
-      editingId
-        ? 'Producto actualizado en Sheets'
-        : 'Producto guardado en Google Sheets'
-    );
-
-  } catch(e){
-
-    console.error(e);
-
-    setSyncStatus('error','Error');
-
-    toast(
-      'error',
-      '❌',
-      'Error al guardar: ' + e.message
-    );
-
-  } finally {
-
-    btn.disabled = false;
-
-    btn.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-        <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
-        <polyline points="17 21 17 13 7 13 7 21"/>
-        <polyline points="7 3 7 8 15 8"/>
-      </svg>
-      Guardar en Sheets
-    `;
-  }
+    await refreshAll();
+    toast('success','✅',id?'Producto actualizado':'Producto guardado en Supabase');
+  }catch(error){toast('error','❌','Error al guardar: '+error.message)}
+  finally{button.disabled=false;button.innerHTML=previous}
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1187,8 +1053,9 @@ function setSyncStatus(state, label){
   }
 }
 
+
 function copyApiUrl(){
-  navigator.clipboard.writeText(API_URL).then(()=>toast('success','📋','URL copiada'));
+  navigator.clipboard.writeText(SUPABASE_URL).then(()=>toast('success','✅','URL de Supabase copiada'));
 }
 
 let toastTimer;
@@ -1204,27 +1071,24 @@ function toast(type, icon, msg){
 // ═══════════════════════════════════════════════════════════════
 //  BOOT
 // ═══════════════════════════════════════════════════════════════
-(function boot(){
-  const savedUrl = localStorage.getItem(API_URL_KEY);
-  if(!savedUrl){
-    document.getElementById('setupScreen').style.display='flex';
-    return;
-  }
-  API_URL = savedUrl;
-  document.getElementById('setupScreen').style.display='none';
 
-  if(sessionStorage.getItem(AUTH_KEY)==='1'){
-    document.getElementById('appShell').style.display='block';
-    document.getElementById('connectedUrl').textContent = API_URL;
-    refreshAll();
-  } else {
-    document.getElementById('loginScreen').classList.add('show');
-    document.getElementById('pwInput').focus();
+(async function boot(){
+  document.getElementById('loginScreen').classList.add('show');
+  document.getElementById('connectedUrl').textContent=SUPABASE_URL;
+  try{
+    const stored=sessionStorage.getItem(SESSION_KEY);
+    if(stored){
+      saveAuthSession(JSON.parse(stored));
+      await enterAdmin();
+    }
+  }catch(error){
+    saveAuthSession(null);
+    if(error.message)showLoginError(error.message);
   }
 })();
-
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
-document.getElementById('pwInput')?.addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+document.getElementById('pwInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+document.getElementById('adminEmail')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 </script>
 </body>
 </html>
