@@ -2227,6 +2227,14 @@ body.page-entering nav{animation:navEntrance .72s cubic-bezier(.2,.82,.25,1) bot
   .used-grid .prod-price,
   .products-grid .prod-price{font-size:.79rem!important}
 }
+
+/* El brillo de la card arranca cuando se muestra la portada, no detrás del loader. */
+body:not(.intro-ready) .hero-feature-card:after{
+  animation-play-state:paused!important;
+}
+body:not(.intro-ready) .hero-feature-card{
+  animation-play-state:paused!important;
+}
 </style>
 </head>
 <body class="loading">
@@ -2617,21 +2625,7 @@ async function loadFromSheets(){
     console.warn('No se pudo cargar desde Sheets:',e);
 
   }finally{
-    const loader=document.getElementById('loaderScreen');
-    if(loader)loader.classList.add('is-leaving');
-    window.setTimeout(()=>{
-      if(loader)loader.remove();
-      document.body.classList.remove('loading');
-      document.body.classList.add('page-entering');
-      const home=document.getElementById('storePage');
-      if(home){
-        home.classList.remove('entering');
-        void home.offsetWidth;
-        home.classList.add('entering');
-        window.setTimeout(()=>home.classList.remove('entering'),1750);
-      }
-      window.setTimeout(()=>document.body.classList.remove('page-entering'),1750);
-    },500);
+    // Las peticiones a Sheets nunca controlan el inicio visual de la tienda.
   }
 
 }
@@ -3422,9 +3416,49 @@ if('IntersectionObserver' in window){
   document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
 }
 
+// ── ENTRADA INICIAL: INDEPENDIENTE DEL DÓLAR Y DE GOOGLE SHEETS ──
+let initialEntranceStarted=false;
+
+function startInitialEntrance(){
+  if(initialEntranceStarted)return;
+  initialEntranceStarted=true;
+  const loader=document.getElementById('loaderScreen');
+  const home=document.getElementById('storePage');
+  if(loader)loader.classList.add('is-leaving');
+
+  // La portada aparece en el primer acceso, sin esperar respuestas de red.
+  window.setTimeout(()=>{
+    document.body.classList.remove('loading');
+    if(loader)loader.remove();
+
+    if(!home)return;
+    home.classList.remove('entering');
+    document.body.classList.remove('page-entering');
+    void home.offsetWidth;
+
+    // Dos fotogramas permiten a Safari/iPhone pintar el estado inicial
+    // antes de activar la entrada y reiniciar el barrido brillante.
+    window.requestAnimationFrame(()=>{
+      window.requestAnimationFrame(()=>{
+        document.body.classList.add('intro-ready','page-entering');
+        home.classList.add('entering');
+        window.setTimeout(()=>{
+          home.classList.remove('entering');
+          document.body.classList.remove('page-entering');
+        },1750);
+      });
+    });
+  },500);
+}
+
 // ── INIT ──
 updateBadge();
-fetchDolar().then(()=>loadFromSheets());
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>window.setTimeout(startInitialEntrance,550),{once:true});
+}else{
+  window.setTimeout(startInitialEntrance,550);
+}
+loadFromSheets();
 </script>
 </body>
 </html>
