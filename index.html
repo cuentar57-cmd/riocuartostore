@@ -2401,6 +2401,53 @@ nav .nav-right .nav-cart{flex:0 0 38px!important;}
   nav .nav-right .nav-cart{width:32px!important;height:32px!important;flex:0 0 32px!important}
 }
 
+
+/* ══ NAVEGACIÓN A INICIO + SECCIONES SELLADOS / SEMINUEVOS ══ */
+nav .nav-inner{gap:10px!important}
+nav .nav-home{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important;
+  min-height:36px!important;flex:0 0 auto!important;padding:0 10px!important;
+  border:1px solid #d3e7f4!important;border-radius:12px!important;background:#f3fbff!important;
+  color:#197aa9!important;font-size:.7rem!important;font-weight:900!important;white-space:nowrap!important;text-decoration:none!important;
+  transition:background .2s ease,transform .2s ease!important;
+}
+nav .nav-home svg{width:16px!important;height:16px!important;flex:0 0 16px!important}
+nav .nav-home:hover{background:#e6f5fe!important;transform:translateY(-1px)!important}
+nav .logo-wrap{flex:0 0 auto!important}
+#sellados.catalog-section{padding:30px 5% 43px!important;background:linear-gradient(180deg,#eaf7ff,#f6fbff)!important;scroll-margin-top:78px!important}
+#seminuevos.catalog-section{padding:30px 5% 53px!important;border-top:1px solid #dfedf7!important;background:linear-gradient(180deg,#f5fbff,#eef8ff)!important;scroll-margin-top:78px!important}
+.catalog-section-heading{max-width:1120px;margin:0 auto 19px}
+.catalog-section-eyebrow{color:#168bbd;font-size:.61rem;font-weight:950;letter-spacing:1.55px;margin-bottom:6px}
+.catalog-section-heading h2{margin:0!important;color:#193750!important;font-size:clamp(1.6rem,3vw,2.2rem)!important;font-weight:950!important;letter-spacing:-.7px!important;line-height:1.2!important}
+.catalog-section-heading h2 span{color:#078bd2!important}
+.catalog-section-heading p{margin-top:7px;color:#70899d;font-size:.76rem;line-height:1.5}
+#selladosGrid.used-grid,#usedGrid.used-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:15px!important;max-width:1120px!important}
+#selladosGrid.used-grid .prod-card,#usedGrid.used-grid .prod-card{min-width:0!important}
+#sealedEmpty[hidden],#usedEmpty[hidden]{display:none!important}
+@media(min-width:1120px){
+  #selladosGrid.used-grid,#usedGrid.used-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+@media(max-width:700px){
+  nav .nav-inner{gap:6px!important}
+  nav .nav-home{min-height:33px!important;padding:0 8px!important;font-size:.63rem!important;gap:4px!important}
+  nav .nav-home svg{width:14px!important;height:14px!important;flex-basis:14px!important}
+  #sellados.catalog-section,#seminuevos.catalog-section{padding:26px 13px 38px!important;scroll-margin-top:72px!important}
+  .catalog-section-heading{margin-bottom:15px}
+  .catalog-section-heading h2{font-size:1.5rem!important}
+  .catalog-section-heading p{font-size:.68rem}
+  #selladosGrid.used-grid,#usedGrid.used-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;width:100%!important;max-width:100%!important}
+  #selladosGrid.used-grid .prod-card,#usedGrid.used-grid .prod-card{display:flex!important;flex-direction:column!important;width:100%!important}
+  #selladosGrid.used-grid .prod-photo-wrap,#usedGrid.used-grid .prod-photo-wrap{height:clamp(126px,36vw,158px)!important}
+  #selladosGrid.used-grid .prod-photo,#usedGrid.used-grid .prod-photo{width:100%!important;height:100%!important;object-fit:contain!important}
+}
+@media(max-width:430px){nav .logo-wrap{display:none!important}nav .nav-home{padding:0 8px!important}}
+@media(max-width:350px){
+  nav .nav-home{font-size:.58rem!important;padding:0 6px!important}
+  nav .nav-right .nav-category{font-size:.55rem!important;padding:0 6px!important}
+  nav .nav-right .nav-instagram,nav .nav-right .nav-cart{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important}
+  #selladosGrid.used-grid,#usedGrid.used-grid{gap:8px!important}
+}
+
 </style>
 </head>
 <body class="loading">
@@ -2416,6 +2463,9 @@ nav .nav-right .nav-cart{flex:0 0 38px!important;}
 
 <nav>
   <div class="nav-inner">
+    <a href="#inicio" class="nav-home" onclick="goToHome();return false;" aria-label="Volver al inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-7h6v7"/></svg><span>Inicio</span>
+    </a>
     <div class="logo-wrap" onclick="showPage('storePage')" aria-label="iPhone Club Río Cuarto">
       <img class="logo-img" src="https://i.postimg.cc/5y5jXskf/IMG-0126.jpg" alt="Logo iPhone Club">
       <div class="logo-text-block">
@@ -2429,8 +2479,8 @@ nav .nav-right .nav-cart{flex:0 0 38px!important;}
       <li><a href="#ubicacion" onclick="showPage('storePage')">Ubicación</a></li>
     </ul>
     <div class="nav-right">
-      <a href="#seminuevos" class="nav-category nav-category-used" onclick="showCatalogCategory('seminuevo');return false;" aria-label="Ver iPhone seminuevos">Seminuevos</a>
       <a href="#sellados" class="nav-category nav-category-sealed" onclick="showCatalogCategory('sellado');return false;" aria-label="Ver iPhone sellados">Sellados</a>
+      <a href="#seminuevos" class="nav-category nav-category-used" onclick="showCatalogCategory('seminuevo');return false;" aria-label="Ver iPhone seminuevos">Seminuevos</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
       <a href="https://www.instagram.com/iphoneclub.r4/" target="_blank" rel="noopener" class="nav-btn nav-instagram" title="Instagram" aria-label="Visitar Instagram de iPhone Club">
         <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg><span class="nav-instagram-label">Instagram</span>
@@ -2475,7 +2525,7 @@ nav .nav-right .nav-cart{flex:0 0 38px!important;}
 
     <p class="hero-under hero-entry" style="--entry-delay:500ms">Consultá disponibilidad, medios de pago y opciones de financiación.</p>
     <div class="hero-actions hero-entry" style="--entry-delay:590ms">
-      <a href="#seminuevos" class="reference-button" onclick="showPage('storePage')">Ver equipos <span>›</span></a>
+      <a href="#sellados" class="reference-button" onclick="showPage('storePage')">Ver equipos <span>›</span></a>
       <a href="https://wa.me/5493584015415" target="_blank" rel="noopener" class="reference-button reference-button-secondary">Consultar <span>↗</span></a>
     </div>
     <div class="reference-trust hero-entry" style="--entry-delay:960ms">
@@ -2512,7 +2562,8 @@ nav .nav-right .nav-cart{flex:0 0 38px!important;}
 
 
 
-<section id="seminuevos" class="catalog-section">
+<section id="sellados" class="catalog-section catalog-sealed">
+  <div class="catalog-section-heading reveal"><div class="catalog-section-eyebrow">IPHONE CLUB · NUEVOS</div><h2>iPhone <span>Sellados.</span></h2><p>Explorá los equipos nuevos y sellados, sus colores, capacidades y precios publicados.</p></div>
   <div class="catalog-toolbar">
     <div class="catalog-toolbar-left">
       <button class="catalog-filter-trigger" id="usedFilterToggle" type="button" aria-expanded="false" aria-controls="filterSheetOverlay">
@@ -2520,13 +2571,12 @@ nav .nav-right .nav-cart{flex:0 0 38px!important;}
         Filtros
         <span class="filter-active-count" id="filterActiveCount" hidden>0</span>
       </button>
-      <div class="catalog-count"><strong id="usedModelCount">— modelos</strong><span> · </span><span id="usedItemCount">— equipos</span></div>
+      <div class="catalog-count"><strong id="sealedModelCount">— modelos</strong><span> · </span><span id="sealedItemCount">— equipos</span></div>
     </div>
-    <div class="catalog-sort"><span>Ordenar</span><select id="usedSort" aria-label="Ordenar equipos"><option value="recommended">Recomendados</option><option value="price-low">Precio menor</option><option value="price-high">Precio mayor</option><option value="model">Modelo A-Z</option></select></div>
+    <div class="catalog-sort"><span>Ordenar</span><select id="sealedSort" aria-label="Ordenar sellados"><option value="recommended">Recomendados</option><option value="price-low">Precio menor</option><option value="price-high">Precio mayor</option><option value="model">Modelo A-Z</option></select></div>
   </div>
-  <span id="sellados" class="catalog-anchor" aria-hidden="true"></span>
 
-  <div class="filter-sheet-overlay" id="filterSheetOverlay" aria-hidden="true">
+<div class="filter-sheet-overlay" id="filterSheetOverlay" aria-hidden="true">
     <div class="filter-sheet" role="dialog" aria-modal="true" aria-labelledby="filterSheetTitle" tabindex="-1">
       <div class="filter-sheet-handle" aria-hidden="true"></div>
       <div class="filter-sheet-head">
@@ -2562,9 +2612,27 @@ nav .nav-right .nav-cart{flex:0 0 38px!important;}
     </div>
   </div>
 
+
+  <div class="used-grid" id="selladosGrid"></div>
+  <div class="catalog-empty" id="sealedEmpty" hidden>No hay equipos sellados que coincidan con esos filtros.</div>
+</section>
+
+<section id="seminuevos" class="catalog-section catalog-used">
+  <div class="catalog-section-heading reveal"><div class="catalog-section-eyebrow">IPHONE CLUB · SELECCIONADOS</div><h2>iPhone <span>Seminuevos.</span></h2><p>Consultá los modelos seminuevos, el estado de la batería y las opciones disponibles.</p></div>
+  <div class="catalog-toolbar">
+    <div class="catalog-toolbar-left">
+      <button class="catalog-filter-trigger" id="usedFilterToggleSecondary" type="button" aria-expanded="false" aria-controls="filterSheetOverlay">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>
+        Filtros
+        <span class="filter-active-count" id="filterActiveCountSecondary" hidden>0</span>
+      </button>
+      <div class="catalog-count"><strong id="usedModelCount">— modelos</strong><span> · </span><span id="usedItemCount">— equipos</span></div>
+    </div>
+    <div class="catalog-sort"><span>Ordenar</span><select id="usedSort" aria-label="Ordenar seminuevos"><option value="recommended">Recomendados</option><option value="price-low">Precio menor</option><option value="price-high">Precio mayor</option><option value="model">Modelo A-Z</option></select></div>
+  </div>
+
   <div class="used-grid" id="usedGrid"></div>
-  <div class="catalog-empty" id="usedEmpty" hidden>No hay equipos que coincidan con esos filtros.</div>
-  <div id="selladosGrid" hidden></div>
+  <div class="catalog-empty" id="usedEmpty" hidden>No hay equipos seminuevos que coincidan con esos filtros.</div>
 </section>
 
 <section id="accesorios">
@@ -2610,7 +2678,7 @@ nav .nav-right .nav-cart{flex:0 0 38px!important;}
 
 <footer>
   <div class="foot-logo"><span class="foot-logo-name">IPhone Club · Río Cuarto</span></div>
-  <div class="foot-links"><a href="#sellados" onclick="showPage('storePage')">Sellados</a><a href="#seminuevos" onclick="showPage('storePage')">Seminuevos</a><a href="#accesorios" onclick="showPage('storePage')">Accesorios</a><a href="#clientes" onclick="showPage('storePage')">Reseñas</a><a href="#ubicacion" onclick="showPage('storePage')">Ubicación</a></div>
+  <div class="foot-links"><a href="#sellados" onclick="showCatalogCategory('sellado');return false;">Sellados</a><a href="#seminuevos" onclick="showCatalogCategory('seminuevo');return false;">Seminuevos</a><a href="#accesorios" onclick="showPage('storePage')">Accesorios</a><a href="#clientes" onclick="showPage('storePage')">Reseñas</a><a href="#ubicacion" onclick="showPage('storePage')">Ubicación</a></div>
   <div class="foot-copy">© 2026 IPhone Club Río Cuarto<br>Todos los derechos reservados</div>
   <div class="dev-credit">Desarrollado por&nbsp;<a class="dev-badge" href="https://instagram.com/btarratweb" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>@btarratweb</a></div>
 </footer>
@@ -2949,7 +3017,7 @@ function renderCustomCards(){
     actions.appendChild(detailsButton);
     right.append(pricePanel,actions);
     card.append(photoWrap,body,right);
-    grid.appendChild(card);
+    (isSealed&&sealedGrid?sealedGrid:grid).appendChild(card);
     card.style.setProperty('--reveal-delay',Math.min(index%8,7)*45+'ms');
     observer.observe(card);
   });
@@ -2958,6 +3026,7 @@ function renderCustomCards(){
   renderFilterSheet();
   applyUsedFilters();
   updateCatalogCounts();
+  sortCatalogGrid('selladosGrid',document.getElementById('sealedSort')?.value||'recommended');
   sortCatalogGrid('usedGrid',document.getElementById('usedSort')?.value||'recommended');
 }
 
@@ -3279,7 +3348,7 @@ function getFilteredProductCards(options={}){
   const ignoreModels=options.ignoreModels===true;
   const capacity=document.getElementById('usedCapacityFilter')?.value||'all';
   const color=document.getElementById('usedColorFilter')?.value||'all';
-  return [...document.querySelectorAll('#usedGrid .prod-card')].filter(card=>{
+  return [...document.querySelectorAll('#selladosGrid .prod-card, #usedGrid .prod-card')].filter(card=>{
     const modelOk=ignoreModels||activeUsedModels.size===0||activeUsedModels.has(getCardModelKey(card));
     const stateOk=ignoreState||activeUsedState==='all'||card.dataset.state===activeUsedState;
     const capacityOk=capacity==='all'||card.dataset.capacity===capacity;
@@ -3290,7 +3359,7 @@ function getFilteredProductCards(options={}){
 
 function applyUsedFilters(){
   const visibleCards=new Set(getFilteredProductCards());
-  document.querySelectorAll('#usedGrid .prod-card').forEach(card=>{
+  document.querySelectorAll('#selladosGrid .prod-card, #usedGrid .prod-card').forEach(card=>{
     card.style.display=visibleCards.has(card)?'flex':'none';
   });
   updateCatalogCounts();
@@ -3298,18 +3367,22 @@ function applyUsedFilters(){
 }
 
 function updateCatalogCounts(){
-  const visible=[...document.querySelectorAll('#usedGrid .prod-card')].filter(card=>card.style.display!=='none');
-  const models=new Set(visible.map(getCardModelKey));
-  const modelLabel=document.getElementById('usedModelCount');
-  const itemLabel=document.getElementById('usedItemCount');
-  if(modelLabel)modelLabel.textContent=models.size+' modelos';
-  if(itemLabel)itemLabel.textContent=visible.length+' equipos';
-  const empty=document.getElementById('usedEmpty');
-  if(empty)empty.hidden=visible.length!==0;
+  [['selladosGrid','sealedModelCount','sealedItemCount','sealedEmpty'],
+   ['usedGrid','usedModelCount','usedItemCount','usedEmpty']].forEach(([gridId,modelId,itemId,emptyId])=>{
+    const cards=[...document.querySelectorAll('#'+gridId+' .prod-card')];
+    const visible=cards.filter(card=>card.style.display!=='none');
+    const models=new Set(visible.map(getCardModelKey));
+    const modelLabel=document.getElementById(modelId);
+    const itemLabel=document.getElementById(itemId);
+    if(modelLabel)modelLabel.textContent=models.size+' modelos';
+    if(itemLabel)itemLabel.textContent=visible.length+' equipos';
+    const empty=document.getElementById(emptyId);
+    if(empty)empty.hidden=visible.length!==0;
+  });
 }
 
 function renderFilterSheet(){
-  const cards=[...document.querySelectorAll('#usedGrid .prod-card')];
+  const cards=[...document.querySelectorAll('#selladosGrid .prod-card, #usedGrid .prod-card')];
   const stateContainer=document.getElementById('filterStateOptions');
   const modelContainer=document.getElementById('filterModelOptions');
   if(!stateContainer||!modelContainer)return;
@@ -3424,6 +3497,7 @@ function updateFilterSheetCounts(){
   }
 }
 
+let activeFilterOrigin='sellados';
 function openFilterSheet(){
   const overlay=document.getElementById('filterSheetOverlay');
   if(!overlay)return;
@@ -3463,7 +3537,8 @@ function clearAllFilters(){
 function applyFilterSheet(){
   applyUsedFilters();
   closeFilterSheet();
-  document.getElementById('usedGrid')?.scrollIntoView({behavior:'smooth',block:'start'});
+  const section=document.getElementById(activeFilterOrigin||'sellados');
+  if(section)section.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function sortCatalogGrid(gridId,mode){
@@ -3483,22 +3558,22 @@ function sortCatalogGrid(gridId,mode){
 function showCatalogCategory(state){
   const home=document.getElementById('storePage');
   if(!home)return;
-  if(!home.classList.contains('active')){
-    showPage('storePage');
-  }
-  // Al abrir cada categoría, mostramos todos los productos de ese estado.
+  if(!home.classList.contains('active'))showPage('storePage');
   clearAllFilters();
-  activeUsedState=state;
-  applyUsedFilters();
-  renderFilterSheet();
   document.querySelectorAll('nav .nav-category').forEach(link=>{
     link.classList.toggle('is-active',link.classList.contains(state==='sellado'?'nav-category-sealed':'nav-category-used'));
   });
-  const catalog=document.getElementById('seminuevos');
-  // El contenido puede ser alimentado por Sheets; el filtro sigue activo hasta recibirlo.
-  window.requestAnimationFrame(()=>{
-    if(catalog)catalog.scrollIntoView({behavior:'smooth',block:'start'});
-  });
+  const target=document.getElementById(state==='sellado'?'sellados':'seminuevos');
+  window.requestAnimationFrame(()=>{if(target)target.scrollIntoView({behavior:'smooth',block:'start'})});
+}
+
+function goToHome(){
+  const home=document.getElementById('storePage');
+  if(!home)return;
+  clearAllFilters();
+  document.querySelectorAll('nav .nav-category').forEach(link=>link.classList.remove('is-active'));
+  if(!home.classList.contains('active'))showPage('storePage');
+  else window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // ── CART ──
@@ -3542,7 +3617,7 @@ function sendOrder(){
 
 
 function populateUsedFilterOptions(){
-  const cards=[...document.querySelectorAll('#usedGrid .prod-card')];
+  const cards=[...document.querySelectorAll('#selladosGrid .prod-card, #usedGrid .prod-card')];
   const capacitySelect=document.getElementById('usedCapacityFilter');
   const colorSelect=document.getElementById('usedColorFilter');
   if(!capacitySelect||!colorSelect)return;
@@ -3556,7 +3631,8 @@ function populateUsedFilterOptions(){
   colorSelect.value=colors.includes(oldColor)?oldColor:'all';
 }
 
-document.getElementById('usedFilterToggle')?.addEventListener('click',openFilterSheet);
+document.getElementById('usedFilterToggle')?.addEventListener('click',()=>{activeFilterOrigin='sellados';openFilterSheet()});
+document.getElementById('usedFilterToggleSecondary')?.addEventListener('click',()=>{activeFilterOrigin='seminuevos';openFilterSheet()});
 document.getElementById('closeFilterSheet')?.addEventListener('click',closeFilterSheet);
 document.getElementById('clearAllFilters')?.addEventListener('click',clearAllFilters);
 document.getElementById('applyFilterSheet')?.addEventListener('click',applyFilterSheet);
@@ -3569,6 +3645,7 @@ document.addEventListener('keydown',event=>{
 document.getElementById('usedCapacityFilter')?.addEventListener('change',applyUsedFilters);
 document.getElementById('usedColorFilter')?.addEventListener('change',applyUsedFilters);
 document.getElementById('usedSort')?.addEventListener('change',event=>sortCatalogGrid('usedGrid',event.target.value));
+document.getElementById('sealedSort')?.addEventListener('change',event=>sortCatalogGrid('selladosGrid',event.target.value));
 
 // ── SCROLL REVEAL: estáticos + tarjetas agregadas dinámicamente ──
 if('IntersectionObserver' in window){
