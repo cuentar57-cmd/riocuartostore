@@ -2614,7 +2614,7 @@ nav .logo-wrap{flex:0 0 auto!important}
 
 
   <div class="used-grid" id="selladosGrid"></div>
-  <div class="catalog-empty" id="sealedEmpty" hidden>No hay equipos sellados que coincidan con esos filtros.</div>
+  <div class="catalog-empty" id="sealedEmpty" hidden>Próximamente publicaremos los iPhone sellados disponibles.</div>
 </section>
 
 <section id="seminuevos" class="catalog-section catalog-used">
@@ -2632,7 +2632,7 @@ nav .logo-wrap{flex:0 0 auto!important}
   </div>
 
   <div class="used-grid" id="usedGrid"></div>
-  <div class="catalog-empty" id="usedEmpty" hidden>No hay equipos seminuevos que coincidan con esos filtros.</div>
+  <div class="catalog-empty" id="usedEmpty" hidden>Próximamente publicaremos los iPhone seminuevos disponibles.</div>
 </section>
 
 <section id="accesorios">
@@ -2791,7 +2791,10 @@ nav .logo-wrap{flex:0 0 auto!important}
 
 <script>
 // ── CONFIG ──
-const SHEETS_API = 'https://script.google.com/macros/s/AKfycbxJ5bp1KBbHy1yc_UHcsKB47lUeoE9JgGkM0ioYkQIuHQlKymUzsEzyOYqZfjBuu4W6zw/exec';
+
+const SUPABASE_URL = 'https://wlvfpogzbwbbrgodxmlt.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_HXGsxu9MUg4FEfqKfJpE6Q_yH2k7NjM";
+
 
 // ── FECHA DE ACTUALIZACIÓN ──
 const stockDate=document.getElementById('stockDate');
@@ -2809,76 +2812,56 @@ let dolarBlue=1425;
 let hiddenIds=new Set();
 let customProducts={};
 
-// ── SHEETS INTEGRATION ──
-async function loadFromSheets(){
 
+/* ── SUPABASE: ÚNICA FUENTE DE PRODUCTOS ── */
+async function loadCatalogFromSupabase(){
+  // No se aceptan datos de caché ni datos históricos de Google Sheets.
+  localStorage.removeItem('products_cache');
   try{
-
-    // ⚡ Cache instantánea
-    const cached = localStorage.getItem('products_cache');
-
-    if(cached){
-
-      const cacheData = JSON.parse(cached);
-
-      hiddenIds = new Set(cacheData.hidden || []);
-
-      customProducts = cacheData.products || {};
-
-      applyHiddenToStaticCards();
-
-      renderCustomCards();
-
+    const fields='id,external_id,category,name,model,storage,color,battery_percent,condition_notes,price_usd,price_ars,stock,image_url,description,specifications,benefits,is_active,sort_order';
+    const url=SUPABASE_URL+'/rest/v1/catalog_products?select='+encodeURIComponent(fields)+'&is_active=eq.true&order=sort_order.asc,created_at.desc';
+    const response=await fetch(url,{headers:{'apikey':SUPABASE_PUBLISHABLE_KEY,'Accept':'application/json'},cache:'no-store'});
+    if(!response.ok)throw new Error('Supabase: error HTTP '+response.status);
+    const rows=await response.json();
+    if(!Array.isArray(rows))throw new Error('Respuesta inesperada del catálogo');
+    const incoming={};
+    rows.forEach((p)=>{
+      if(!p||!p.id||!['sellado','seminuevo'].includes(p.category))return;
+      const specs=(p.specifications&&typeof p.specifications==='object'&&!Array.isArray(p.specifications))?{...p.specifications}:{};
+      if(p.storage)specs['Almacenamiento']=p.storage;
+      if(p.color)specs['Color']=p.color;
+      if(p.battery_percent!==null&&p.battery_percent!==undefined)specs['Batería']=String(p.battery_percent)+'%';
+      if(p.stock>0)specs['Stock']=String(p.stock);
+      const meta=[p.storage,p.color].filter(Boolean).join(' · ');
+      const usd=Number(p.price_usd)||0;
+      incoming[p.id]={
+        id:p.id,name:p.name,storage:meta,image:p.image_url||'',
+        usd,price:usd?0:(Number(p.price_ars)||0),tag:p.category==='sellado'?'Sellado':'Usado',
+        description:p.description||p.condition_notes||'',specs,benefits:Array.isArray(p.benefits)?p.benefits:[],
+        stock:p.stock,category:p.category
+      };
+    });
+    customProducts=incoming;
+    renderCustomCards();
+    document.querySelectorAll('.catalog-fetch-error').forEach(el=>el.remove());
+  }catch(error){
+    console.error('No se pudo obtener el catálogo de Supabase:',error);
+    customProducts={};
+    renderCustomCards();
+    document.querySelectorAll('.catalog-fetch-error').forEach(el=>el.remove());
+    const first=document.getElementById('sellados');
+    if(first){
+      const el=document.createElement('p');
+      el.className='catalog-fetch-error';
+      el.setAttribute('role','status');
+      el.textContent='No se pudo cargar el catálogo. Actualizá la página para intentar nuevamente.';
+      first.insertBefore(el,first.querySelector('.used-grid'));
     }
-
-    // ⚡ Cargar desde Sheets
-    const url = SHEETS_API + '?action=getAll';
-
-    const res = await fetch(url,{redirect:'follow'});
-
-    const data = await res.json();
-
-    if(data.ok){
-
-      hiddenIds = new Set(data.hidden || []);
-
-      customProducts = data.products || {};
-
-      localStorage.setItem('products_cache', JSON.stringify({
-        products:data.products,
-        hidden:data.hidden
-      }));
-
-      applyHiddenToStaticCards();
-
-      renderCustomCards();
-
-    }
-
-  }catch(e){
-
-    console.warn('No se pudo cargar desde Sheets:',e);
-
-  }finally{
-    // Las peticiones a Sheets nunca controlan el inicio visual de la tienda.
   }
-
-}
-
-
-
-
-function applyHiddenToStaticCards(){
-  // Ocultar cards hardcodeadas que el admin marcó como ocultas
-  document.querySelectorAll('.prod-card[onclick]').forEach(card=>{
-    const match=card.getAttribute('onclick').match(/openDetail\('([^']+)'\)/);
-    if(match&&hiddenIds.has(match[1])){
-      card.style.display='none';
-    }
-  });
 }
 
 function renderCustomCards(){
+  Object.keys(products).forEach(id=>delete products[id]);
   const grid=document.getElementById('usedGrid');
   const sealedGrid=document.getElementById('selladosGrid');
   if(!grid)return;
@@ -2920,7 +2903,7 @@ function renderCustomCards(){
     const status=isSealed?'Sellado':'Seminuevo';
     const batteryNumber=parseInt(String(battery).replace(/\D/g,''),10)||0;
     const batteryClass=batteryNumber>=90?'bat-high':batteryNumber>=80?'bat-mid':'bat-low';
-    const stock=specs['Stock']||p.stock||'';
+    const stock=specs['Stock']||((Number(p.stock)>0)?Number(p.stock):'');
 
     const card=document.createElement('article');
     card.className='prod-card reveal custom-card '+modelClass;
@@ -3019,7 +3002,7 @@ function renderCustomCards(){
     card.append(photoWrap,body,right);
     (isSealed&&sealedGrid?sealedGrid:grid).appendChild(card);
     card.style.setProperty('--reveal-delay',Math.min(index%8,7)*45+'ms');
-    observer.observe(card);
+    // El observador de elementos dinámicos anima la card al ingresar en pantalla.
   });
 
   populateUsedFilterOptions();
@@ -3078,44 +3061,7 @@ function addToCart(name,icon,price,button){
 }
 
 // ── PRODUCTS DATA ──
-const products={
-  iphone16_ultramarine:{name:'iPhone 16',storage:'128 GB · Ultramarine · Sellado',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:840,tag:'Sellado',description:'iPhone 16 sellado de fábrica en el vibrante color Ultramarine. 128 GB, batería al 100%, chip A18, Camera Control y soporte para Apple Intelligence.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'100%',Color:'Ultramarine'},benefits:['Color Ultramarine exclusivo','Chip A18 Bionic','Camera Control','Batería 100%','Sellado de fábrica','Garantía incluida']},
-  iphone16_white:{name:'iPhone 16',storage:'128 GB · White · Sellado',image:'https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png',usd:840,tag:'Sellado',description:'iPhone 16 sellado de fábrica en color White. 128 GB, chip A18, Camera Control y Apple Intelligence.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'100%',Color:'White'},benefits:['Color White clásico','Chip A18 Bionic','Camera Control','Batería 100%','Sellado de fábrica','Garantía incluida']},
-  iphone16_black:{name:'iPhone 16',storage:'128 GB · Black · Sellado',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:840,tag:'Sellado',description:'iPhone 16 sellado de fábrica en color Black.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'100%',Color:'Black'},benefits:['Color Black elegante','Chip A18 Bionic','Camera Control','Batería 100%','Sellado de fábrica','Garantía incluida']},
-  iphone16_pink:{name:'iPhone 16',storage:'128 GB · Pink · Sellado',image:'https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png',usd:840,tag:'Sellado',description:'iPhone 16 sellado de fábrica en color Pink.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'100%',Color:'Pink'},benefits:['Color Pink suave','Chip A18 Bionic','Camera Control','Batería 100%','Sellado de fábrica','Garantía incluida']},
-  iphone17_white:{name:'iPhone 17',storage:'256 GB · White · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado',description:'iPhone 17 sellado de fábrica en color White. 256 GB, chip A19.',specs:{Pantalla:'6.3" OLED',Chip:'A19',Almacenamiento:'256 GB',Batería:'100%',Color:'White'},benefits:['Color White moderno','Chip A19','256 GB','Batería 100%','Sellado de fábrica','Garantía incluida']},
-  iphone17_lavender:{name:'iPhone 17',storage:'256 GB · Lavender · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado',description:'iPhone 17 sellado de fábrica en color Lavender.',specs:{Pantalla:'6.3" OLED',Chip:'A19',Almacenamiento:'256 GB',Batería:'100%',Color:'Lavender'},benefits:['Color Lavender exclusivo','Chip A19','256 GB','Batería 100%','Sellado de fábrica','Garantía incluida']},
-  iphone17_black:{name:'iPhone 17',storage:'256 GB · Black · Sellado',image:'https://i.postimg.cc/V6CmBPfJ/8750048b-7228-4ddc-9591-2285716541a6-removebg-preview.png',usd:920,tag:'Sellado',description:'iPhone 17 sellado de fábrica en color Black.',specs:{Pantalla:'6.3" OLED',Chip:'A19',Almacenamiento:'256 GB',Batería:'100%',Color:'Black'},benefits:['Color Black atemporal','Chip A19','256 GB','Batería 100%','Sellado de fábrica','Garantía incluida']},
-  iphone17pro_256_orange:{name:'iPhone 17 Pro',storage:'256 GB · Cuatro Orange · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1370,tag:'Sellado',description:'iPhone 17 Pro sellado en Cuatro Orange. Chip A19 Pro, titanio, ProMotion 120Hz.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Cuatro Orange',Material:'Titanio'},benefits:['Color Cuatro Orange único','Chip A19 Pro','ProMotion 120Hz','Titanio aeroespacial','Sellado de fábrica']},
-  iphone17pro_256_silver:{name:'iPhone 17 Pro',storage:'256 GB · Silver · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1370,tag:'Sellado',description:'iPhone 17 Pro sellado en Silver. Chip A19 Pro, titanio, ProMotion 120Hz.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Silver',Material:'Titanio'},benefits:['Color Silver premium','Chip A19 Pro','ProMotion 120Hz','Titanio aeroespacial','Sellado de fábrica']},
-  iphone17pro_512_silver:{name:'iPhone 17 Pro',storage:'512 GB · Silver · Sellado',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1600,tag:'Sellado',description:'iPhone 17 Pro 512 GB en Silver.',specs:{Pantalla:'6.3" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'512 GB',Batería:'100%',Color:'Silver',Material:'Titanio'},benefits:['512 GB','Color Silver premium','Chip A19 Pro','Titanio aeroespacial','Sellado de fábrica']},
-  iphone17promax_256_silver:{name:'iPhone 17 Pro Max',storage:'256 GB · Silver · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado',description:'iPhone 17 Pro Max Silver. Pantalla 6.9".',specs:{Pantalla:'6.9" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Silver',Material:'Titanio'},benefits:['Pantalla 6.9"','Color Silver','Chip A19 Pro','Titanio','Sellado de fábrica']},
-  iphone17promax_256_deepblue:{name:'iPhone 17 Pro Max',storage:'256 GB · Deep Blue · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado',description:'iPhone 17 Pro Max Deep Blue.',specs:{Pantalla:'6.9" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Deep Blue',Material:'Titanio'},benefits:['Color Deep Blue exclusivo','Pantalla 6.9"','Chip A19 Pro','Titanio','Sellado de fábrica']},
-  iphone17promax_512_orange:{name:'iPhone 17 Pro Max',storage:'512 GB · Cuatro Orange · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1530,tag:'Sellado',description:'iPhone 17 Pro Max Cuatro Orange 512 GB.',specs:{Pantalla:'6.9" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'512 GB',Batería:'100%',Color:'Cuatro Orange',Material:'Titanio'},benefits:['512 GB','Color Cuatro Orange','Pantalla 6.9"','Chip A19 Pro','Titanio','Sellado de fábrica']},
-  iphone17promax_512_deepblue:{name:'iPhone 17 Pro Max',storage:'512 GB · Deep Blue · Sellado',image:'https://i.postimg.cc/RZK78Ngj/Diseno-sin-titulo-2-450x450.png',usd:1730,tag:'Sellado',description:'iPhone 17 Pro Max Deep Blue 512 GB.',specs:{Pantalla:'6.9" ProMotion 120Hz',Chip:'A19 Pro',Almacenamiento:'512 GB',Batería:'100%',Color:'Deep Blue',Material:'Titanio'},benefits:['512 GB + Deep Blue','Pantalla 6.9"','Chip A19 Pro','Titanio','Sellado de fábrica']},
-  u_iph13_blanco_87:{name:'iPhone 13',storage:'128 GB · Blanco · Bat. 87%',image:'https://i.postimg.cc/2jQZdPXQ/IPHONE-13-4-removebg-preview.png',usd:350,tag:'Usado',description:'iPhone 13 en excelente estado.',specs:{Pantalla:'6.1" OLED',Chip:'A15 Bionic',Almacenamiento:'128 GB',Batería:'87%',Color:'Blanco'},benefits:['Batería 87%','Funda + templado','Cargador incluido','Revisado','Garantía incluida']},
-  u_iph13_blanco_88:{name:'iPhone 13',storage:'128 GB · Blanco · Bat. 88% · Con Caja',image:'https://i.postimg.cc/2jQZdPXQ/IPHONE-13-4-removebg-preview.png',usd:360,tag:'Usado',description:'iPhone 13 con caja original.',specs:{Pantalla:'6.1" OLED',Chip:'A15 Bionic',Almacenamiento:'128 GB',Batería:'88%',Color:'Blanco',Extras:'Con Caja'},benefits:['Caja original','Batería 88%','Funda + templado','Cargador incluido','Garantía incluida']},
-  u_iph14pro_morado_84:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 84%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado',description:'iPhone 14 Pro Morado Profundo.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'84%',Color:'Morado'},benefits:['Dynamic Island','Cámara 48MP','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14pro_morado_85a:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 85%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado',description:'iPhone 14 Pro Morado 85%.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'85%',Color:'Morado'},benefits:['Dynamic Island','Cámara 48MP','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14pro_negro_85:{name:'iPhone 14 Pro',storage:'128 GB · Negro Espacial · Bat. 85%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado',description:'iPhone 14 Pro Negro Espacial.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'85%',Color:'Negro'},benefits:['Dynamic Island','Cámara 48MP','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14pro_morado_86:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 86%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:500,tag:'Usado',description:'iPhone 14 Pro Morado 86%.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'86%',Color:'Morado'},benefits:['Dynamic Island','Cámara 48MP','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14pro_morado_100a:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro Morado batería cambiada 100%.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Morado'},benefits:['Batería 100% cambiada','Dynamic Island','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14pro_negro_100a:{name:'iPhone 14 Pro',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro Negro batería 100%.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro'},benefits:['Batería 100%','Dynamic Island','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14pro_negro_100b:{name:'iPhone 14 Pro',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro Negro batería 100%.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro'},benefits:['Batería 100%','Dynamic Island','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14pro_negro_100c:{name:'iPhone 14 Pro',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro Negro batería 100%.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro'},benefits:['Batería 100%','Dynamic Island','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14pro_morado_100b:{name:'iPhone 14 Pro',storage:'128 GB · Morado Profundo · Bat. 100%',image:'https://i.postimg.cc/mrbyxTzn/1703105172-removebg-preview.png',usd:505,tag:'Usado',description:'iPhone 14 Pro Morado batería 100%.',specs:{Pantalla:'6.1" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Morado'},benefits:['Batería 100%','Dynamic Island','A16 Bionic','Funda + templado','Garantía']},
-  u_iph14promax_negro_100:{name:'iPhone 14 Pro Max',storage:'128 GB · Negro Grafito · Bat. 100%',image:'https://i.postimg.cc/1zJcsbwj/celular-apple-iphone-14-pro-128gb-recondicionado-155300-550x550-1-removebg-preview.png',usd:590,tag:'Usado',description:'iPhone 14 Pro Max Negro batería 100%.',specs:{Pantalla:'6.7" ProMotion',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro'},benefits:['Batería 100%','Pantalla 6.7"','Dynamic Island','A16 Bionic','Funda + templado']},
-  u_iph15_negro_90:{name:'iPhone 15',storage:'128 GB · Negro · Bat. 90% · Con Caja',image:'https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png',usd:515,tag:'Usado',description:'iPhone 15 con caja original.',specs:{Pantalla:'6.1" OLED',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'90%',Color:'Negro'},benefits:['Caja original','Dynamic Island','USB-C','Cámara 48MP','Funda + templado']},
-  u_iph15_negro_100:{name:'iPhone 15',storage:'128 GB · Negro · Bat. 100%',image:'https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png',usd:530,tag:'Usado',description:'iPhone 15 Negro batería 100%.',specs:{Pantalla:'6.1" OLED',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Negro'},benefits:['Batería 100%','Dynamic Island','USB-C','Cámara 48MP','Funda + templado']},
-  u_iph15_rosa_100:{name:'iPhone 15',storage:'128 GB · Rosa · Bat. 100%',image:'https://i.postimg.cc/m2627jRQ/i-PH-15-2-1-removebg-preview.png',usd:535,tag:'Usado',description:'iPhone 15 Rosa batería 100%.',specs:{Pantalla:'6.1" OLED',Chip:'A16 Bionic',Almacenamiento:'128 GB',Batería:'100%',Color:'Rosa'},benefits:['Color Rosa','Batería 100%','Dynamic Island','USB-C','Funda + templado']},
-  u_iph15pro_azulpac_100:{name:'iPhone 15 Pro',storage:'256 GB · Azul Pacífico · Bat. 100%',image:'https://i.postimg.cc/rp8N6q05/15promaxqw-5673c7228b1d4c7efb17245976970936-1024-1024-removebg-preview.png',usd:670,tag:'Usado',description:'iPhone 15 Pro Azul Pacífico 256 GB.',specs:{Pantalla:'6.1" ProMotion',Chip:'A17 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Azul Pacífico',Material:'Titanio'},benefits:['Color Azul Pacífico','A17 Pro','Titanio','USB-C','Funda + templado']},
-  u_iph16_negro_93:{name:'iPhone 16',storage:'128 GB · Negro · Bat. 93% · Garantía Oficial',image:'https://i.postimg.cc/28Xh3nKc/7f3185fb-23ed-4c53-9017-739fa050e5a8-removebg-preview.png',usd:670,tag:'Usado',description:'iPhone 16 con Garantía Oficial.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'128 GB',Batería:'93%',Color:'Negro',Garantía:'Oficial Apple'},benefits:['Garantía Oficial','Batería 93%','A18','Camera Control','Funda + templado']},
-  u_iph16_512_blanco_96:{name:'iPhone 16',storage:'512 GB · Blanco · Bat. 96%',image:'https://i.postimg.cc/Kjj4yHx8/IPH-16-1-1-2-removebg-preview.png',usd:730,tag:'Usado',description:'iPhone 16 512 GB Blanco.',specs:{Pantalla:'6.1" OLED',Chip:'A18',Almacenamiento:'512 GB',Batería:'96%',Color:'Blanco'},benefits:['512 GB','Batería 96%','A18','Camera Control','Funda + templado']},
-  u_iph16pro_blancoti_92:{name:'iPhone 16 Pro',storage:'128 GB · Blanco Titanio · Bat. 92%',image:'https://i.postimg.cc/RVN4zt2s/D-Q-NP-2X-947797-MLA106809012023-022026-P-removebg-preview.png',usd:790,tag:'Usado',description:'iPhone 16 Pro Blanco Titanio.',specs:{Pantalla:'6.3" ProMotion',Chip:'A18 Pro',Almacenamiento:'128 GB',Batería:'92%',Color:'Blanco Titanio',Material:'Titanio'},benefits:['Blanco Titanio','A18 Pro','ProMotion','Cámara Pro','Funda + templado']},
-  u_iph16pro_negroti_93:{name:'iPhone 16 Pro',storage:'128 GB · Negro Titanio · Bat. 93%',image:'https://i.postimg.cc/P5MjWMDF/D-Q-NP-979824-MLA99954201419-112025-O-removebg-preview.png',usd:790,tag:'Usado',description:'iPhone 16 Pro Negro Titanio.',specs:{Pantalla:'6.3" ProMotion',Chip:'A18 Pro',Almacenamiento:'128 GB',Batería:'93%',Color:'Negro Titanio',Material:'Titanio'},benefits:['Negro Titanio','A18 Pro','ProMotion','Cámara Pro','Funda + templado']},
-  u_iph16pro_naturalt_94:{name:'iPhone 16 Pro',storage:'128 GB · Natural Titanio · Bat. 94%',image:'https://i.postimg.cc/jdQ9mSj2/D-Q-NP-690550-MLA95697850810-102025-O-removebg-preview.png',usd:805,tag:'Usado',description:'iPhone 16 Pro Natural Titanio.',specs:{Pantalla:'6.3" ProMotion',Chip:'A18 Pro',Almacenamiento:'128 GB',Batería:'94%',Color:'Natural Titanio',Material:'Titanio'},benefits:['Natural Titanio','A18 Pro','ProMotion','Cámara Pro','Funda + templado']},
-  u_iph17pro_naranja_100:{name:'iPhone 17 Pro',storage:'256 GB · Naranja · Bat. 100% · Garantía Oficial',image:'https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png',usd:1240,tag:'Usado',description:'iPhone 17 Pro Naranja con Garantía Oficial.',specs:{Pantalla:'6.3" ProMotion',Chip:'A19 Pro',Almacenamiento:'256 GB',Batería:'100%',Color:'Naranja',Garantía:'Oficial Apple'},benefits:['Garantía Oficial','Batería 100%','A19 Pro','ProMotion','Funda + templado']},
-};
+const products={};
 
 // ── DETAIL ──
 function getDetailMeta(p){
@@ -3734,7 +3680,7 @@ if(document.readyState==='loading'){
 }else{
   window.setTimeout(startInitialEntrance,550);
 }
-loadFromSheets();
+loadCatalogFromSupabase();
 </script>
 </body>
 </html>
