@@ -2815,7 +2815,7 @@ let customProducts={};
 
 /* ── SUPABASE: ÚNICA FUENTE DE PRODUCTOS ── */
 async function loadCatalogFromSupabase(){
-  // No se aceptan datos de caché ni datos históricos de Google Sheets.
+  // Se limpia únicamente la caché del sistema anterior.
   localStorage.removeItem('products_cache');
   try{
     const fields='id,external_id,category,name,model,storage,color,battery_percent,condition_notes,price_usd,price_ars,stock,image_url,description,specifications,benefits,is_active,sort_order';
@@ -3632,7 +3632,7 @@ if('IntersectionObserver' in window){
   document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
 }
 
-// ── ENTRADA INICIAL: INDEPENDIENTE DEL DÓLAR Y DE GOOGLE SHEETS ──
+// ── ENTRADA INICIAL: INDEPENDIENTE DEL DÓLAR Y DE LA BASE DE DATOS ──
 let initialEntranceStarted=false;
 
 function startInitialEntrance(){
