@@ -612,6 +612,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <span class="toast-msg" id="toastMsg"></span>
 </div>
 
+<script src="image-fit.js?v=20261124-2"></script>
 <script>
 
 
@@ -737,6 +738,7 @@ function renderDrivePhotos(){
     image.src=photo.image_url;
     image.alt=photo.color?photo.model+' '+photo.color:photo.filename;
     image.loading='lazy';
+    window.iPhoneClubFitImage?.(image);
     image.onerror=()=>{image.onerror=null;image.src='https://lh3.googleusercontent.com/d/'+photo.drive_file_id+'=w600';};
     const label=document.createElement('span');
     label.textContent=photo.color||'Color no identificado';
@@ -934,6 +936,7 @@ function renderGrid(){
       image.alt=(p.name||'iPhone')+' '+(p.storage||'');
       image.addEventListener('error',()=>{phoneHolder.textContent='📱';},{once:true});
       phoneHolder.replaceChildren(image);
+      window.iPhoneClubFitImage?.(image);
     }
     grid.appendChild(card);
   });
