@@ -301,6 +301,18 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   /* filter row oculto en mobile (usamos el mobile bar) */
   .filter-row{display:none}
 }
+
+/* Biblioteca de imágenes por modelo y color */
+.drive-picker{border:1px solid var(--border2);border-radius:12px;padding:14px;background:var(--surface);margin:12px 0}
+.drive-picker h4{font-size:.86rem;margin:0 0 8px;color:var(--txt)}
+.drive-picker .drive-hint{font-size:.73rem;color:var(--txt2);line-height:1.5;margin-bottom:10px}
+.drive-images{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:9px}
+.drive-image{display:flex;flex-direction:column;gap:6px;align-items:center;cursor:pointer;background:var(--bg2);color:var(--txt);border:1px solid var(--border2);border-radius:9px;padding:7px 4px;font:inherit}
+.drive-image:hover,.drive-image.chosen{border-color:var(--accent);background:var(--accent-dim)}
+.drive-image img{width:80px;height:80px;object-fit:contain;border-radius:5px}
+.drive-image span{font-size:.7rem;line-height:1.2;overflow-wrap:anywhere;text-align:center}
+.drive-photo-status{color:var(--txt2);font-size:.74rem;margin:9px 0}
+@media(max-width:560px){.drive-images{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -494,8 +506,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label">Nombre del equipo</label>
-          <input type="text" class="form-input" id="f-name" placeholder="iPhone 16 Pro">
+          <label class="form-label">Modelo del equipo</label>
+          <select class="form-select" id="f-model-picker" onchange="chooseDriveModel()" aria-label="Modelo de iPhone">
+            <option value="">Elegí un modelo</option>
+          </select>
+          <input type="text" class="form-input" id="f-name" placeholder="iPhone 16 Pro" oninput="renderDrivePhotos()" style="margin-top:8px">
         </div>
         <div class="form-group">
           <label class="form-label">Descripción corta</label>
@@ -516,8 +531,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
       <div class="form-row full">
         <div class="form-group">
-          <label class="form-label">URL HTTPS de imagen del producto</label>
-          <input type="url" class="form-input" id="f-image" placeholder="https://...imagen.jpg" inputmode="url">
+          <label class="form-label">Imagen del producto</label>
+          <input type="url" class="form-input" id="f-image" placeholder="Elegí una imagen abajo o pegá una URL HTTPS" inputmode="url" oninput="markDriveSelection()">
+          <div class="drive-picker">
+            <h4>Fotos de Google Drive por color</h4>
+            <p class="drive-hint">Elegí el modelo de arriba para ver las fotos disponibles. Tocá una imagen para asignarla al equipo sin modificar el archivo original.</p>
+            <label for="f-color" class="form-label">Color del equipo</label>
+            <input type="text" class="form-input" id="f-color" placeholder="Ej.: Negro, Rosa, Azul Titanio">
+            <p class="drive-photo-status" id="drivePhotoStatus">Cargando fotos…</p>
+            <div class="drive-images" id="drivePhotoGrid"></div>
+          </div>
         </div>
       </div>
       <div class="form-row full">
@@ -649,12 +672,100 @@ async function verifyAdmin(){
   }
   return user;
 }
+
+/* Fotos importadas desde Drive a la biblioteca Supabase */
+let drivePhotos=[];
+let drivePhotoError='';
+function modelKey(text){
+  return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+}
+function selectDrivePhoto(entry){
+  document.getElementById('f-image').value=entry.image_url;
+  if(entry.color){
+    document.getElementById('f-color').value=entry.color;
+    const existing=[...document.querySelectorAll('#specsContainer .spec-pair')].find(row=>row.querySelector('.spec-key')?.value.trim().toLowerCase()==='color');
+    if(existing)existing.querySelector('.spec-val').value=entry.color;
+    else addSpec('Color',entry.color);
+  }
+  markDriveSelection();
+}
+function markDriveSelection(){
+  const url=document.getElementById('f-image').value.trim();
+  document.querySelectorAll('#drivePhotoGrid .drive-image').forEach(button=>{
+    button.classList.toggle('chosen',button.dataset.url===url);
+  });
+}
+function chooseDriveModel(){
+  const picker=document.getElementById('f-model-picker');
+  if(picker.value)document.getElementById('f-name').value=picker.value;
+  document.getElementById('f-image').value='';
+  document.getElementById('f-color').value='';
+  renderDrivePhotos();
+}
+function renderDrivePhotos(){
+  const model=document.getElementById('f-name').value.trim();
+  const picker=document.getElementById('f-model-picker');
+  const match=[...picker.options].find(option=>modelKey(option.value)===modelKey(model));
+  picker.value=match?.value||'';
+  const grid=document.getElementById('drivePhotoGrid');
+  const status=document.getElementById('drivePhotoStatus');
+  grid.replaceChildren();
+  if(drivePhotoError){status.textContent='No se pudieron cargar las fotos: '+drivePhotoError;return;}
+  const photos=drivePhotos.filter(row=>modelKey(row.model)===modelKey(model));
+  if(!model){status.textContent='Seleccioná un modelo para ver sus fotografías.';return;}
+  status.textContent=photos.length
+   ? photos.length+' fotos disponibles. Seleccioná el color que corresponde al equipo.'
+   : 'Sin fotos de este modelo en Drive. Podés ingresar una URL manual.';
+  photos.forEach(photo=>{
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='drive-image';
+    button.dataset.url=photo.image_url;
+    button.title=photo.filename;
+    const image=document.createElement('img');
+    image.src=photo.image_url;
+    image.alt=photo.color?photo.model+' '+photo.color:photo.filename;
+    image.loading='lazy';
+    image.onerror=()=>{image.onerror=null;image.src='https://lh3.googleusercontent.com/d/'+photo.drive_file_id+'=w600';};
+    const label=document.createElement('span');
+    label.textContent=photo.color||'Color no identificado';
+    button.append(image,label);
+    button.addEventListener('click',()=>selectDrivePhoto(photo));
+    grid.appendChild(button);
+  });
+  markDriveSelection();
+}
+function populateDriveModels(){
+  const picker=document.getElementById('f-model-picker');
+  const prev=picker.value,entered=document.getElementById('f-name').value.trim();
+  const models=[...new Set([...drivePhotos.map(p=>p.model),...Object.values(customProducts).map(p=>p.name)])]
+   .filter(Boolean).sort((a,b)=>a.localeCompare(b,'es',{numeric:true}));
+  picker.replaceChildren(new Option('Elegí un modelo',''));
+  for(const model of models)picker.add(new Option(model,model));
+  picker.value=models.find(m=>modelKey(m)===modelKey(entered))||models.find(m=>modelKey(m)===modelKey(prev))||'';
+}
+async function loadDrivePhotos(){
+  try{
+    const rows=await supabaseRequest('GET','catalog_photo_library?select=model,color,filename,image_url,drive_file_id&order=model.asc,color.asc,sort_order.asc&limit=500');
+    if(!Array.isArray(rows))throw Error('Formato de fotografías inesperado');
+    drivePhotos=rows;
+    drivePhotoError='';
+  }catch(error){
+    drivePhotos=[];
+    drivePhotoError=error.message;
+    console.error('Error al consultar fotos',error);
+  }
+  populateDriveModels();
+  renderDrivePhotos();
+}
+
 async function enterAdmin(){
   await verifyAdmin();
   document.getElementById('loginScreen').classList.remove('show');
   document.getElementById('appShell').style.display='block';
   document.getElementById('connectedUrl').textContent=SUPABASE_URL;
   await refreshAll();
+  await loadDrivePhotos();
 }
 async function doLogin(){
   const email=document.getElementById('adminEmail').value.trim();
@@ -905,6 +1016,7 @@ function openModal(id){
     document.getElementById('f-tag').value=p.tag||'Sellado';
     document.getElementById('f-usd').value=p.usd||'';
     document.getElementById('f-name').value=p.name||'';
+    document.getElementById('f-color').value=(p.specs?.Color||p.storage?.split('·')[1]||'').trim();
     document.getElementById('f-storage').value=p.storage||'';
     document.getElementById('f-stock').value=p.stock??0;
     document.getElementById('f-image').value=p.image||'';
@@ -916,6 +1028,8 @@ function openModal(id){
     ['Pantalla','Chip','Almacenamiento','Batería','Color'].forEach(k=>addSpec(k,''));
     for(let i=0;i<3;i++)addBen('');
   }
+  populateDriveModels();
+  renderDrivePhotos();
   document.getElementById('modalOverlay').classList.add('open');
   setTimeout(()=>document.getElementById('f-name').focus(),80);
 }
@@ -929,7 +1043,7 @@ function closeModal(){
 
 
 function clearForm(){
-  ['f-usd','f-name','f-storage','f-desc','f-image'].forEach(id=>{
+  ['f-usd','f-name','f-storage','f-desc','f-image','f-color'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.value='';
   });
   document.getElementById('f-tag').value='Sellado';
@@ -1005,7 +1119,8 @@ async function saveProduct(){
   });
   const benefits=[...document.querySelectorAll('#bensContainer .list-input')].map(el=>el.value.trim()).filter(Boolean);
   const storage=(specs['Almacenamiento']||storageText.split('·')[0]||'').trim();
-  const color=(specs['Color']||storageText.split('·')[1]||'').trim();
+  const color=(document.getElementById('f-color').value.trim()||specs['Color']||storageText.split('·')[1]||'').trim();
+  if(color)specs['Color']=color;
   const batteryRaw=(specs['Batería']||storageText.match(/bat(?:ería)?\.?\s*(\d{2,3})%/i)?.[1]||'');
   const batteryNumber=parseInt(String(batteryRaw).replace(/[^\d]/g,''),10);
   const data={
