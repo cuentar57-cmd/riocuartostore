@@ -2448,6 +2448,13 @@ nav .logo-wrap{flex:0 0 auto!important}
   #selladosGrid.used-grid,#usedGrid.used-grid{gap:8px!important}
 }
 
+
+/* iPhone Club: presentacion homogenea de productos, sin deformacion ni recortes */
+.prod-photo-wrap{display:flex!important;align-items:center!important;justify-content:center!important;height:clamp(195px,21vw,244px)!important;min-height:195px!important;box-sizing:border-box!important;overflow:hidden!important}
+.prod-photo{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center center!important;padding:18px!important;box-sizing:border-box!important}
+.detail-media img{object-fit:contain!important;object-position:center!important;box-sizing:border-box!important;padding:14px!important}
+@media(max-width:600px){.prod-photo-wrap{height:205px!important;min-height:205px!important}.prod-photo{padding:15px!important}.detail-media img{height:315px!important;padding:12px!important}}
+
 </style>
 </head>
 <body class="loading">
