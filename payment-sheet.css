@@ -24,3 +24,46 @@
 #detailPage .ic-inline-pay-fineprint{font-size:.7rem;color:#748697;line-height:1.5;margin:11px 0 0}
 #detailPage #detailAddBtn[hidden],#detailPage #detailWhatsApp{display:none!important}
 @media(max-width:430px){#detailPage #installmentsBox.detail-payment{padding:14px 11px!important}#detailPage .ic-inline-pay-choice{padding:11px 10px;min-height:52px}#detailPage .ic-inline-pay-label span{font-size:.73rem}#detailPage .ic-inline-pay-label strong{font-size:.79rem}}
+
+/* Vector icon system and responsive catalogue polish — 2026-11-24 */
+.reference-benefit-icon svg,.reference-action-icon svg,#detailPage .ic-payment-icon svg{display:block;width:23px;height:23px;flex-shrink:0;color:inherit}
+.reference-benefit-icon{color:#087fb8!important;flex-shrink:0!important}
+.reference-benefit>div{min-width:0!important;flex:1!important}
+.reference-benefit strong,.reference-benefit small{white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important}
+.reference-benefits{overflow:hidden!important;overscroll-behavior-x:contain}
+.reference-benefits-track{animation-duration:42s!important}
+.reference-benefits:hover .reference-benefits-track,.reference-benefits:focus-within .reference-benefits-track{animation-play-state:paused!important}
+.reference-button .reference-action-icon{display:inline-flex!important;align-items:center!important;justify-content:center!important}
+.reference-action-icon svg{width:19px;height:19px}
+#detailPage .ic-payment-icon{display:inline-flex!important;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:#eaf6fc;color:#1683ba!important}
+#detailPage .ic-payment-icon svg{width:19px;height:19px}
+#detailPage .ic-inline-pay-heading .ic-payment-icon,#detailPage .ic-inline-pay-credit-title .ic-payment-icon{width:34px;height:34px;flex-basis:34px}
+#detailPage .ic-inline-pay-label .ic-payment-method{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+#detailPage .ic-payment-method>span:last-child{min-width:0;overflow-wrap:break-word}
+#detailPage .ic-inline-pay-label strong{flex:0 0 auto}
+#detailPage .ic-inline-pay-choice{gap:8px}
+#detailPage .ic-inline-pay-wa .ic-payment-icon{background:transparent;color:#fff!important;flex:0 0 23px;width:23px;height:23px}
+#detailPage .ic-inline-pay-wa .ic-payment-icon svg{width:23px;height:23px}
+@media(max-width:700px){
+  .reference-benefit{box-sizing:border-box!important;flex:0 0 min(284px,calc(100vw - 36px))!important;width:min(284px,calc(100vw - 36px))!important;min-width:0!important;min-height:96px!important;padding:13px!important}
+  .reference-benefits-group{gap:12px!important;padding-right:12px!important}
+  .reference-benefits-track{animation-duration:40s!important}
+  .reference-benefit strong{font-size:.91rem!important}
+  .reference-benefit small{font-size:.75rem!important}
+  #sellados .catalog-toolbar,#seminuevos .catalog-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
+  #sellados .catalog-toolbar-left,#seminuevos .catalog-toolbar-left{width:100%!important;min-width:0!important;display:flex!important;align-items:center!important;justify-content:space-between!important}
+  #sellados .catalog-count,#seminuevos .catalog-count{white-space:normal!important;text-align:right!important}
+  #sellados .catalog-sort,#seminuevos .catalog-sort{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:9px!important;width:100%!important;min-width:0!important}
+  #sellados .catalog-sort>span,#seminuevos .catalog-sort>span{display:block!important}
+  #sellados .catalog-sort select,#seminuevos .catalog-sort select{width:auto!important;max-width:none!important;min-width:0!important;min-height:40px!important;flex:1!important}
+}
+@media(max-width:360px){
+ #detailPage .ic-inline-pay-label .ic-payment-method{gap:5px}
+ #detailPage .ic-payment-method .ic-payment-icon{flex-basis:24px;width:24px;height:24px}
+ #detailPage .ic-payment-method .ic-payment-icon svg{width:16px;height:16px}
+}
+@media(prefers-reduced-motion:reduce){
+ .reference-benefits{overflow-x:auto!important}
+ .reference-benefits-track{animation:none!important;will-change:auto!important}
+ .reference-benefits-group[aria-hidden=true]{display:none!important}
+}
