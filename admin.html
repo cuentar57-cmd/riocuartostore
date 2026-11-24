@@ -313,6 +313,17 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .drive-image span{font-size:.7rem;line-height:1.2;overflow-wrap:anywhere;text-align:center}
 .drive-photo-status{color:var(--txt2);font-size:.74rem;margin:9px 0}
 @media(max-width:560px){.drive-images{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* iPhone Club: marco uniforme para fotos y fotos reales en el inventario */
+.drive-images{grid-template-columns:repeat(auto-fill,minmax(124px,1fr));gap:12px}
+.drive-image{min-width:0;min-height:162px;align-items:stretch;justify-content:space-between;padding:10px 9px;box-sizing:border-box}
+.drive-image img{display:block;width:100%;height:122px;max-width:100%;object-fit:contain;object-position:center;background:var(--surface2);border-radius:9px;padding:10px;box-sizing:border-box}
+.drive-image span{font-size:.72rem;line-height:1.28;min-height:18px;font-weight:650}
+.drive-image.chosen{outline:2px solid var(--accent);outline-offset:1px}
+.pc-icon{width:58px;height:58px;flex:0 0 58px;overflow:hidden}
+.pc-icon img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;padding:5px;box-sizing:border-box}
+@media(max-width:560px){.drive-images{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.drive-image{min-height:135px;padding:6px 4px}.drive-image img{height:100px;padding:5px}.pc-icon{width:48px;height:48px;flex-basis:48px}}
+
 </style>
 </head>
 <body>
@@ -916,6 +927,14 @@ function renderGrid(){
         <div class="pc-actions">${editBtn}${hideBtn}${delBtn}</div>
       </div>`;
 
+    const phoneHolder=card.querySelector('.pc-icon');
+    if(phoneHolder&&p.image){
+      const image=document.createElement('img');
+      image.src=p.image;image.loading='lazy';
+      image.alt=(p.name||'iPhone')+' '+(p.storage||'');
+      image.addEventListener('error',()=>{phoneHolder.textContent='📱';},{once:true});
+      phoneHolder.replaceChildren(image);
+    }
     grid.appendChild(card);
   });
 
