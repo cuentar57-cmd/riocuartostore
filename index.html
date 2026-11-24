@@ -3203,7 +3203,8 @@ function openDetail(id){
   image.src=p.image||'';
   image.alt=(p.name||'iPhone')+(meta.color?' '+meta.color:'');
   image.onerror=()=>{image.style.display='none'};
-  image.onload=()=>{image.style.display='block'};
+  image.onload=()=>{image.style.display='block';window.iPhoneClubFitImage?.(image)};
+  window.iPhoneClubFitImage?.(image);
 
   const isSealed=meta.isSealed;
   document.getElementById('detailTag').textContent=isSealed?'Nuevo sellado':'Seminuevo';
