@@ -1,41 +1,26 @@
-/* iPhone Club Rio Cuarto - Ventana de pagos */
-.ic-pay-overlay[hidden],.ic-pay-more[hidden],.ic-pay-credit[hidden],.ic-pay-perks[hidden]{display:none!important}
-.ic-pay-overlay{position:fixed;inset:0;z-index:200000;display:flex;align-items:flex-end;justify-content:center;background:rgba(9,25,43,.67);backdrop-filter:blur(7px)}
-body.ic-pay-lock{overflow:hidden!important}
-.ic-pay-sheet{position:relative;display:flex;flex-direction:column;width:100%;max-width:650px;max-height:94dvh;background:#fff;color:#223447;border-radius:25px 25px 0 0;overflow:hidden;box-shadow:0 -20px 65px rgba(0,0,0,.25);font-family:'Plus Jakarta Sans',sans-serif;animation:ic-pay-up .22s ease}
-@keyframes ic-pay-up{from{transform:translateY(24px);opacity:.4}to{transform:translateY(0);opacity:1}}
-.ic-pay-head{position:relative;padding:13px 21px 16px;border-bottom:1px solid #ecf0f5;flex-shrink:0}
-.ic-pay-handle{width:43px;height:5px;border-radius:20px;background:#d8e0e7;margin:0 auto 14px}
-.ic-pay-eyebrow{color:#73889b;font-weight:800;font-size:.67rem;letter-spacing:.7px;text-transform:uppercase;margin:0 0 5px}
-.ic-pay-title{font-size:1.17rem!important;color:#223447!important;font-weight:950!important;margin:0 38px 0 0!important;line-height:1.3!important}
-.ic-pay-subtitle{margin:6px 40px 0 0;color:#70849a;font-size:.78rem}
-.ic-pay-close{position:absolute;right:17px;top:34px;border:1px solid #e5eaf0;border-radius:50%;width:39px;height:39px;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.07);font-size:1.3rem;color:#364a5f;display:grid;place-items:center;cursor:pointer}
-.ic-pay-body{padding:18px 21px 22px;overflow-y:auto;overscroll-behavior:contain;flex:1}
-.ic-pay-section-title{display:flex;align-items:center;gap:9px;font-size:.97rem;font-weight:900;color:#26394a;margin:8px 0 14px}
-.ic-pay-section-title .ic-pay-icon{font-size:1.12rem;color:#1684bf}
-.ic-pay-credit{margin-top:23px}
-.ic-pay-note{color:#718397;font-size:.73rem;line-height:1.55;margin:2px 0 12px}
-.ic-pay-options{display:grid;gap:9px}
-.ic-pay-option{display:flex;align-items:center;gap:10px;min-height:60px;border:1.5px solid #e4e9f1;border-radius:15px;padding:13px 14px;background:#fff;cursor:pointer;box-sizing:border-box;transition:background .15s,border-color .15s}
-.ic-pay-option:hover,.ic-pay-option:focus-within{border-color:#91c6e4}
-.ic-pay-option:has(input:checked){background:#f0f9ff;border-color:#2589c6}
-.ic-pay-option-label{flex:1;display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
-.ic-pay-option-label span{color:#263748;font-size:.82rem;font-weight:680;line-height:1.4}
-.ic-pay-option-label strong{color:#1d2937;font-size:.89rem;font-weight:950;white-space:nowrap}
-.ic-pay-option input{appearance:none;-webkit-appearance:none;border:2px solid #b9c5d4;border-radius:50%;width:19px;height:19px;flex-shrink:0;cursor:pointer}
-.ic-pay-option input:checked{border-color:#2189c5;box-shadow:inset 0 0 0 4px white;background:#2189c5}
-.ic-pay-more-button{color:#1f82ba;font-weight:850;font-size:.83rem;padding:13px 5px;border:0;background:transparent;cursor:pointer;text-align:left}
-.ic-pay-perks{padding:15px 17px;background:#f4f7fb;border-radius:17px;margin-top:21px}
-.ic-pay-perks ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
-.ic-pay-perks li{display:flex;gap:11px;align-items:flex-start;color:#506273;font-size:.78rem;line-height:1.55}
-.ic-pay-perks li::before{content:'✓';font-weight:950;color:#168abf}
-.ic-pay-disclaimer{font-size:.72rem;line-height:1.6;color:#738396;margin:18px 0 0}
-.ic-pay-footer{background:#fff;flex-shrink:0;border-top:1px solid #e7edf2;padding:12px 21px max(17px,env(safe-area-inset-bottom))}
-.ic-pay-selected{text-align:center;font-size:.75rem;color:#6e8193;margin:0 0 9px;min-height:18px}
-.ic-pay-wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:55px;background:#56ca71;color:#fff!important;font-size:1rem;font-weight:900;text-decoration:none!important;border-radius:16px;box-shadow:0 8px 25px rgba(86,202,113,.22)}
-.ic-pay-wa:hover{background:#35b657}
-.ic-pay-open{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;margin-top:12px;border-radius:11px;border:1px solid #c0e0f2;background:#e9f7ff;color:#167cae;font:850 .82rem 'Plus Jakarta Sans',sans-serif;cursor:pointer}
-.ic-pay-open:hover{background:#dcf1fd}
-@media(min-width:720px){.ic-pay-overlay{align-items:center;padding:20px}.ic-pay-sheet{border-radius:22px;max-height:88dvh}}
-@media(max-width:440px){.ic-pay-head{padding:11px 16px 13px}.ic-pay-body{padding:15px 16px 18px}.ic-pay-footer{padding:12px 16px max(17px,env(safe-area-inset-bottom))}.ic-pay-option{min-height:58px;padding:12px 12px}.ic-pay-option-label span{font-size:.76rem}.ic-pay-option-label strong{font-size:.84rem}}
-@media(prefers-reduced-motion:reduce){.ic-pay-sheet{animation:none}}
+/* iPhone Club: medios de pago desplegables dentro de Detalles, sin ventana superpuesta */
+#detailPage #installmentsBox.detail-payment{display:block!important;background:#fff!important;border:1px solid #e0eaf3!important;border-radius:16px!important;padding:17px 14px!important;margin:17px 0!important}
+#detailPage .ic-inline-pay-heading{display:flex;align-items:center;gap:9px;font-weight:900;color:#233f55;font-size:1rem;line-height:1.35;margin:0 0 7px}
+#detailPage .ic-inline-pay-heading span{color:#1581ba;font-size:1.14rem;line-height:1}
+#detailPage .ic-inline-pay-note{color:#72889d;font-size:.76rem;line-height:1.52;margin:0 0 12px}
+#detailPage .ic-inline-pay-options{display:grid;gap:9px;margin:0}
+#detailPage .ic-inline-pay-choice{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:12px 13px;min-height:53px;border-radius:13px;border:1.5px solid #e0e8f0;background:#fff;box-sizing:border-box;cursor:pointer;transition:background .15s,border-color .15s}
+#detailPage .ic-inline-pay-choice:hover,#detailPage .ic-inline-pay-choice:focus-within{border-color:#90cbe8}
+#detailPage .ic-inline-pay-choice:has(input:checked){border-color:#1887bf;background:#f0f9ff}
+#detailPage .ic-inline-pay-label{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:1;min-width:0}
+#detailPage .ic-inline-pay-label span{font-size:.78rem;font-weight:650;color:#29465b;line-height:1.35}
+#detailPage .ic-inline-pay-label strong{font-size:.83rem;font-weight:900;color:#182e41;white-space:nowrap;text-align:right}
+#detailPage .ic-inline-pay-choice input[type=radio]{appearance:none;-webkit-appearance:none;flex:0 0 18px;width:18px;height:18px;border:2px solid #b7c5d2;border-radius:50%;background:#fff;cursor:pointer;margin:0}
+#detailPage .ic-inline-pay-choice input[type=radio]:checked{border-color:#2089c0;background:#2089c0;box-shadow:inset 0 0 0 4px #fff}
+#detailPage .ic-inline-pay-credit-title{font-size:.91rem;font-weight:900;color:#25435b;display:flex;align-items:center;gap:8px;margin:22px 0 7px}
+#detailPage .ic-inline-pay-credit-title span{font-size:1rem;color:#1685b9}
+#detailPage .ic-inline-pay-extra[hidden]{display:none!important}
+#detailPage .ic-inline-pay-more[hidden]{display:none!important}
+#detailPage .ic-inline-pay-more{width:100%;min-height:43px;text-align:left;background:transparent;border:0;padding:9px 3px 5px;color:#167fb4;font:850 .83rem 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+#detailPage .ic-inline-pay-more:hover{text-decoration:underline}
+#detailPage .ic-inline-pay-status{font-size:.72rem;color:#6c8091;text-align:center;margin:17px 0 10px;line-height:1.4}
+#detailPage .ic-inline-pay-wa{display:flex;align-items:center;justify-content:center;gap:9px;min-height:52px;padding:7px 10px;text-align:center;text-decoration:none!important;background:#55c96f;color:#fff!important;border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:900;transition:background .15s}
+#detailPage .ic-inline-pay-wa:hover{background:#36b952}
+#detailPage .ic-inline-pay-fineprint{font-size:.7rem;color:#748697;line-height:1.5;margin:11px 0 0}
+#detailPage #detailAddBtn[hidden],#detailPage #detailWhatsApp{display:none!important}
+@media(max-width:430px){#detailPage #installmentsBox.detail-payment{padding:14px 11px!important}#detailPage .ic-inline-pay-choice{padding:11px 10px;min-height:52px}#detailPage .ic-inline-pay-label span{font-size:.73rem}#detailPage .ic-inline-pay-label strong{font-size:.79rem}}
