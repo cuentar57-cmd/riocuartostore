@@ -2836,7 +2836,7 @@ async function loadCatalogFromSupabase(){
       const usd=Number(p.price_usd)||0;
       incoming[p.id]={
         id:p.id,name:p.name,storage:meta,image:p.image_url||'',
-        usd,price:usd?0:(Number(p.price_ars)||0),tag:p.category==='sellado'?'Sellado':'Usado',
+        usd,price:Number(p.price_ars)||0,tag:p.category==='sellado'?'Sellado':'Usado',
         description:p.description||p.condition_notes||'',specs,benefits:Array.isArray(p.benefits)?p.benefits:[],
         stock:p.stock,category:p.category
       };
@@ -2871,7 +2871,7 @@ function renderCustomCards(){
   Object.values(customProducts).sort((a,b)=>(Number(a.usd)||0)-(Number(b.usd)||0)).forEach((p,index)=>{
     if(!p||hiddenIds.has(p.id))return;
     products[p.id]=p;
-    const pricePesos=Number(p.usd)>0?Math.round(Number(p.usd)*dolarBlue):(Number(p.price)||0);
+    const pricePesos=Number(p.price)>0?Math.round(Number(p.price)):(Number(p.usd)>0?Math.round(Number(p.usd)*dolarBlue):0);
     const name=(p.name||'iPhone').toLowerCase();
     let modelClass='';
     if(name.includes('iphone 13 pro max'))modelClass='iphone13promax';
@@ -3105,7 +3105,7 @@ function getDetailRelatedProducts(p){
 }
 
 function getDetailPrice(p){
-  return Number(p?.usd)>0?Math.round(Number(p.usd)*dolarBlue):(Number(p?.price)||0);
+  return Number(p?.price)>0?Math.round(Number(p.price)):(Number(p?.usd)>0?Math.round(Number(p.usd)*dolarBlue):0);
 }
 
 function getDetailStockLabel(p){
