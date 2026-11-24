@@ -16,7 +16,7 @@ function getId(url){
 function update(img){
   if(!img||!img.isConnected||!img.naturalWidth||!img.naturalHeight)return;
   const frame=FRAMES[getId(img.currentSrc||img.src)];
-  if(!frame)return;
+  if(!frame){img.style.scale='';img.style.translate='';return;}
   const [sw,sh,x,y,bw,bh]=frame;
   const css=getComputedStyle(img);
   const boxW=img.clientWidth-(parseFloat(css.paddingLeft)||0)-(parseFloat(css.paddingRight)||0);
