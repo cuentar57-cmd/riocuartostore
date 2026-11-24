@@ -88,7 +88,7 @@
     const extra = document.getElementById('icPayExtra');
     cash.replaceChildren(); first.replaceChildren(); extra.replaceChildren();
     const ars = Number(p.price) || 0, usd = Number(p.usd) || 0;
-    if (ars > 0) createOption(cash,'ars','Precio en pesos · consultar pago',moneyARS(ars));
+    if (ars > 0) createOption(cash,'ars','Efectivo o transferencia · confirmar',moneyARS(ars));
     if (usd > 0) createOption(cash,'usd','Precio en dólares',moneyUSD(usd));
     if (ars <= 0) {
       const note = document.createElement('p'); note.className='ic-pay-note';
@@ -159,6 +159,10 @@
     if (price) price.textContent = displayed;
     const sticky = document.getElementById('detailStickyPrice');
     if (sticky) sticky.textContent = displayed;
+    const usdSecondary = document.getElementById('detailUsd');
+    if (usdSecondary) usdSecondary.textContent = ars > 0 && usd > 0 ? moneyUSD(usd) : '';
+    const stickyUsd = document.getElementById('detailStickyUsd');
+    if (stickyUsd) stickyUsd.textContent = ars > 0 && usd > 0 ? moneyUSD(usd) : '';
     const note = document.getElementById('detailPriceNote');
     if (note) note.textContent = ars > 0 ? 'Precio en pesos publicado. Confirmá vigencia.' : 'Precio en dólares publicado. Pesos a consultar.';
     const cartButton = document.getElementById('detailAddBtn');
