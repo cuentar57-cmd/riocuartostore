@@ -2488,6 +2488,24 @@ nav .logo-wrap{flex:0 0 auto!important}
  .variant-chip{font-size:.47rem!important;padding:4px 5px!important}
 }
 
+
+/* Galería real de colores: fotografías del Drive dentro de cada tarjeta */
+.variant-photo-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;width:100%!important;height:100%!important;padding:32px 10px 10px!important;box-sizing:border-box!important;align-content:center!important;overflow:hidden!important}
+.variant-photo-tile{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;min-width:0!important;min-height:80px!important;padding:5px!important;overflow:hidden!important;border:1px solid #e0edf5!important;border-radius:11px!important;background:rgba(255,255,255,.82)!important;cursor:pointer!important}
+.variant-photo-tile img{display:block!important;width:100%!important;height:100%!important;max-height:115px!important;object-fit:contain!important;mix-blend-mode:multiply!important}
+.variant-photo-tile span{position:absolute!important;left:3px!important;right:3px!important;bottom:3px!important;padding:3px 4px!important;border-radius:6px!important;background:rgba(255,255,255,.92)!important;color:#456477!important;font-size:.48rem!important;font-weight:850!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.variant-photo-tile.is-active{border-color:#078bd2!important;box-shadow:inset 0 0 0 1px #078bd2,0 3px 9px rgba(7,139,210,.12)!important}
+.variant-photo-tile:focus-visible{outline:2px solid #078bd2!important;outline-offset:2px!important}
+.prod-photo-wrap.has-variant-gallery>.prod-photo{display:none!important}
+.prod-photo-wrap.has-variant-gallery>.prod-photo-fallback{display:none!important}
+@media(max-width:700px){
+ .prod-photo-wrap.has-variant-gallery{padding:34px 6px 7px!important}
+ .variant-photo-grid{gap:4px!important;padding:34px 5px 6px!important}
+ .variant-photo-tile{min-height:65px!important;padding:2px!important;border-radius:8px!important}
+ .variant-photo-tile img{max-height:78px!important}
+ .variant-photo-tile span{font-size:.39rem!important;padding:2px!important}
+}
+
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -2881,7 +2899,7 @@ async function loadCatalogFromSupabase(){
         id:p.id,name:p.name,model:p.model||p.name,externalId:p.external_id||'',storage:meta,image:p.image_url||'',
         usd,price:Number(p.price_ars)||0,tag:p.category==='sellado'?'Sellado':'Usado',
         description:p.description||p.condition_notes||'',specs,benefits:Array.isArray(p.benefits)?p.benefits:[],
-        stock:p.stock,category:p.category,sortOrder:Number(p.sort_order)||0
+        stock:p.stock,category:p.category,sortOrder:Number(p.sort_order)||0,gallery:Array.isArray(p.gallery)?p.gallery:[]
       };
     });
     customProducts=incoming;
@@ -3070,6 +3088,9 @@ function selectCatalogVariant(card,group,variant){
 
   const photo=card.querySelector('.prod-photo');
   const fallback=card.querySelector('.prod-photo-fallback');
+  card.querySelectorAll('.variant-photo-tile').forEach(tile=>{
+    tile.classList.toggle('is-active',tile.getAttribute('aria-label')==='Ver color '+meta.color);
+  });
   if(photo){
     photo.alt=(variant.name||group.modelName)+(meta.color?' '+meta.color:'');
     if(variant.image){
@@ -3189,7 +3210,42 @@ function renderCustomCards(){
     const fallback=document.createElement('div');
     fallback.className='prod-photo-fallback';
     fallback.textContent='Imagen ilustrativa';
-    photoWrap.append(statusTag,photo,fallback);
+    
+    const photoGallery=document.createElement('div');
+    photoGallery.className='variant-photo-grid';
+    const photoItems=(initial.gallery||[]).filter(item=>item&&item.url);
+    const uniquePhotoItems=[];
+    const seenPhotoUrls=new Set();
+    photoItems.forEach(item=>{
+      if(seenPhotoUrls.has(item.url))return;
+      seenPhotoUrls.add(item.url);
+      uniquePhotoItems.push(item);
+    });
+    uniquePhotoItems.slice(0,6).forEach(item=>{
+      const tile=document.createElement('button');
+      tile.type='button';
+      tile.className='variant-photo-tile';
+      tile.setAttribute('aria-label','Ver color '+(item.color||'del modelo'));
+      const tileImage=document.createElement('img');
+      tileImage.src=item.url;
+      tileImage.alt=(group.modelName||'iPhone')+' '+(item.color||'');
+      tileImage.loading='lazy';
+      tileImage.onerror=()=>{tile.style.display='none';};
+      tile.appendChild(tileImage);
+      const tileLabel=document.createElement('span');
+      tileLabel.textContent=item.color||'';
+      tile.appendChild(tileLabel);
+      const matching=group.variants.find(candidate=>getDetailMeta(candidate).color.toLocaleLowerCase('es')===String(item.color||'').toLocaleLowerCase('es'));
+      if(matching&&matching.id===initial.id)tile.classList.add('is-active');
+      tile.addEventListener('click',event=>{
+        event.stopPropagation();
+        if(!matching)return;
+        selectCatalogVariant(card,group,matching);
+      });
+      photoGallery.appendChild(tile);
+    });
+    if(uniquePhotoItems.length)photoWrap.classList.add('has-variant-gallery');
+    photoWrap.append(statusTag,photoGallery,photo,fallback);
 
     const body=document.createElement('div');
     body.className='prod-card-body';
