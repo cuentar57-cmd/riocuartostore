@@ -2455,6 +2455,39 @@ nav .logo-wrap{flex:0 0 auto!important}
 .detail-media img{object-fit:contain!important;object-position:center!important;box-sizing:border-box!important;padding:14px!important}
 @media(max-width:600px){.prod-photo-wrap{height:205px!important;min-height:205px!important}.prod-photo{padding:15px!important}.detail-media img{height:315px!important;padding:12px!important}}
 
+
+/* Catálogo agrupado por modelo con selectores reales de variante */
+.variant-picker{display:flex!important;flex-direction:column!important;gap:7px!important;margin-top:9px!important;min-width:0!important}
+.variant-picker-row{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:5px!important;min-width:0!important}
+.variant-picker-label{display:block!important;width:100%!important;color:#7b91a2!important;font-size:.49rem!important;font-weight:950!important;letter-spacing:.75px!important;line-height:1.2!important}
+.variant-chip{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;min-width:0!important;min-height:25px!important;padding:4px 7px!important;border:1px solid #dbe8f0!important;border-radius:8px!important;background:#fff!important;color:#496477!important;font-family:'Plus Jakarta Sans',sans-serif!important;font-size:.57rem!important;font-weight:800!important;line-height:1.15!important;cursor:pointer!important;transition:background .15s,border-color .15s,color .15s!important}
+.variant-chip.is-selected{border-color:#1688bd!important;background:#eaf7fd!important;color:#0879ad!important;box-shadow:inset 0 0 0 1px rgba(22,136,189,.08)!important}
+.variant-chip:focus-visible{outline:2px solid #1688bd!important;outline-offset:2px!important}
+.variant-chip-static{cursor:default!important}
+.variant-swatch{display:inline-block!important;width:9px!important;height:9px!important;flex:0 0 9px!important;border:1px solid rgba(20,40,55,.18)!important;border-radius:50%!important}
+.variant-color-chip{max-width:100%!important}
+.variant-color-chip span:last-child{overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+@media(min-width:701px){
+ .variant-picker{gap:8px!important;margin-top:11px!important}
+ .variant-picker-label{font-size:.56rem!important}
+ .variant-chip{min-height:28px!important;padding:5px 9px!important;font-size:.64rem!important}
+ .variant-swatch{width:10px!important;height:10px!important;flex-basis:10px!important}
+}
+@media(max-width:700px){
+ .variant-picker{gap:6px!important;margin-top:7px!important}
+ .variant-picker-row{gap:4px!important}
+ .variant-picker-label{font-size:.44rem!important;letter-spacing:.6px!important}
+ .variant-chip{min-height:23px!important;padding:4px 6px!important;font-size:.51rem!important;border-radius:7px!important}
+ .variant-swatch{width:8px!important;height:8px!important;flex-basis:8px!important}
+ .prod-card-body{padding:9px 8px 0!important}
+ .prod-name{font-size:.74rem!important;line-height:1.25!important}
+ .prod-meta{font-size:.56rem!important}
+ .prod-price-note{font-size:.48rem!important}
+}
+@media(max-width:360px){
+ .variant-chip{font-size:.47rem!important;padding:4px 5px!important}
+}
+
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -2820,6 +2853,7 @@ let cart=JSON.parse(localStorage.getItem('cart_rc')||'[]');
 let dolarBlue=1425;
 let hiddenIds=new Set();
 let customProducts={};
+let customProductGroups={};
 
 
 /* ── SUPABASE: ÚNICA FUENTE DE PRODUCTOS ── */
@@ -2844,10 +2878,10 @@ async function loadCatalogFromSupabase(){
       const meta=[p.storage,p.color].filter(Boolean).join(' · ');
       const usd=Number(p.price_usd)||0;
       incoming[p.id]={
-        id:p.id,name:p.name,storage:meta,image:p.image_url||'',
+        id:p.id,name:p.name,model:p.model||p.name,externalId:p.external_id||'',storage:meta,image:p.image_url||'',
         usd,price:Number(p.price_ars)||0,tag:p.category==='sellado'?'Sellado':'Usado',
         description:p.description||p.condition_notes||'',specs,benefits:Array.isArray(p.benefits)?p.benefits:[],
-        stock:p.stock,category:p.category
+        stock:p.stock,category:p.category,sortOrder:Number(p.sort_order)||0
       };
     });
     customProducts=incoming;
@@ -2869,82 +2903,292 @@ async function loadCatalogFromSupabase(){
   }
 }
 
+function getCatalogModelClass(name){
+  const match=String(name||'').match(/iphone\s*(\d+)(?:\s*(pro\s*max|pro|max|plus))?/i);
+  if(!match)return 'other';
+  const suffix=(match[2]||'').toLowerCase().replace(/\s+/g,'');
+  return 'iphone'+match[1]+suffix;
+}
+
+function getCatalogVariantPrice(p){
+  const ars=Number(p?.price)||0;
+  return ars>0?ars:(Number(p?.usd)||0);
+}
+
+function getCatalogGroupForCard(card){
+  return card?.dataset?.groupId?customProductGroups[card.dataset.groupId]||null:null;
+}
+
+function getCatalogMatchingVariants(card,options={}){
+  const group=getCatalogGroupForCard(card);
+  if(!group)return [];
+  const capacity=options.ignoreCapacity?'all':(document.getElementById('usedCapacityFilter')?.value||'all');
+  const color=options.ignoreColor?'all':(document.getElementById('usedColorFilter')?.value||'all');
+  return group.variants.filter(variant=>{
+    const meta=getDetailMeta(variant);
+    return (capacity==='all'||meta.capacity===capacity)&&(color==='all'||meta.color===color);
+  });
+}
+
+function getCatalogColorHex(color){
+  const value=String(color||'').toLowerCase();
+  if(/black|negro|grafito|medianoche|espacial/.test(value))return '#292d32';
+  if(/white|blanco|plata|silver|natural/.test(value))return '#dfe5e9';
+  if(/blue|azul|ultramarine|celeste|glacier/.test(value))return '#8eb7d8';
+  if(/pink|rosa/.test(value))return '#e9b2c4';
+  if(/purple|morado|lila|lavender/.test(value))return '#c6b5df';
+  if(/yellow|amarillo/.test(value))return '#e9d66b';
+  if(/green|verde|salvia/.test(value))return '#a6b79b';
+  if(/burgundy|borgoña|vino/.test(value))return '#713546';
+  if(/orange|naranja/.test(value))return '#e98b4c';
+  if(/natural titanium/.test(value))return '#b5aa9c';
+  return '#b8cbd8';
+}
+
+function findCatalogVariant(group,current,dimension,value){
+  const currentMeta=getDetailMeta(current);
+  let candidates=[];
+  if(dimension==='color'){
+    candidates=group.variants.filter(item=>getDetailMeta(item).color===value);
+    return candidates.find(item=>{
+      const meta=getDetailMeta(item);
+      return meta.capacity===currentMeta.capacity&&(!currentMeta.battery||meta.battery===currentMeta.battery);
+    })||candidates.find(item=>getDetailMeta(item).capacity===currentMeta.capacity)||candidates[0]||current;
+  }
+  if(dimension==='capacity'){
+    candidates=group.variants.filter(item=>getDetailMeta(item).capacity===value);
+    return candidates.find(item=>{
+      const meta=getDetailMeta(item);
+      return meta.color===currentMeta.color&&(!currentMeta.battery||meta.battery===currentMeta.battery);
+    })||candidates.find(item=>getDetailMeta(item).color===currentMeta.color)||candidates[0]||current;
+  }
+  if(dimension==='battery'){
+    candidates=group.variants.filter(item=>{
+      const meta=getDetailMeta(item);
+      return meta.color===currentMeta.color&&meta.capacity===currentMeta.capacity&&meta.battery===value;
+    });
+    return candidates[0]||current;
+  }
+  return current;
+}
+
+function renderCatalogVariantControls(card,group,selected){
+  const picker=card.querySelector('.variant-picker');
+  if(!picker)return;
+  picker.replaceChildren();
+  const current=getDetailMeta(selected);
+  const colors=[...new Set(group.variants.map(item=>getDetailMeta(item).color).filter(Boolean))];
+  const capacities=[...new Set(group.variants.map(item=>getDetailMeta(item).capacity).filter(Boolean))];
+  const addRow=(label,values,active,dimension)=>{
+    if(!values.length)return;
+    const row=document.createElement('div');
+    row.className='variant-picker-row';
+    const heading=document.createElement('span');
+    heading.className='variant-picker-label';
+    heading.textContent=label;
+    row.appendChild(heading);
+    values.forEach(value=>{
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='variant-chip'+(value===active?' is-selected':'');
+      button.textContent=value;
+      button.setAttribute('aria-pressed',String(value===active));
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        const next=findCatalogVariant(group,selected,dimension,value);
+        if(next&&next.id!==selected.id)selectCatalogVariant(card,group,next);
+      });
+      row.appendChild(button);
+    });
+    picker.appendChild(row);
+  };
+
+  if(colors.length>1){
+    const row=document.createElement('div');
+    row.className='variant-picker-row';
+    const heading=document.createElement('span');
+    heading.className='variant-picker-label';
+    heading.textContent='COLOR';
+    row.appendChild(heading);
+    colors.forEach(value=>{
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='variant-chip variant-color-chip'+(value===current.color?' is-selected':'');
+      button.setAttribute('aria-label','Color '+value);
+      button.setAttribute('aria-pressed',String(value===current.color));
+      const dot=document.createElement('span');
+      dot.className='variant-swatch';
+      dot.style.backgroundColor=getCatalogColorHex(value);
+      const text=document.createElement('span');
+      text.textContent=value;
+      button.append(dot,text);
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        const next=findCatalogVariant(group,selected,'color',value);
+        if(next&&next.id!==selected.id)selectCatalogVariant(card,group,next);
+      });
+      row.appendChild(button);
+    });
+    picker.appendChild(row);
+  }else if(current.color){
+    const row=document.createElement('div');
+    row.className='variant-picker-row variant-picker-single';
+    const heading=document.createElement('span');
+    heading.className='variant-picker-label';
+    heading.textContent='COLOR';
+    const chip=document.createElement('span');
+    chip.className='variant-chip variant-chip-static';
+    const dot=document.createElement('span');
+    dot.className='variant-swatch';
+    dot.style.backgroundColor=getCatalogColorHex(current.color);
+    chip.append(dot,document.createTextNode(current.color));
+    row.append(heading,chip);
+    picker.appendChild(row);
+  }
+
+  if(capacities.length>1)addRow('CAPACIDAD',capacities,current.capacity,'capacity');
+
+  if(!getDetailMeta(selected).isSealed){
+    const sameSelection=group.variants.filter(item=>{
+      const meta=getDetailMeta(item);
+      return meta.color===current.color&&meta.capacity===current.capacity&&meta.battery;
+    });
+    const batteries=[...new Set(sameSelection.map(item=>getDetailMeta(item).battery))];
+    if(batteries.length>1)addRow('ESTADO DE BATERÍA',batteries,current.battery,'battery');
+  }
+}
+
+function selectCatalogVariant(card,group,variant){
+  if(!card||!group||!variant)return;
+  const meta=getDetailMeta(variant);
+  card.dataset.productId=variant.id||'';
+  card.dataset.capacity=meta.capacity||'';
+  card.dataset.color=meta.color||'';
+  card.dataset.price=String(getCatalogVariantPrice(variant));
+  card.dataset.order=String(Number(variant.sortOrder)||group.sortOrder||0);
+  card._selectedVariantId=variant.id;
+
+  const photo=card.querySelector('.prod-photo');
+  const fallback=card.querySelector('.prod-photo-fallback');
+  if(photo){
+    photo.alt=(variant.name||group.modelName)+(meta.color?' '+meta.color:'');
+    if(variant.image){
+      photo.style.display='block';
+      if(photo.getAttribute('src')!==variant.image)photo.src=variant.image;
+      if(fallback)fallback.style.display='none';
+      photo.onerror=()=>{
+        photo.style.display='none';
+        if(fallback)fallback.style.display='grid';
+      };
+    }else{
+      photo.removeAttribute('src');
+      photo.style.display='none';
+      if(fallback)fallback.style.display='grid';
+    }
+  }
+
+  const metaLine=card.querySelector('.prod-meta');
+  if(metaLine){
+    metaLine.textContent=[meta.capacity,!meta.isSealed&&meta.battery?'Batería '+meta.battery:''].filter(Boolean).join(' · ')||'Consultá las características';
+  }
+
+  const chips=card.querySelector('.prod-chips');
+  if(chips){
+    chips.replaceChildren();
+    const chipValue=variant.specs?.['Chip'];
+    if(chipValue){
+      const chip=document.createElement('span');
+      chip.className='prod-chip';
+      chip.textContent=String(chipValue);
+      chips.appendChild(chip);
+    }
+    if(!meta.isSealed&&meta.battery){
+      const batteryNumber=parseInt(String(meta.battery).replace(/\D/g,''),10)||0;
+      const battery=document.createElement('span');
+      battery.className='prod-chip '+(batteryNumber>=90?'bat-high':batteryNumber>=80?'bat-mid':'bat-low');
+      battery.textContent='Batería '+meta.battery;
+      chips.appendChild(battery);
+    }
+  }
+
+  const pricePesos=Number(variant.price)||0;
+  const usd=Number(variant.usd)||0;
+  const price=card.querySelector('.prod-price');
+  const usdNode=card.querySelector('.prod-usd');
+  const priceNote=card.querySelector('.prod-price-note');
+  if(price)price.textContent=pricePesos>0?money(pricePesos):(usd>0?'USD '+usd.toLocaleString('es-AR'):'Consultar');
+  if(usdNode)usdNode.textContent=pricePesos>0&&usd>0?'USD '+usd.toLocaleString('es-AR'):(pricePesos<=0?'Pesos a consultar':'');
+  if(priceNote){
+    const stock=Number(variant.stock)||0;
+    priceNote.textContent=stock>0?stock+' disponibles':'Consultá disponibilidad';
+  }
+  const details=card.querySelector('.prod-btn');
+  if(details)details.onclick=event=>{
+    event.stopPropagation();
+    openDetail(variant.id);
+  };
+  card.onclick=()=>openDetail(variant.id);
+  renderCatalogVariantControls(card,group,variant);
+}
+
 function renderCustomCards(){
   Object.keys(products).forEach(id=>delete products[id]);
-  const grid=document.getElementById('usedGrid');
+  customProductGroups={};
+  const usedGrid=document.getElementById('usedGrid');
   const sealedGrid=document.getElementById('selladosGrid');
-  if(!grid)return;
-  grid.innerHTML='';
+  if(!usedGrid)return;
+  usedGrid.innerHTML='';
   if(sealedGrid)sealedGrid.innerHTML='';
 
-  Object.values(customProducts).sort((a,b)=>(Number(a.usd)||0)-(Number(b.usd)||0)).forEach((p,index)=>{
-    if(!p||hiddenIds.has(p.id))return;
-    products[p.id]=p;
-    const pricePesos=Number(p.price)>0?Math.round(Number(p.price)):0;
-    const name=(p.name||'iPhone').toLowerCase();
-    let modelClass='';
-    if(name.includes('iphone 13 pro max'))modelClass='iphone13promax';
-    else if(name.includes('iphone 13 pro'))modelClass='iphone13pro';
-    else if(name.includes('iphone 13'))modelClass='iphone13';
-    else if(name.includes('iphone 14 pro max'))modelClass='iphone14promax';
-    else if(name.includes('iphone 14 pro'))modelClass='iphone14pro';
-    else if(name.includes('iphone 14'))modelClass='iphone14';
-    else if(name.includes('iphone 15 pro max'))modelClass='iphone15promax';
-    else if(name.includes('iphone 15 pro'))modelClass='iphone15pro';
-    else if(name.includes('iphone 15'))modelClass='iphone15';
-    else if(name.includes('iphone 16 pro max'))modelClass='iphone16promax';
-    else if(name.includes('iphone 16 pro'))modelClass='iphone16pro';
-    else if(name.includes('iphone 16'))modelClass='iphone16';
-    else if(name.includes('iphone 17 pro max'))modelClass='iphone17promax';
-    else if(name.includes('iphone 17 pro'))modelClass='iphone17pro';
-    else if(name.includes('iphone 17'))modelClass='iphone17';
+  const grouped=new Map();
+  Object.values(customProducts).forEach(product=>{
+    if(!product||!product.id||hiddenIds.has(product.id))return;
+    const category=product.category||'seminuevo';
+    const modelName=String(product.model||product.name||'iPhone').trim();
+    const groupKey=category+'::'+modelName.toLocaleLowerCase('es');
+    if(!grouped.has(groupKey)){
+      grouped.set(groupKey,{
+        id:groupKey,category,modelName,variants:[],
+        sortOrder:Number(product.sortOrder)||0
+      });
+    }
+    const group=grouped.get(groupKey);
+    group.variants.push(product);
+    group.sortOrder=Math.min(group.sortOrder||Number(product.sortOrder)||0,Number(product.sortOrder)||0);
+  });
 
-    const specs=p.specs||{};
-    const battery=specs['Batería']||'';
-    const chip=specs['Chip']||'';
-    const storage=specs['Almacenamiento']||((p.storage||'').split('·')[0]||'').trim();
-    const color=specs['Color']||(()=>{
-      const m=(p.storage||'').match(/·\s*([^·]+?)\s*·/);
-      return m?m[1].trim():'';
-    })();
-    const isSealed=['Sellado','Nuevo'].includes(String(p.tag||'').trim());
+  const groups=[...grouped.values()].sort((a,b)=>a.sortOrder-b.sortOrder||a.modelName.localeCompare(b.modelName,'es',{numeric:true}));
+  groups.forEach((group,index)=>{
+    group.variants.sort((a,b)=>(Number(a.sortOrder)||0)-(Number(b.sortOrder)||0));
+    customProductGroups[group.id]=group;
+    group.variants.forEach(variant=>{products[variant.id]=variant;});
+
+    const initial=group.variants[0];
+    const initialMeta=getDetailMeta(initial);
+    const isSealed=group.category==='sellado';
     const state=isSealed?'sellado':'seminuevo';
-    const status=isSealed?'Sellado':'Seminuevo';
-    const batteryNumber=parseInt(String(battery).replace(/\D/g,''),10)||0;
-    const batteryClass=batteryNumber>=90?'bat-high':batteryNumber>=80?'bat-mid':'bat-low';
-    const stock=specs['Stock']||((Number(p.stock)>0)?Number(p.stock):'');
-
+    const modelClass=getCatalogModelClass(group.modelName);
     const card=document.createElement('article');
     card.className='prod-card reveal custom-card '+modelClass;
-    card.dataset.productId=p.id||'';
+    card.dataset.groupId=group.id;
     card.dataset.model=modelClass;
-    card.dataset.modelName=p.name||'iPhone';
-    card.dataset.capacity=storage;
-    card.dataset.color=color;
+    card.dataset.modelName=group.modelName;
     card.dataset.state=state;
-    card.dataset.price=String(pricePesos);
-    card.dataset.order=String(index);
-    card.addEventListener('click',()=>openDetail(p.id));
+    card.dataset.order=String(group.sortOrder||index);
+    const groupPrices=group.variants.map(getCatalogVariantPrice).filter(value=>value>0);
+    card.dataset.price=String(groupPrices.length?Math.min(...groupPrices):0);
 
     const photoWrap=document.createElement('div');
     photoWrap.className='prod-photo-wrap';
     const statusTag=document.createElement('span');
     statusTag.className='prod-status-tag';
-    statusTag.textContent=status;
+    statusTag.textContent=isSealed?'Sellado':'Seminuevo';
     const photo=document.createElement('img');
     photo.className='prod-photo';
-    photo.src=p.image||'';
-    photo.alt=(p.name||'iPhone')+(color?' '+color:'');
     photo.loading='lazy';
-    window.iPhoneClubFitImage?.(photo);
     const fallback=document.createElement('div');
     fallback.className='prod-photo-fallback';
     fallback.textContent='Imagen ilustrativa';
-    photo.addEventListener('error',()=>{
-      photo.style.display='none';
-      fallback.style.display='grid';
-    },{once:true});
-    if(!p.image){photo.style.display='none';fallback.style.display='grid'}
     photoWrap.append(statusTag,photo,fallback);
 
     const body=document.createElement('div');
@@ -2953,31 +3197,15 @@ function renderCustomCards(){
     info.className='prod-info';
     const title=document.createElement('div');
     title.className='prod-name';
-    title.textContent=p.name||'iPhone';
-    const colorLine=document.createElement('div');
-    colorLine.className='prod-color-line';
-    const colorDot=document.createElement('span');
-    colorDot.className='prod-color-dot';
-    colorLine.append(colorDot,document.createTextNode(color||'Color a consultar'));
-    const meta=document.createElement('div');
-    meta.className='prod-meta';
-    meta.textContent=(storage||p.storage||'')+(battery?' · Batería '+battery:'');
+    title.textContent=group.modelName;
+    const metaLine=document.createElement('div');
+    metaLine.className='prod-meta';
     const chips=document.createElement('div');
     chips.className='prod-chips';
-    if(chip){
-      const chipInfo=document.createElement('span');
-      chipInfo.className='prod-chip';
-      chipInfo.textContent=chip;
-      chips.appendChild(chipInfo);
-    }
-    if(battery&&!isSealed){
-      const batteryChip=document.createElement('span');
-      batteryChip.className='prod-chip '+batteryClass;
-      batteryChip.textContent='Batería '+battery;
-      chips.appendChild(batteryChip);
-    }
-    info.append(title,colorLine,meta,chips);
-    body.appendChild(info);
+    info.append(title,metaLine,chips);
+    const picker=document.createElement('div');
+    picker.className='variant-picker';
+    body.append(info,picker);
 
     const right=document.createElement('div');
     right.className='prod-card-right';
@@ -2988,31 +3216,23 @@ function renderCustomCards(){
     priceLabel.textContent='Precio publicado';
     const price=document.createElement('div');
     price.className='prod-price';
-    price.textContent=pricePesos>0?money(pricePesos):(Number(p.usd)>0?'USD '+Number(p.usd).toLocaleString('es-AR'):'Consultar');
     const usd=document.createElement('div');
     usd.className='prod-usd';
-    usd.textContent=pricePesos>0&&Number(p.usd)>0?'USD '+Number(p.usd).toLocaleString('es-AR'):(pricePesos<=0?'Pesos a consultar':'');
     const priceNote=document.createElement('div');
     priceNote.className='prod-price-note';
-    priceNote.textContent=stock?String(stock)+' disponibles':'Consultá disponibilidad';
     pricePanel.append(priceLabel,price,usd,priceNote);
-
     const actions=document.createElement('div');
     actions.className='prod-actions';
     const detailsButton=document.createElement('button');
     detailsButton.type='button';
     detailsButton.className='prod-btn prod-btn-ghost';
     detailsButton.textContent='Ver detalles  ›';
-    detailsButton.addEventListener('click',event=>{
-      event.stopPropagation();
-      openDetail(p.id);
-    });
     actions.appendChild(detailsButton);
     right.append(pricePanel,actions);
     card.append(photoWrap,body,right);
-    (isSealed&&sealedGrid?sealedGrid:grid).appendChild(card);
+    (isSealed&&sealedGrid?sealedGrid:usedGrid).appendChild(card);
+    selectCatalogVariant(card,group,initial);
     card.style.setProperty('--reveal-delay',Math.min(index%8,7)*45+'ms');
-    // El observador de elementos dinámicos anima la card al ingresar en pantalla.
   });
 
   populateUsedFilterOptions();
@@ -3022,7 +3242,6 @@ function renderCustomCards(){
   sortCatalogGrid('selladosGrid',document.getElementById('sealedSort')?.value||'recommended');
   sortCatalogGrid('usedGrid',document.getElementById('usedSort')?.value||'recommended');
 }
-
 // ── DÓLAR ──
 async function fetchDolar(){
   try{const r=await fetch('https://dolarapi.com/v1/dolares/blue');const d=await r.json();dolarBlue=d.venta+25;}catch(e){dolarBlue=1425;}
@@ -3303,21 +3522,23 @@ function getCardModelLabel(key){
 function getFilteredProductCards(options={}){
   const ignoreState=options.ignoreState===true;
   const ignoreModels=options.ignoreModels===true;
-  const capacity=document.getElementById('usedCapacityFilter')?.value||'all';
-  const color=document.getElementById('usedColorFilter')?.value||'all';
   return [...document.querySelectorAll('#selladosGrid .prod-card, #usedGrid .prod-card')].filter(card=>{
     const modelOk=ignoreModels||activeUsedModels.size===0||activeUsedModels.has(getCardModelKey(card));
     const stateOk=ignoreState||activeUsedState==='all'||card.dataset.state===activeUsedState;
-    const capacityOk=capacity==='all'||card.dataset.capacity===capacity;
-    const colorOk=color==='all'||card.dataset.color===color;
-    return modelOk&&stateOk&&capacityOk&&colorOk;
+    return modelOk&&stateOk&&getCatalogMatchingVariants(card,options).length>0;
   });
 }
 
 function applyUsedFilters(){
   const visibleCards=new Set(getFilteredProductCards());
   document.querySelectorAll('#selladosGrid .prod-card, #usedGrid .prod-card').forEach(card=>{
-    card.style.display=visibleCards.has(card)?'flex':'none';
+    const matches=getCatalogMatchingVariants(card);
+    const visible=visibleCards.has(card)&&matches.length>0;
+    if(visible){
+      const selectedId=card.dataset.productId;
+      if(!matches.some(item=>item.id===selectedId))selectCatalogVariant(card,getCatalogGroupForCard(card),matches[0]);
+    }
+    card.style.display=visible?'flex':'none';
   });
   updateCatalogCounts();
   updateFilterSheetCounts();
@@ -3329,12 +3550,13 @@ function updateCatalogCounts(){
     const cards=[...document.querySelectorAll('#'+gridId+' .prod-card')];
     const visible=cards.filter(card=>card.style.display!=='none');
     const models=new Set(visible.map(getCardModelKey));
+    const itemCount=visible.reduce((sum,card)=>sum+getCatalogMatchingVariants(card).length,0);
     const modelLabel=document.getElementById(modelId);
     const itemLabel=document.getElementById(itemId);
     if(modelLabel)modelLabel.textContent=models.size+' modelos';
-    if(itemLabel)itemLabel.textContent=visible.length+' equipos';
+    if(itemLabel)itemLabel.textContent=itemCount+' equipos';
     const empty=document.getElementById(emptyId);
-    if(empty)empty.hidden=visible.length!==0;
+    if(empty)empty.hidden=itemCount!==0;
   });
 }
 
@@ -3430,17 +3652,22 @@ function updateFilterSheetCounts(){
   const stateBase=getFilteredProductCards({ignoreState:true});
   document.querySelectorAll('[data-state-count]').forEach(node=>{
     const value=node.dataset.stateCount;
-    const count=value==='all'?stateBase.length:stateBase.filter(card=>card.dataset.state===value).length;
+    const count=stateBase.reduce((sum,card)=>{
+      const variants=getCatalogMatchingVariants(card);
+      return sum+variants.filter(item=>value==='all'||item.category===value).length;
+    },0);
     node.textContent=String(count);
   });
 
   const modelBase=getFilteredProductCards({ignoreModels:true});
   document.querySelectorAll('[data-model-count]').forEach(node=>{
     const key=node.dataset.modelCount;
-    node.textContent=String(modelBase.filter(card=>getCardModelKey(card)===key).length);
+    const count=modelBase.filter(card=>getCardModelKey(card)===key)
+      .reduce((sum,card)=>sum+getCatalogMatchingVariants(card).length,0);
+    node.textContent=String(count);
   });
 
-  const total=getFilteredProductCards().length;
+  const total=getFilteredProductCards().reduce((sum,card)=>sum+getCatalogMatchingVariants(card).length,0);
   const applyButton=document.getElementById('applyFilterSheet');
   if(applyButton)applyButton.textContent='Ver '+total+' '+(total===1?'equipo':'equipos');
 
@@ -3574,14 +3801,14 @@ function sendOrder(){
 
 
 function populateUsedFilterOptions(){
-  const cards=[...document.querySelectorAll('#selladosGrid .prod-card, #usedGrid .prod-card')];
   const capacitySelect=document.getElementById('usedCapacityFilter');
   const colorSelect=document.getElementById('usedColorFilter');
   if(!capacitySelect||!colorSelect)return;
   const oldCapacity=capacitySelect.value||'all';
   const oldColor=colorSelect.value||'all';
-  const capacities=[...new Set(cards.map(c=>c.dataset.capacity).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
-  const colors=[...new Set(cards.map(c=>c.dataset.color).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  const variants=Object.values(customProductGroups).flatMap(group=>group.variants);
+  const capacities=[...new Set(variants.map(item=>getDetailMeta(item).capacity).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es',{numeric:true}));
+  const colors=[...new Set(variants.map(item=>getDetailMeta(item).color).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
   capacitySelect.innerHTML='<option value="all">Todas las capacidades</option>'+capacities.map(v=>'<option value="'+v+'">'+v+'</option>').join('');
   colorSelect.innerHTML='<option value="all">Todos los colores</option>'+colors.map(v=>'<option value="'+v+'">'+v+'</option>').join('');
   capacitySelect.value=capacities.includes(oldCapacity)?oldCapacity:'all';
