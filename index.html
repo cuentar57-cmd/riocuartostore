@@ -2688,6 +2688,16 @@ nav .logo-wrap{flex:0 0 auto!important}
 #storePage>.hero{position:relative!important}
 #storePage>.hero>.rc-santa-sky{top:12px;z-index:50}
 @media(max-width:700px){#storePage>.hero>.rc-santa-sky{top:28px;height:150px}}
+ 
+#selladosGrid .prod-actions,#usedGrid .prod-actions{gap:7px!important}
+#selladosGrid .prod-consult-btn,#usedGrid .prod-consult-btn{background:linear-gradient(135deg,#128c49,#20ad61)!important;color:white!important;border:0!important;font-weight:800!important}
+#selladosGrid .prod-payment-btn,#usedGrid .prod-payment-btn{background:#edf7fc!important;color:#0875a6!important;border:1px solid #c3dfed!important;font-weight:800!important}
+#detailAllVariants{margin:14px 0;display:grid;gap:8px}
+#detailAllVariants[hidden]{display:none!important}
+#detailAllVariants h3{font-size:15px;font-weight:800;margin-bottom:3px}
+.detail-variant-choice{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;padding:12px;border:1px solid #c5dce9;border-radius:12px;background:#fff;color:#193750;text-align:left;font:inherit;cursor:pointer}
+.detail-variant-choice strong{font-size:13px}.detail-variant-choice small{font-size:12px;font-weight:750}
+.detail-variant-choice.is-selected{background:#e7f5fc;border:2px solid #1688bd}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -3367,7 +3377,13 @@ function selectCatalogVariant(card,group,variant,showSelected=false){
     const stock=Number(variant.stock)||0;
     priceNote.textContent=stock>0?stock+' disponibles':'Consultá disponibilidad';
   }
-  const details=card.querySelector('.prod-btn');
+  const consult=card.querySelector('.prod-consult-btn');
+  if(consult)consult.onclick=event=>{
+    event.stopPropagation();
+    const message='Hola, quiero consultar por '+group.modelName+' '+[meta.capacity,meta.color,meta.battery?'Batería '+meta.battery:''].filter(Boolean).join(' · ')+'. ¿Sigue disponible?';
+    window.open('https://wa.me/5493584015415?text='+encodeURIComponent(message),'_blank','noopener');
+  };
+  const details=card.querySelector('.prod-payment-btn');
   if(details)details.onclick=event=>{
     event.stopPropagation();
     openDetail(variant.id);
@@ -3514,8 +3530,11 @@ function renderCustomCards(){
     const detailsButton=document.createElement('button');
     detailsButton.type='button';
     detailsButton.className='prod-btn prod-btn-ghost';
-    detailsButton.textContent='Ver detalles  ›';
-    actions.appendChild(detailsButton);
+    detailsButton.textContent='Formas de pago ›';
+    detailsButton.classList.add('prod-payment-btn');
+    const consult=document.createElement('button');
+    consult.type='button';consult.className='prod-btn prod-consult-btn';consult.textContent='Consultar';
+    actions.append(consult,detailsButton);
     right.append(pricePanel,actions);
     card.append(photoWrap,body,right);
     (isSealed&&sealedGrid?sealedGrid:usedGrid).appendChild(card);
@@ -3636,6 +3655,24 @@ function getDetailStockLabel(p){
 function renderDetailOptions(p){
   const meta=getDetailMeta(p);
   const related=getDetailRelatedProducts(p);
+  const allVariants=getDetailProductEntries().filter(item=>String(item.p.model||item.p.name||'').trim().toLowerCase()===String(p.model||p.name||'').trim().toLowerCase()&&getDetailMeta(item.p).isSealed===meta.isSealed);
+  const anchor=document.getElementById('detailCapacityBlock');
+  let variants=document.getElementById('detailAllVariants');
+  if(!variants){variants=document.createElement('div');variants.id='detailAllVariants';anchor.before(variants);}
+  variants.replaceChildren();
+  variants.hidden=allVariants.length<2;
+  if(allVariants.length>1){
+    const heading=document.createElement('h3');heading.textContent='Opciones disponibles';variants.append(heading);
+    allVariants.forEach(item=>{
+      const m=getDetailMeta(item.p),button=document.createElement('button');
+      button.type='button';button.className='detail-variant-choice';
+      const active=item.p===p||item.id===p.id;
+      button.classList.toggle('is-selected',active);button.setAttribute('aria-pressed',String(active));
+      const label=document.createElement('strong');label.textContent=[m.color,m.capacity,!m.isSealed&&m.battery?'Batería '+m.battery:''].filter(Boolean).join(' · ');
+      const price=document.createElement('small');price.textContent=getDetailPrice(item.p)>0?money(getDetailPrice(item.p)):'Consultar precio';
+      button.append(label,price);button.onclick=()=>{if(!active)openDetail(item.id);};variants.append(button);
+    });
+  }
   const capacityBlock=document.getElementById('detailCapacityBlock');
   const capacityOptions=document.getElementById('detailCapacityOptions');
   const stockLabel=document.getElementById('detailStockLabel');
@@ -3770,7 +3807,7 @@ function openDetail(id){
   paymentTitle.append(paymentIcon,document.createTextNode('Medios de pago y financiación'));
   const paymentCopy=document.createElement('p');
   paymentCopy.className='detail-payment-copy';
-  paymentCopy.textContent='Consultá por WhatsApp las opciones disponibles para este equipo.';
+  paymentCopy.textContent='Consultá por WhatsApp las opciones disponibles para este equipo, incluyendo financiación en 3, 9 y 12 cuotas sin interés y sus condiciones.';
   payment.append(paymentTitle,paymentCopy);
 
   document.getElementById('detailAddBtn').onclick=()=>addToCartDirect((p.name||'iPhone')+' '+(p.storage||''),'📱',pricePesos);
