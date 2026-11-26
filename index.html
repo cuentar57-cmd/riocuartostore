@@ -2564,6 +2564,16 @@ nav .logo-wrap{flex:0 0 auto!important}
  .variant-photo-item img{max-height:120px!important}
 }
 
+ 
+.prod-photo-wrap:not(.has-variant-gallery)>.variant-photo-strip{display:none!important}
+.prod-photo-wrap.has-variant-gallery .variant-photo-strip{gap:0!important;padding:25px 10px 8px!important;isolation:isolate}
+.prod-photo-wrap.has-variant-gallery .variant-photo-item{flex:0 0 min(76%,calc(100% / (1 + (var(--phone-count) - 1)*.66)))!important;max-width:none!important;overflow:visible!important;position:relative!important}
+.prod-photo-wrap.has-variant-gallery .variant-photo-item+.variant-photo-item{margin-left:calc(-34% / (1 + (var(--phone-count) - 1)*.66))!important}
+.prod-photo-wrap.has-variant-gallery .variant-photo-item img{max-height:none!important;object-fit:contain!important}
+.variant-picker-row:has(.variant-color-chip){flex-direction:column!important;align-items:stretch!important}
+.variant-picker-row .variant-color-chip{display:flex!important;width:100%!important;justify-content:flex-start!important;min-height:28px!important;padding:5px 8px!important;border-radius:8px!important}
+.variant-color-check{margin-left:auto;width:15px;height:15px;flex:0 0 15px;border:1px solid #b9cbd8;border-radius:50%;display:grid;place-items:center;font-size:10px}
+.variant-color-chip.is-selected .variant-color-check{background:#078bd2;color:white;border-color:#078bd2}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -3084,7 +3094,7 @@ function renderCatalogVariantControls(card,group,selected){
     row.className='variant-picker-row';
     const heading=document.createElement('span');
     heading.className='variant-picker-label';
-    heading.textContent='COLOR';
+    heading.textContent='Elegí el color';
     row.appendChild(heading);
     colors.forEach(value=>{
       const button=document.createElement('button');
@@ -3097,7 +3107,10 @@ function renderCatalogVariantControls(card,group,selected){
       dot.style.backgroundColor=getCatalogColorHex(value);
       const text=document.createElement('span');
       text.textContent=value;
-      button.append(dot,text);
+      const check=document.createElement('span');
+      check.className='variant-color-check';
+      check.textContent=value===current.color?'✓':'';
+      button.append(dot,text,check);
       button.addEventListener('click',event=>{
         event.stopPropagation();
         const next=findCatalogVariant(group,selected,'color',value);
@@ -3146,7 +3159,7 @@ function selectCatalogVariant(card,group,variant){
 
   const photo=card.querySelector('.prod-photo');
   const fallback=card.querySelector('.prod-photo-fallback');
-  card.querySelectorAll('.variant-photo-tile').forEach(tile=>{
+  card.querySelectorAll('.variant-photo-item').forEach(tile=>{
     tile.classList.toggle('is-active',tile.getAttribute('aria-label')==='Ver color '+meta.color);
   });
   if(photo){
@@ -3271,35 +3284,40 @@ function renderCustomCards(){
     
     const photoGallery=document.createElement('div');
     photoGallery.className='variant-photo-strip';
-    const photoItems=(initial.gallery||[]).filter(item=>item&&item.url);
-    const uniquePhotoItems=[];
-    const seenPhotoUrls=new Set();
-    photoItems.forEach(item=>{
-      if(seenPhotoUrls.has(item.url))return;
-      seenPhotoUrls.add(item.url);
-      uniquePhotoItems.push(item);
+    const colorKey=value=>String(value||'').trim().toLocaleLowerCase('es');
+    const photoItems=new Map();
+    group.variants.forEach(v=>{
+      const color=getDetailMeta(v).color;
+      const key=colorKey(color);
+      const gallery=group.variants.flatMap(item=>Array.isArray(item.gallery)?item.gallery:[]);
+      const match=gallery.find(item=>item&&item.url&&colorKey(item.color)===key);
+      const url=match?.url||v.image;
+      if(url&&!photoItems.has(key))photoItems.set(key,{url,color,variant:v});
     });
-    uniquePhotoItems.slice(0,6).forEach(item=>{
+    const items=[...photoItems.values()];
+    photoGallery.style.setProperty('--phone-count',String(items.length));
+    items.forEach(item=>{
       const tile=document.createElement('button');
       tile.type='button';
       tile.className='variant-photo-item';
-      tile.setAttribute('aria-label','Ver color '+(item.color||'del modelo'));
+      tile.setAttribute('aria-label','Ver color '+item.color);
       const tileImage=document.createElement('img');
       tileImage.src=item.url;
-      tileImage.alt=(group.modelName||'iPhone')+' '+(item.color||'');
+      tileImage.alt=group.modelName+' '+item.color;
       tileImage.loading='lazy';
-      tileImage.onerror=()=>{tile.style.display='none';};
+      tileImage.onerror=()=>{
+        tile.remove();
+        if(!photoGallery.children.length)photoWrap.classList.remove('has-variant-gallery');
+        else photoGallery.style.setProperty('--phone-count',String(photoGallery.children.length));
+      };
       tile.appendChild(tileImage);
-      const matching=group.variants.find(candidate=>getDetailMeta(candidate).color.toLocaleLowerCase('es')===String(item.color||'').toLocaleLowerCase('es'));
-      if(matching&&matching.id===initial.id)tile.classList.add('is-active');
       tile.addEventListener('click',event=>{
         event.stopPropagation();
-        if(!matching)return;
-        selectCatalogVariant(card,group,matching);
+        selectCatalogVariant(card,group,item.variant);
       });
       photoGallery.appendChild(tile);
     });
-    if(uniquePhotoItems.length)photoWrap.classList.add('has-variant-gallery');
+    if(items.length>1)photoWrap.classList.add('has-variant-gallery');
     photoWrap.append(statusTag,photoGallery,photo,fallback);
 
     const body=document.createElement('div');
