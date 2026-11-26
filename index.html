@@ -2566,14 +2566,15 @@ nav .logo-wrap{flex:0 0 auto!important}
 
  
 .prod-photo-wrap:not(.has-variant-gallery)>.variant-photo-strip{display:none!important}
-.prod-photo-wrap.has-variant-gallery .variant-photo-strip{gap:0!important;padding:25px 10px 8px!important;isolation:isolate}
-.prod-photo-wrap.has-variant-gallery .variant-photo-item{flex:0 0 min(76%,calc(100% / (1 + (var(--phone-count) - 1)*.66)))!important;max-width:none!important;overflow:visible!important;position:relative!important}
-.prod-photo-wrap.has-variant-gallery .variant-photo-item+.variant-photo-item{margin-left:calc(-34% / (1 + (var(--phone-count) - 1)*.66))!important}
+.prod-photo-wrap.has-variant-gallery .variant-photo-strip{gap:4px!important;padding:25px 10px 8px!important;isolation:isolate}
+.prod-photo-wrap.has-variant-gallery .variant-photo-item{flex:1 1 0!important;max-width:none!important;min-width:0!important;overflow:hidden!important;position:relative!important}
+.prod-photo-wrap.has-variant-gallery .variant-photo-item+.variant-photo-item{margin-left:0!important}
 .prod-photo-wrap.has-variant-gallery .variant-photo-item img{max-height:none!important;object-fit:contain!important}
 .variant-picker-row:has(.variant-color-chip){flex-direction:column!important;align-items:stretch!important}
 .variant-picker-row .variant-color-chip{display:flex!important;width:100%!important;justify-content:flex-start!important;min-height:28px!important;padding:5px 8px!important;border-radius:8px!important}
 .variant-color-check{margin-left:auto;width:15px;height:15px;flex:0 0 15px;border:1px solid #b9cbd8;border-radius:50%;display:grid;place-items:center;font-size:10px}
 .variant-color-chip.is-selected .variant-color-check{background:#078bd2;color:white;border-color:#078bd2}
+.all-colors-button{align-self:flex-start;border:0;background:transparent;color:#078bd2;font:inherit;font-size:11px;font-weight:750;padding:5px 0;cursor:pointer}.all-colors-button[hidden]{display:none!important}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -3114,7 +3115,7 @@ function renderCatalogVariantControls(card,group,selected){
       button.addEventListener('click',event=>{
         event.stopPropagation();
         const next=findCatalogVariant(group,selected,'color',value);
-        if(next&&next.id!==selected.id)selectCatalogVariant(card,group,next);
+        if(next)selectCatalogVariant(card,group,next,true);
       });
       row.appendChild(button);
     });
@@ -3147,7 +3148,7 @@ function renderCatalogVariantControls(card,group,selected){
   }
 }
 
-function selectCatalogVariant(card,group,variant){
+function selectCatalogVariant(card,group,variant,showSelected=false){
   if(!card||!group||!variant)return;
   const meta=getDetailMeta(variant);
   card.dataset.productId=variant.id||'';
@@ -3157,6 +3158,8 @@ function selectCatalogVariant(card,group,variant){
   card.dataset.order=String(Number(variant.sortOrder)||group.sortOrder||0);
   card._selectedVariantId=variant.id;
 
+  const wrap=card.querySelector('.prod-photo-wrap');
+  if(showSelected)wrap?.classList.remove('has-variant-gallery');
   const photo=card.querySelector('.prod-photo');
   const fallback=card.querySelector('.prod-photo-fallback');
   card.querySelectorAll('.variant-photo-item').forEach(tile=>{
@@ -3164,9 +3167,11 @@ function selectCatalogVariant(card,group,variant){
   });
   if(photo){
     photo.alt=(variant.name||group.modelName)+(meta.color?' '+meta.color:'');
-    if(variant.image){
+    const matchingPhoto=[...card.querySelectorAll('.variant-photo-item')].find(tile=>tile.getAttribute('aria-label')==='Ver color '+meta.color)?.querySelector('img')?.getAttribute('src');
+    const imageUrl=matchingPhoto||variant.image;
+    if(imageUrl){
       photo.style.display='block';
-      if(photo.getAttribute('src')!==variant.image)photo.src=variant.image;
+      if(photo.getAttribute('src')!==imageUrl)photo.src=imageUrl;
       if(fallback)fallback.style.display='none';
       photo.onerror=()=>{
         photo.style.display='none';
@@ -3313,11 +3318,17 @@ function renderCustomCards(){
       tile.appendChild(tileImage);
       tile.addEventListener('click',event=>{
         event.stopPropagation();
-        selectCatalogVariant(card,group,item.variant);
+        selectCatalogVariant(card,group,item.variant,true);
       });
       photoGallery.appendChild(tile);
     });
     if(items.length>1)photoWrap.classList.add('has-variant-gallery');
+    const allColors=document.createElement('button');
+    allColors.type='button';
+    allColors.className='all-colors-button';
+    allColors.textContent='Ver todos los colores';
+    allColors.hidden=items.length<2;
+    allColors.addEventListener('click',event=>{event.stopPropagation();if(photoGallery.children.length>1)photoWrap.classList.add('has-variant-gallery');});
     photoWrap.append(statusTag,photoGallery,photo,fallback);
 
     const body=document.createElement('div');
@@ -3334,7 +3345,7 @@ function renderCustomCards(){
     info.append(title,metaLine,chips);
     const picker=document.createElement('div');
     picker.className='variant-picker';
-    body.append(info,picker);
+    body.append(info,picker,allColors);
 
     const right=document.createElement('div');
     right.className='prod-card-right';
@@ -3665,7 +3676,7 @@ function applyUsedFilters(){
     const visible=visibleCards.has(card)&&matches.length>0;
     if(visible){
       const selectedId=card.dataset.productId;
-      if(!matches.some(item=>item.id===selectedId))selectCatalogVariant(card,getCatalogGroupForCard(card),matches[0]);
+      if(!matches.some(item=>item.id===selectedId))selectCatalogVariant(card,getCatalogGroupForCard(card),matches[0],true);
     }
     card.style.display=visible?'flex':'none';
   });
