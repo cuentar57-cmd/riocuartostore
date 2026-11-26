@@ -2577,30 +2577,23 @@ nav .logo-wrap{flex:0 0 auto!important}
 .all-colors-button{align-self:flex-start;border:0;background:transparent;color:#078bd2;font:inherit;font-size:11px;font-weight:750;padding:5px 0;cursor:pointer}.all-colors-button[hidden]{display:none!important}
  
 
-/* Galería simétrica: el equipo activo siempre ocupa el centro real. */
-#selladosGrid .prod-photo-wrap.has-variant-gallery,#usedGrid .prod-photo-wrap.has-variant-gallery{position:relative!important;height:clamp(190px,22vw,260px)!important;min-height:190px!important;padding:0!important}
-.prod-photo-wrap.has-centered-selection .variant-photo-strip{display:flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;padding:28px 10px 12px!important}
-.prod-photo-wrap.has-centered-selection .variant-photo-item{flex:1 1 0!important;max-width:none!important;min-width:0!important;height:72%!important;margin:0!important}
-.prod-photo-wrap.has-centered-selection .variant-photo-item.is-active{flex:1.65 1 0!important;height:100%!important}
-.prod-photo-wrap.has-centered-selection .variant-photo-item img{transform:none!important;object-fit:contain!important;max-height:100%!important}
-.prod-photo-wrap.has-centered-selection .variant-photo-item:not(.is-active) img{opacity:.78}
-.prod-photo-wrap.has-centered-selection .gallery-side{display:flex;flex:1 1 0;min-width:0;height:100%;align-items:center;justify-content:center;gap:4px}
-.prod-photo-wrap.has-centered-selection .gallery-center{display:flex;flex:1.65 1 0;min-width:0;height:100%;align-items:center;justify-content:center}
+/* Galería adaptable al ancho de cada card. */
+.prod-photo-wrap.has-centered-selection .variant-photo-strip{display:flex!important;align-items:center!important;justify-content:center!important;gap:2px!important;padding:24px 4px 5px!important}
+.prod-photo-wrap.has-centered-selection .gallery-side{display:flex;flex:1 1 0;min-width:0;height:100%;align-items:center;justify-content:center;gap:2px}
+.prod-photo-wrap.has-centered-selection .gallery-center{display:flex;flex:1.25 1 0;min-width:0;height:100%;align-items:center;justify-content:center}
+.prod-photo-wrap.has-centered-selection .variant-photo-item{flex:1 1 0!important;max-width:none!important;min-width:0!important;height:90%!important;margin:0!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-item.is-active{height:100%!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-item img{width:100%!important;height:100%!important;max-height:100%!important;object-fit:contain!important;transform:none!important;filter:none!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-item:not(.is-active) img{opacity:.92}
+.prod-photo-wrap.has-centered-selection .gallery-side:empty{flex:.45 1 0}
 .variant-color-chip>span:nth-child(2){flex:1;min-width:0;white-space:normal!important;overflow-wrap:anywhere}
 .variant-color-chip .variant-color-check{flex-shrink:0!important}
 @media(max-width:700px){
- #selladosGrid.used-grid,#usedGrid.used-grid{grid-template-columns:minmax(0,1fr)!important;gap:16px!important;max-width:440px!important}
- #selladosGrid .prod-card.custom-card,#usedGrid .prod-card.custom-card{flex-direction:column!important;min-width:0!important;border-radius:20px!important}
- #selladosGrid .prod-photo-wrap,#usedGrid .prod-photo-wrap{height:clamp(205px,59vw,265px)!important;min-height:205px!important;width:100%!important}
- #selladosGrid .prod-card-body,#usedGrid .prod-card-body{padding:14px 16px 4px!important}
- #selladosGrid .prod-card-right,#usedGrid .prod-card-right{padding:10px 16px 16px!important}
- #selladosGrid .prod-name,#usedGrid .prod-name{font-size:20px!important;line-height:1.2!important}
- #selladosGrid .prod-meta,#usedGrid .prod-meta{font-size:12px!important}
- .variant-picker-label{font-size:11px!important;letter-spacing:.3px!important}
- .variant-picker-row .variant-color-chip{min-height:42px!important;font-size:13px!important;padding:8px 12px!important;gap:9px!important}
- .variant-picker-row:has(.variant-color-chip){gap:6px!important}
- .variant-color-check{width:19px;height:19px;flex-basis:19px;font-size:12px}
- .prod-photo-wrap.has-centered-selection .variant-photo-strip{padding:30px 12px 12px!important;gap:7px!important}
+ #selladosGrid.used-grid,#usedGrid.used-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;max-width:100%!important}
+ #selladosGrid .prod-photo-wrap.has-variant-gallery,#usedGrid .prod-photo-wrap.has-variant-gallery{height:clamp(145px,42vw,185px)!important;min-height:145px!important;width:100%!important}
+ .prod-photo-wrap.has-centered-selection .variant-photo-strip{padding:23px 3px 5px!important;gap:1px!important}
+ .prod-photo-wrap.has-centered-selection .gallery-side{gap:1px}
+ .prod-photo-wrap.has-centered-selection .gallery-center{flex:1.15 1 0}
 }
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
