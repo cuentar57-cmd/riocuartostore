@@ -2679,11 +2679,15 @@ nav .logo-wrap{flex:0 0 auto!important}
 #selladosGrid .prod-chip,#seminuevos #usedGrid .prod-chip,#selladosGrid .variant-picker-label,#seminuevos #usedGrid .variant-picker-label{font-size:10px!important}
 }
 
-.rc-santa-sky{position:fixed;top:env(safe-area-inset-top,0px);left:0;width:100%;height:clamp(120px,24vw,300px);overflow:hidden;pointer-events:none;z-index:50}
+.rc-santa-sky{position:absolute;top:12px;left:0;width:100%;height:clamp(120px,24vw,300px);overflow:hidden;pointer-events:none;z-index:50}
 .rc-santa-flight{position:absolute;top:0;left:0;width:clamp(260px,38vw,560px);animation:rc-santa-cross 22s linear infinite}
 .rc-santa-flight img{display:block;width:100%;height:auto}
 @keyframes rc-santa-cross{from{transform:translateX(-110%)}to{transform:translateX(100vw)}}
 @media(prefers-reduced-motion:reduce){.rc-santa-sky{display:none}}
+
+#storePage>.hero{position:relative!important}
+#storePage>.hero>.rc-santa-sky{top:12px;z-index:50}
+@media(max-width:700px){#storePage>.hero>.rc-santa-sky{top:28px;height:150px}}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
