@@ -2654,6 +2654,30 @@ nav .logo-wrap{flex:0 0 auto!important}
 @keyframes rc-rise{0%{transform:translateY(0);opacity:0}10%{opacity:.9}100%{transform:translateY(-330px);opacity:0}}
 @media(max-width:600px){.rc-finance{gap:12px;padding:16px 12px;border-radius:20px;grid-template-columns: minmax(90px, .8fr) minmax(0,1.2fr)}.rc-ring{width:100%;max-width:150px}.rc-num{font-size:clamp(48px,15vw,78px)}.rc-headline{font-size:clamp(20px,6vw,30px)!important}.rc-sub{font-size:11px!important}.rc-steps{gap:4px}.rc-steps b{font-size:10px;padding:4px 7px}.rc-cta{font-size:11px;padding:9px 10px}}
 @media(prefers-reduced-motion:reduce){.rc-finance,.rc-finance *,.rc-finance:before,.rc-finance:after,.rc-finance *:before{animation:none!important;transition:none!important}}
+
+/* Catálogo: jerarquía legible y categorías diferenciadas */
+#seminuevos.catalog-section,#sellados.catalog-section{scroll-margin-top:110px}
+#seminuevos .catalog-section-heading,#sellados .catalog-section-heading{box-sizing:border-box;padding:20px 22px;border-radius:18px;border:1px solid #cce5f2;background:linear-gradient(120deg,#e7f5fc,#f7fbfe);border-left:5px solid #1688bd}
+#sellados .catalog-section-heading{background:linear-gradient(120deg,#e8f8ef,#f8fcfa);border-color:#cce8d7;border-left-color:#16834c}
+#sellados .catalog-section-heading h2 span,#sellados .catalog-section-eyebrow{color:#16834c!important}
+#seminuevos .catalog-section-heading h2 span,#seminuevos .catalog-section-eyebrow{color:#087eb7!important}
+#sellados .catalog-section-heading p,#seminuevos .catalog-section-heading p{font-size:14px!important;font-weight:600!important;color:#486174!important}
+#sellados .catalog-section-eyebrow,#seminuevos .catalog-section-eyebrow{font-size:11px!important;font-weight:850!important;letter-spacing:.07em}
+#selladosGrid.used-grid .prod-name,#seminuevos #usedGrid.used-grid .prod-name{font-size:18px!important;font-weight:850!important;line-height:1.22!important}
+#selladosGrid.used-grid .prod-meta,#seminuevos #usedGrid.used-grid .prod-meta{font-size:13px!important;font-weight:650!important;line-height:1.4!important}
+#selladosGrid.used-grid .prod-price,#seminuevos #usedGrid.used-grid .prod-price{font-size:22px!important;font-weight:900!important;line-height:1.2!important}
+#selladosGrid.used-grid .prod-usd,#seminuevos #usedGrid.used-grid .prod-usd{font-size:12px!important;font-weight:750!important}
+#selladosGrid .variant-chip,#seminuevos #usedGrid .variant-chip{font-size:12px!important;font-weight:750!important;min-height:30px!important}
+#selladosGrid .prod-chip,#seminuevos #usedGrid .prod-chip,#selladosGrid .variant-picker-label,#seminuevos #usedGrid .variant-picker-label{font-size:11px!important;font-weight:750!important}
+@media(max-width:600px){
+#sellados .catalog-section-heading,#seminuevos .catalog-section-heading{padding:15px 13px}
+#selladosGrid.used-grid .prod-name,#seminuevos #usedGrid.used-grid .prod-name{font-size:15px!important}
+#selladosGrid.used-grid .prod-meta,#seminuevos #usedGrid.used-grid .prod-meta{font-size:11px!important}
+#selladosGrid.used-grid .prod-price,#seminuevos #usedGrid.used-grid .prod-price{font-size:17px!important;overflow-wrap:anywhere}
+#selladosGrid.used-grid .prod-usd,#seminuevos #usedGrid.used-grid .prod-usd{font-size:11px!important}
+#selladosGrid .variant-chip,#seminuevos #usedGrid .variant-chip{font-size:10px!important;min-height:28px!important}
+#selladosGrid .prod-chip,#seminuevos #usedGrid .prod-chip,#selladosGrid .variant-picker-label,#seminuevos #usedGrid .variant-picker-label{font-size:10px!important}
+}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -2723,26 +2747,9 @@ nav .logo-wrap{flex:0 0 auto!important}
         <a class="rc-cta" href="https://wa.me/5493584015415?text=Hola%2C%20quiero%20consultar%20por%20las%20cuotas%20sin%20inter%C3%A9s" target="_blank" rel="noopener">Consultar por WhatsApp ›</a>
       </div>
     </section>
-    <div class="hero-feature-stage hero-entry" style="--entry-delay:340ms">
-      <div class="hero-feature-back" aria-hidden="true"></div>
-      <div class="hero-feature-card">
-        <div class="hero-feature-top"><span>IPHONE CLUB</span><span>RÍO CUARTO</span></div>
-        <div class="hero-feature-main">
-          <div class="hero-feature-copy">
-            <span class="hero-feature-label">TU PRÓXIMO EQUIPO</span>
-            <strong>iPhone.</strong>
-            <span>Sellados y seminuevos</span>
-          </div>
-          <img class="hero-feature-image" src="https://i.postimg.cc/282RWSQF/Iphone-17-Pro-Silver-01-removebg-preview.png" alt="iPhone de la colección" fetchpriority="high">
-        </div>
-        <div class="hero-feature-bottom"><span>ENCONTRÁ EL TUYO</span><span>IPHONE CLUB · RC</span></div>
-        <span class="hero-live-shine" aria-hidden="true"></span>
-      </div>
-    </div>
-
     <p class="hero-under hero-entry" style="--entry-delay:500ms">Consultá disponibilidad, medios de pago y opciones de financiación.</p>
     <div class="hero-actions hero-entry" style="--entry-delay:590ms">
-      <a href="#sellados" class="reference-button" onclick="showPage('storePage')">Ver equipos <span>›</span></a>
+      <a href="#seminuevos" class="reference-button" onclick="showPage('storePage')">Ver equipos <span>›</span></a>
       <a href="https://wa.me/5493584015415" target="_blank" rel="noopener" class="reference-button reference-button-secondary">Consultar <span class="reference-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a>
     </div>
     <div class="reference-trust hero-entry" style="--entry-delay:960ms">
@@ -2779,8 +2786,26 @@ nav .logo-wrap{flex:0 0 auto!important}
 
 
 
+<section id="seminuevos" class="catalog-section catalog-used">
+  <div class="catalog-section-heading reveal"><div class="catalog-section-eyebrow">EQUIPOS VERIFICADOS · SEMINUEVOS</div><h2>iPhone <span>Seminuevos.</span></h2><p>Consultá los modelos seminuevos, el estado de la batería y las opciones disponibles.</p></div>
+  <div class="catalog-toolbar">
+    <div class="catalog-toolbar-left">
+      <button class="catalog-filter-trigger" id="usedFilterToggleSecondary" type="button" aria-expanded="false" aria-controls="filterSheetOverlay">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>
+        Filtros
+        <span class="filter-active-count" id="filterActiveCountSecondary" hidden>0</span>
+      </button>
+      <div class="catalog-count"><strong id="usedModelCount">— modelos</strong><span> · </span><span id="usedItemCount">— equipos</span></div>
+    </div>
+    <div class="catalog-sort"><span>Ordenar</span><select id="usedSort" aria-label="Ordenar seminuevos"><option value="recommended">Recomendados</option><option value="price-low">Precio menor</option><option value="price-high">Precio mayor</option><option value="model">Modelo A-Z</option></select></div>
+  </div>
+
+  <div class="used-grid" id="usedGrid"></div>
+  <div class="catalog-empty" id="usedEmpty" hidden>Próximamente publicaremos los iPhone seminuevos disponibles.</div>
+</section>
+
 <section id="sellados" class="catalog-section catalog-sealed">
-  <div class="catalog-section-heading reveal"><div class="catalog-section-eyebrow">IPHONE CLUB · NUEVOS</div><h2>iPhone <span>Sellados.</span></h2><p>Explorá los equipos nuevos y sellados, sus colores, capacidades y precios publicados.</p></div>
+  <div class="catalog-section-heading reveal"><div class="catalog-section-eyebrow">EQUIPOS NUEVOS · SELLADOS</div><h2>iPhone <span>Sellados.</span></h2><p>Explorá los equipos nuevos y sellados, sus colores, capacidades y precios publicados.</p></div>
   <div class="catalog-toolbar">
     <div class="catalog-toolbar-left">
       <button class="catalog-filter-trigger" id="usedFilterToggle" type="button" aria-expanded="false" aria-controls="filterSheetOverlay">
@@ -2832,24 +2857,6 @@ nav .logo-wrap{flex:0 0 auto!important}
 
   <div class="used-grid" id="selladosGrid"></div>
   <div class="catalog-empty" id="sealedEmpty" hidden>Próximamente publicaremos los iPhone sellados disponibles.</div>
-</section>
-
-<section id="seminuevos" class="catalog-section catalog-used">
-  <div class="catalog-section-heading reveal"><div class="catalog-section-eyebrow">IPHONE CLUB · SELECCIONADOS</div><h2>iPhone <span>Seminuevos.</span></h2><p>Consultá los modelos seminuevos, el estado de la batería y las opciones disponibles.</p></div>
-  <div class="catalog-toolbar">
-    <div class="catalog-toolbar-left">
-      <button class="catalog-filter-trigger" id="usedFilterToggleSecondary" type="button" aria-expanded="false" aria-controls="filterSheetOverlay">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>
-        Filtros
-        <span class="filter-active-count" id="filterActiveCountSecondary" hidden>0</span>
-      </button>
-      <div class="catalog-count"><strong id="usedModelCount">— modelos</strong><span> · </span><span id="usedItemCount">— equipos</span></div>
-    </div>
-    <div class="catalog-sort"><span>Ordenar</span><select id="usedSort" aria-label="Ordenar seminuevos"><option value="recommended">Recomendados</option><option value="price-low">Precio menor</option><option value="price-high">Precio mayor</option><option value="model">Modelo A-Z</option></select></div>
-  </div>
-
-  <div class="used-grid" id="usedGrid"></div>
-  <div class="catalog-empty" id="usedEmpty" hidden>Próximamente publicaremos los iPhone seminuevos disponibles.</div>
 </section>
 
 <section id="accesorios">
