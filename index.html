@@ -2575,6 +2575,15 @@ nav .logo-wrap{flex:0 0 auto!important}
 .variant-color-check{margin-left:auto;width:15px;height:15px;flex:0 0 15px;border:1px solid #b9cbd8;border-radius:50%;display:grid;place-items:center;font-size:10px}
 .variant-color-chip.is-selected .variant-color-check{background:#078bd2;color:white;border-color:#078bd2}
 .all-colors-button{align-self:flex-start;border:0;background:transparent;color:#078bd2;font:inherit;font-size:11px;font-weight:750;padding:5px 0;cursor:pointer}.all-colors-button[hidden]{display:none!important}
+ 
+.prod-photo-wrap.has-centered-selection .variant-photo-strip{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,1fr);gap:5px!important;align-items:center!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-item{width:100%!important;height:76%!important;max-width:none!important;min-width:0!important;margin:0!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-item.is-active{height:100%!important;grid-column:2;grid-row:1}
+.prod-photo-wrap.has-centered-selection .variant-photo-item:not(.is-active){grid-row:1}
+.prod-photo-wrap.has-centered-selection .variant-photo-item:not(.is-active) img{opacity:.85}
+.prod-photo-wrap.has-centered-selection .variant-photo-item img{transform:none!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-strip:has(.variant-photo-item:nth-child(4)){display:flex!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-strip:has(.variant-photo-item:nth-child(4)) .variant-photo-item.is-active{flex:1.5 1 0!important}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -3159,12 +3168,20 @@ function selectCatalogVariant(card,group,variant,showSelected=false){
   card._selectedVariantId=variant.id;
 
   const wrap=card.querySelector('.prod-photo-wrap');
-  if(showSelected)wrap?.classList.remove('has-variant-gallery');
+  if(showSelected&&wrap?.querySelectorAll('.variant-photo-item').length>1)wrap.classList.add('has-variant-gallery');
   const photo=card.querySelector('.prod-photo');
   const fallback=card.querySelector('.prod-photo-fallback');
-  card.querySelectorAll('.variant-photo-item').forEach(tile=>{
-    tile.classList.toggle('is-active',tile.getAttribute('aria-label')==='Ver color '+meta.color);
+  const tiles=[...card.querySelectorAll('.variant-photo-item')];
+  const selectedTile=tiles.find(tile=>tile.getAttribute('aria-label')==='Ver color '+meta.color);
+  const others=tiles.filter(tile=>tile!==selectedTile);
+  if(selectedTile)others.splice(Math.floor(others.length/2),0,selectedTile);
+  others.forEach((tile,index)=>{
+    const active=tile===selectedTile;
+    tile.classList.toggle('is-active',active);
+    tile.setAttribute('aria-pressed',String(active));
+    tile.style.order=String(index);
   });
+  wrap?.classList.toggle('has-centered-selection',!!selectedTile&&tiles.length>1);
   if(photo){
     photo.alt=(variant.name||group.modelName)+(meta.color?' '+meta.color:'');
     const matchingPhoto=[...card.querySelectorAll('.variant-photo-item')].find(tile=>tile.getAttribute('aria-label')==='Ver color '+meta.color)?.querySelector('img')?.getAttribute('src');
@@ -3327,7 +3344,7 @@ function renderCustomCards(){
     allColors.type='button';
     allColors.className='all-colors-button';
     allColors.textContent='Ver todos los colores';
-    allColors.hidden=items.length<2;
+    allColors.hidden=true;
     allColors.addEventListener('click',event=>{event.stopPropagation();if(photoGallery.children.length>1)photoWrap.classList.add('has-variant-gallery');});
     photoWrap.append(statusTag,photoGallery,photo,fallback);
 
