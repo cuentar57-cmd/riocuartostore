@@ -2678,6 +2678,12 @@ nav .logo-wrap{flex:0 0 auto!important}
 #selladosGrid .variant-chip,#seminuevos #usedGrid .variant-chip{font-size:10px!important;min-height:28px!important}
 #selladosGrid .prod-chip,#seminuevos #usedGrid .prod-chip,#selladosGrid .variant-picker-label,#seminuevos #usedGrid .variant-picker-label{font-size:10px!important}
 }
+
+.rc-santa-sky{position:fixed;top:env(safe-area-inset-top,0px);left:0;width:100%;height:clamp(120px,24vw,300px);overflow:hidden;pointer-events:none;z-index:50}
+.rc-santa-flight{position:absolute;top:0;left:0;width:clamp(260px,38vw,560px);animation:rc-santa-cross 22s linear infinite}
+.rc-santa-flight img{display:block;width:100%;height:auto}
+@keyframes rc-santa-cross{from{transform:translateX(-110%)}to{transform:translateX(100vw)}}
+@media(prefers-reduced-motion:reduce){.rc-santa-sky{display:none}}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -2727,6 +2733,7 @@ nav .logo-wrap{flex:0 0 auto!important}
 <div id="storePage" class="page active">
 
 <section class="hero">
+  <div class="rc-santa-sky" aria-hidden="true"><div class="rc-santa-flight"><img src="papa-noel-animado.svg" alt="" decoding="async"></div></div>
   <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
   <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
   <div class="hero-inner">
