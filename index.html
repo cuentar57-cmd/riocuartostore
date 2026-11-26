@@ -2592,6 +2592,11 @@ nav .logo-wrap{flex:0 0 auto!important}
  #selladosGrid.used-grid,#usedGrid.used-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;max-width:100%!important}
  #selladosGrid .prod-photo-wrap.has-variant-gallery,#usedGrid .prod-photo-wrap.has-variant-gallery{height:clamp(145px,42vw,185px)!important;min-height:145px!important;width:100%!important}
 }
+
+.prod-photo-wrap.has-centered-selection .variant-photo-item{transform-origin:center center;will-change:auto}
+.prod-photo-wrap.has-centered-selection .variant-photo-item img{transition:opacity .42s ease!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-item.is-active{z-index:2}
+@media(prefers-reduced-motion:reduce){.variant-photo-item,.variant-photo-item img{animation:none!important;transition:none!important}}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -3180,6 +3185,12 @@ function selectCatalogVariant(card,group,variant,showSelected=false){
   const photo=card.querySelector('.prod-photo');
   const fallback=card.querySelector('.prod-photo-fallback');
   const tiles=[...card.querySelectorAll('.variant-photo-item')];
+  const animate=showSelected&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const previousRects=new Map();
+  if(animate)tiles.forEach(tile=>{
+    previousRects.set(tile,tile.getBoundingClientRect());
+    tile.getAnimations?.().forEach(animation=>animation.cancel());
+  });
   const selectedTile=tiles.find(tile=>tile.getAttribute('aria-label')==='Ver color '+meta.color);
   const others=tiles.filter(tile=>tile!==selectedTile);
   if(selectedTile)others.splice(Math.floor(others.length/2),0,selectedTile);
@@ -3202,6 +3213,20 @@ function selectCatalogVariant(card,group,variant,showSelected=false){
     tile.style.order='';
   });
   wrap?.classList.toggle('has-centered-selection',!!selectedTile&&tiles.length>1);
+  if(animate&&selectedTile&&tiles.length>1){
+    tiles.forEach(tile=>{
+      const before=previousRects.get(tile);
+      const after=tile.getBoundingClientRect();
+      if(!before||!before.width||!after.width||!after.height||!tile.animate)return;
+      const dx=before.left+before.width/2-after.left-after.width/2;
+      const dy=before.top+before.height/2-after.top-after.height/2;
+      const scale=Math.min(before.width/after.width,before.height/after.height);
+      tile.animate([
+        {transform:'translate('+dx+'px,'+dy+'px) scale('+scale+')'},
+        {transform:'translate(0,0) scale(1)'}
+      ],{duration:480,easing:'cubic-bezier(.22,.8,.25,1)'});
+    });
+  }
   if(photo){
     photo.hidden=!!wrap?.classList.contains('has-variant-gallery');
     photo.alt=(variant.name||group.modelName)+(meta.color?' '+meta.color:'');
