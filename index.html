@@ -2704,6 +2704,18 @@ nav .logo-wrap{flex:0 0 auto!important}
 #storePage .prod-card.reveal.reveal-pending{transition:opacity .48s ease-out,transform .62s cubic-bezier(.16,1,.3,1)!important;transition-delay:var(--reveal-delay,0ms)!important}
 #storePage .prod-card.reveal.reveal-pending.visible{opacity:1!important;transform:translate3d(0,0,0) scale(1)!important}
 @media(prefers-reduced-motion:reduce){#storePage .prod-card.reveal.reveal-pending:not(.visible),#storePage .prod-card.reveal.reveal-pending.visible{opacity:1!important;transform:none!important;transition:none!important}}
+
+.detail-media-column{display:flex;flex-direction:column;gap:14px;min-width:0;align-self:start;width:100%}
+.detail-media-column .detail-media{width:100%;box-sizing:border-box}
+#detailAllVariants{margin:0!important;padding:16px;border:1px solid #c5dce9;border-radius:18px;background:#fff;box-sizing:border-box}
+#detailAllVariants h3{font-size:17px;margin:0 0 5px;color:#193750}
+#detailAllVariants .detail-variant-choice{display:flex;flex-wrap:nowrap;width:100%;align-items:center;gap:12px;padding:10px;min-height:76px}
+.detail-variant-choice img{width:58px;height:66px;object-fit:contain;flex-shrink:0}
+.detail-variant-info{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0}
+.detail-variant-info strong{font-size:13px;line-height:1.35}
+.detail-variant-info small{font-size:14px;color:#0875a6}
+.detail-variant-check{font-size:19px;color:#0875a6;flex-shrink:0}
+@media(max-width:600px){#detailAllVariants{padding:12px}.detail-variant-choice img{width:48px;height:56px}}
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
 </head>
@@ -2940,9 +2952,12 @@ nav .logo-wrap{flex:0 0 auto!important}
   <div class="detail-wrap">
     <div class="inner-back" onclick="showPage('storePage')"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Volver al catálogo</div>
     <div class="detail-layout">
+      <div class="detail-media-column">
       <div class="detail-media">
         <img id="detailImage" src="" alt="Imagen del equipo seleccionado">
         <span class="detail-image-caption">IPHONE CLUB · RÍO CUARTO</span>
+      </div>
+      <section id="detailAllVariants" hidden></section>
       </div>
       <div class="detail-column">
         <div class="detail-heading">
@@ -3676,7 +3691,10 @@ function renderDetailOptions(p){
       button.classList.toggle('is-selected',active);button.setAttribute('aria-pressed',String(active));
       const label=document.createElement('strong');label.textContent=[m.color,m.capacity,!m.isSealed&&m.battery?'Batería '+m.battery:''].filter(Boolean).join(' · ');
       const price=document.createElement('small');price.textContent=getDetailPrice(item.p)>0?money(getDetailPrice(item.p)):'Consultar precio';
-      button.append(label,price);button.onclick=()=>{if(!active)openDetail(item.id);};variants.append(button);
+      const info=document.createElement('span');info.className='detail-variant-info';info.append(label,price);
+      if(item.p.image){const img=document.createElement('img');img.src=item.p.image;img.alt=m.color||'iPhone';img.loading='lazy';img.onerror=()=>img.remove();button.append(img);}
+      const check=document.createElement('span');check.className='detail-variant-check';check.textContent=active?'✓':'›';
+      button.append(info,check);button.onclick=()=>{if(!active)openDetail(item.id);};variants.append(button);
     });
   }
   const capacityBlock=document.getElementById('detailCapacityBlock');
