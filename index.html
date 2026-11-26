@@ -2489,21 +2489,79 @@ nav .logo-wrap{flex:0 0 auto!important}
 }
 
 
-/* Galería real de colores: fotografías del Drive dentro de cada tarjeta */
-.variant-photo-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;width:100%!important;height:100%!important;padding:32px 10px 10px!important;box-sizing:border-box!important;align-content:center!important;overflow:hidden!important}
-.variant-photo-tile{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;min-width:0!important;min-height:80px!important;padding:5px!important;overflow:hidden!important;border:1px solid #e0edf5!important;border-radius:11px!important;background:rgba(255,255,255,.82)!important;cursor:pointer!important}
-.variant-photo-tile img{display:block!important;width:100%!important;height:100%!important;max-height:115px!important;object-fit:contain!important;mix-blend-mode:multiply!important}
-.variant-photo-tile span{position:absolute!important;left:3px!important;right:3px!important;bottom:3px!important;padding:3px 4px!important;border-radius:6px!important;background:rgba(255,255,255,.92)!important;color:#456477!important;font-size:.48rem!important;font-weight:850!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-.variant-photo-tile.is-active{border-color:#078bd2!important;box-shadow:inset 0 0 0 1px #078bd2,0 3px 9px rgba(7,139,210,.12)!important}
-.variant-photo-tile:focus-visible{outline:2px solid #078bd2!important;outline-offset:2px!important}
+/* Galería de producto: todos los colores visibles juntos, como una foto de catálogo */
+.variant-photo-strip{
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:2px!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  padding:24px 9px 9px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+.variant-photo-item{
+  display:flex!important;
+  flex:1 1 0!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:0!important;
+  max-width:calc(100% / 6)!important;
+  height:100%!important;
+  min-height:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+}
+.variant-photo-item img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:148px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  mix-blend-mode:multiply!important;
+  filter:drop-shadow(0 5px 6px rgba(31,81,110,.10))!important;
+  transition:transform .2s ease!important;
+}
+.variant-photo-item:hover img{transform:translateY(-2px) scale(1.04)!important}
+.variant-photo-item:focus-visible{outline:2px solid #078bd2!important;outline-offset:-2px!important;border-radius:7px!important}
 .prod-photo-wrap.has-variant-gallery>.prod-photo{display:none!important}
 .prod-photo-wrap.has-variant-gallery>.prod-photo-fallback{display:none!important}
 @media(max-width:700px){
- .prod-photo-wrap.has-variant-gallery{padding:34px 6px 7px!important}
- .variant-photo-grid{gap:4px!important;padding:34px 5px 6px!important}
- .variant-photo-tile{min-height:65px!important;padding:2px!important;border-radius:8px!important}
- .variant-photo-tile img{max-height:78px!important}
- .variant-photo-tile span{font-size:.39rem!important;padding:2px!important}
+ .prod-photo-wrap.has-variant-gallery{
+   grid-column:1 / -1!important;
+   grid-row:1!important;
+   width:100%!important;
+   height:clamp(138px,42vw,175px)!important;
+   min-height:138px!important;
+   padding:0!important;
+   border-right:0!important;
+   border-bottom:1px solid #e5f0f6!important;
+ }
+ .variant-photo-strip{gap:1px!important;padding:25px 8px 7px!important}
+ .variant-photo-item{max-width:calc(100% / 6)!important}
+ .variant-photo-item img{max-height:135px!important}
+ .prod-card.custom-card:has(.variant-photo-strip){
+   display:flex!important;
+   flex-direction:column!important;
+   min-height:0!important;
+ }
+ .prod-card.custom-card:has(.variant-photo-strip) .prod-card-body{padding:10px 11px 0!important}
+ .prod-card.custom-card:has(.variant-photo-strip) .prod-card-right{padding:9px 11px 12px!important}
+}
+@media(max-width:360px){
+ .prod-photo-wrap.has-variant-gallery{height:132px!important;min-height:132px!important}
+ .variant-photo-strip{padding-left:5px!important;padding-right:5px!important}
+ .variant-photo-item img{max-height:120px!important}
 }
 
 </style>
@@ -3212,7 +3270,7 @@ function renderCustomCards(){
     fallback.textContent='Imagen ilustrativa';
     
     const photoGallery=document.createElement('div');
-    photoGallery.className='variant-photo-grid';
+    photoGallery.className='variant-photo-strip';
     const photoItems=(initial.gallery||[]).filter(item=>item&&item.url);
     const uniquePhotoItems=[];
     const seenPhotoUrls=new Set();
@@ -3224,7 +3282,7 @@ function renderCustomCards(){
     uniquePhotoItems.slice(0,6).forEach(item=>{
       const tile=document.createElement('button');
       tile.type='button';
-      tile.className='variant-photo-tile';
+      tile.className='variant-photo-item';
       tile.setAttribute('aria-label','Ver color '+(item.color||'del modelo'));
       const tileImage=document.createElement('img');
       tileImage.src=item.url;
@@ -3232,9 +3290,6 @@ function renderCustomCards(){
       tileImage.loading='lazy';
       tileImage.onerror=()=>{tile.style.display='none';};
       tile.appendChild(tileImage);
-      const tileLabel=document.createElement('span');
-      tileLabel.textContent=item.color||'';
-      tile.appendChild(tileLabel);
       const matching=group.variants.find(candidate=>getDetailMeta(candidate).color.toLocaleLowerCase('es')===String(item.color||'').toLocaleLowerCase('es'));
       if(matching&&matching.id===initial.id)tile.classList.add('is-active');
       tile.addEventListener('click',event=>{
