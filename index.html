@@ -2577,23 +2577,20 @@ nav .logo-wrap{flex:0 0 auto!important}
 .all-colors-button{align-self:flex-start;border:0;background:transparent;color:#078bd2;font:inherit;font-size:11px;font-weight:750;padding:5px 0;cursor:pointer}.all-colors-button[hidden]{display:none!important}
  
 
-/* Galería adaptable al ancho de cada card. */
-.prod-photo-wrap.has-centered-selection .variant-photo-strip{display:flex!important;align-items:center!important;justify-content:center!important;gap:2px!important;padding:24px 4px 5px!important}
-.prod-photo-wrap.has-centered-selection .gallery-side{display:flex;flex:1 1 0;min-width:0;height:100%;align-items:center;justify-content:center;gap:2px}
-.prod-photo-wrap.has-centered-selection .gallery-center{display:flex;flex:1.25 1 0;min-width:0;height:100%;align-items:center;justify-content:center}
+/* La galería ocupa toda la foto; nunca comparte espacio con la imagen individual. */
+#selladosGrid .prod-photo-wrap.has-variant-gallery>.prod-photo,#usedGrid .prod-photo-wrap.has-variant-gallery>.prod-photo,
+#selladosGrid .prod-photo-wrap.has-variant-gallery>.prod-photo-fallback,#usedGrid .prod-photo-wrap.has-variant-gallery>.prod-photo-fallback{display:none!important}
+#selladosGrid .prod-photo-wrap.has-variant-gallery>.variant-photo-strip,#usedGrid .prod-photo-wrap.has-variant-gallery>.variant-photo-strip{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:3px!important;padding:24px 5px 5px!important;box-sizing:border-box!important}
+.prod-photo-wrap.has-centered-selection .gallery-side,.prod-photo-wrap.has-centered-selection .gallery-center{display:contents!important}
 .prod-photo-wrap.has-centered-selection .variant-photo-item{flex:1 1 0!important;max-width:none!important;min-width:0!important;height:90%!important;margin:0!important}
-.prod-photo-wrap.has-centered-selection .variant-photo-item.is-active{height:100%!important}
+.prod-photo-wrap.has-centered-selection .variant-photo-item.is-active{flex:1.3 1 0!important;height:100%!important}
 .prod-photo-wrap.has-centered-selection .variant-photo-item img{width:100%!important;height:100%!important;max-height:100%!important;object-fit:contain!important;transform:none!important;filter:none!important}
-.prod-photo-wrap.has-centered-selection .variant-photo-item:not(.is-active) img{opacity:.92}
-.prod-photo-wrap.has-centered-selection .gallery-side:empty{flex:.45 1 0}
+.prod-photo-wrap.has-centered-selection .variant-photo-item:not(.is-active) img{opacity:.95}
 .variant-color-chip>span:nth-child(2){flex:1;min-width:0;white-space:normal!important;overflow-wrap:anywhere}
 .variant-color-chip .variant-color-check{flex-shrink:0!important}
 @media(max-width:700px){
  #selladosGrid.used-grid,#usedGrid.used-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;max-width:100%!important}
  #selladosGrid .prod-photo-wrap.has-variant-gallery,#usedGrid .prod-photo-wrap.has-variant-gallery{height:clamp(145px,42vw,185px)!important;min-height:145px!important;width:100%!important}
- .prod-photo-wrap.has-centered-selection .variant-photo-strip{padding:23px 3px 5px!important;gap:1px!important}
- .prod-photo-wrap.has-centered-selection .gallery-side{gap:1px}
- .prod-photo-wrap.has-centered-selection .gallery-center{flex:1.15 1 0}
 }
 </style>
 <link rel="stylesheet" href="payment-sheet.css?v=20261124-5">
@@ -3206,11 +3203,12 @@ function selectCatalogVariant(card,group,variant,showSelected=false){
   });
   wrap?.classList.toggle('has-centered-selection',!!selectedTile&&tiles.length>1);
   if(photo){
+    photo.hidden=!!wrap?.classList.contains('has-variant-gallery');
     photo.alt=(variant.name||group.modelName)+(meta.color?' '+meta.color:'');
     const matchingPhoto=[...card.querySelectorAll('.variant-photo-item')].find(tile=>tile.getAttribute('aria-label')==='Ver color '+meta.color)?.querySelector('img')?.getAttribute('src');
     const imageUrl=matchingPhoto||variant.image;
     if(imageUrl){
-      photo.style.display='block';
+      photo.style.setProperty('display',photo.hidden?'none':'block','important');
       if(photo.getAttribute('src')!==imageUrl)photo.src=imageUrl;
       if(fallback)fallback.style.display='none';
       photo.onerror=()=>{
@@ -3350,9 +3348,10 @@ function renderCustomCards(){
       tileImage.src=item.url;
       tileImage.alt=group.modelName+' '+item.color;
       tileImage.loading='lazy';
+      tileImage.onload=()=>window.iPhoneClubFitImage?.(tileImage);
       tileImage.onerror=()=>{
         tile.remove();
-        if(photoGallery.querySelectorAll('.variant-photo-item').length<2)photoWrap.classList.remove('has-variant-gallery','has-centered-selection');
+        if(photoGallery.querySelectorAll('.variant-photo-item').length<2){photoWrap.classList.remove('has-variant-gallery','has-centered-selection');photo.hidden=false;if(photo.getAttribute('src'))photo.style.setProperty('display','block','important');}
       };
       tile.appendChild(tileImage);
       tile.addEventListener('click',event=>{
