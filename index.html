@@ -3128,7 +3128,7 @@ async function loadCatalogFromSupabase(){
   localStorage.removeItem('products_cache');
   try{
     const fields='id,external_id,category,name,model,storage,color,battery_percent,condition_notes,price_usd,price_ars,stock,image_url,description,specifications,benefits,is_active,sort_order';
-    const url=SUPABASE_URL+'/rest/v1/catalog_products?select='+encodeURIComponent(fields)+'&is_active=eq.true&order=sort_order.asc,created_at.desc';
+    const url=SUPABASE_URL+'/rest/v1/catalog_products?select='+encodeURIComponent(fields)+'&is_active=eq.true&order=sort_order.asc,created_at.asc';
     const response=await fetch(url,{headers:{'apikey':SUPABASE_PUBLISHABLE_KEY,'Accept':'application/json'},cache:'no-store'});
     if(!response.ok)throw new Error('Supabase: error HTTP '+response.status);
     const rows=await response.json();
@@ -3169,6 +3169,14 @@ async function loadCatalogFromSupabase(){
   }
 }
 
+function getCanonicalCatalogModel(p){
+  const raw=String(p?.model||p?.name||'iPhone').trim();
+  const match=raw.match(/\biphone\s*(\d{1,2})(?!\d)\s*(pro\s*max|pro|plus|max|mini|air|e\b)?/i);
+  if(!match)return raw;
+  const suffix=(match[2]||'').toLowerCase().replace(/\s+/g,'');
+  const labels={promax:' Pro Max',pro:' Pro',plus:' Plus',max:' Max',mini:' mini',air:' Air',e:'e'};
+  return 'iPhone '+match[1]+(labels[suffix]||'');
+}
 function getCatalogModelClass(name){
   const match=String(name||'').match(/iphone\s*(\d+)(?:\s*(pro\s*max|pro|max|plus))?/i);
   if(!match)return 'other';
@@ -3353,14 +3361,19 @@ function selectCatalogVariant(card,group,variant,showSelected=false){
   if(selectedTile)others.splice(Math.floor(others.length/2),0,selectedTile);
   const strip=wrap?.querySelector('.variant-photo-strip');
   if(strip&&selectedTile&&tiles.length>1){
-    const rest=tiles.filter(tile=>tile!==selectedTile);
+    const rest=tiles.filter(tile=>tile!==selectedTile).sort((a,b)=>Number(a.dataset.galleryOrder)-Number(b.dataset.galleryOrder));
+    const visible=new Set([selectedTile,...rest.slice(0,2)]);
+    tiles.forEach(tile=>{tile.style.setProperty('display',visible.has(tile)?'':'none',visible.has(tile)?'':'important');});
+    strip.style.setProperty('--phone-count',String(visible.size));
     const left=document.createElement('div');left.className='gallery-side';
     const center=document.createElement('div');center.className='gallery-center';
     const right=document.createElement('div');right.className='gallery-side';
-    const split=Math.ceil(rest.length/2);
-    rest.slice(0,split).forEach(tile=>left.appendChild(tile));
+    const shown=rest.slice(0,2);
+    const split=Math.ceil(shown.length/2);
+    shown.slice(0,split).forEach(tile=>left.appendChild(tile));
     center.appendChild(selectedTile);
-    rest.slice(split).forEach(tile=>right.appendChild(tile));
+    shown.slice(split).forEach(tile=>right.appendChild(tile));
+    rest.slice(2).forEach(tile=>right.appendChild(tile));
     strip.replaceChildren(left,center,right);
   }
   tiles.forEach(tile=>{
@@ -3467,7 +3480,7 @@ function renderCustomCards(){
   Object.values(customProducts).forEach(product=>{
     if(!product||!product.id||hiddenIds.has(product.id))return;
     const category=product.category||'seminuevo';
-    const modelName=String(product.model||product.name||'iPhone').trim();
+    const modelName=getCanonicalCatalogModel(product);
     const groupKey=category+'::'+modelName.toLocaleLowerCase('es');
     if(!grouped.has(groupKey)){
       grouped.set(groupKey,{
@@ -3526,11 +3539,13 @@ function renderCustomCards(){
       if(url&&!photoItems.has(key))photoItems.set(key,{url,color,variant:v});
     });
     const items=[...photoItems.values()];
-    photoGallery.style.setProperty('--phone-count',String(items.length));
-    items.forEach(item=>{
+    photoGallery.style.setProperty('--phone-count',String(Math.min(items.length,3)));
+    items.forEach((item,photoIndex)=>{
       const tile=document.createElement('button');
       tile.type='button';
       tile.className='variant-photo-item';
+      tile.dataset.galleryOrder=String(photoIndex);
+      if(photoIndex>=3)tile.style.setProperty('display','none','important');
       tile.setAttribute('aria-label','Ver color '+item.color);
       const tileImage=document.createElement('img');
       tileImage.src=item.url;
@@ -3692,11 +3707,11 @@ function getDetailProductEntries(){
 
 function getDetailRelatedProducts(p){
   const meta=getDetailMeta(p);
-  const name=String(p?.name||'').trim().toLowerCase();
+  const name=getCanonicalCatalogModel(p).toLowerCase();
   if(!name||!meta.color)return [{id:p.id||'',p}];
   return getDetailProductEntries().filter(item=>{
     const other=getDetailMeta(item.p);
-    return String(item.p.name||'').trim().toLowerCase()===name
+    return getCanonicalCatalogModel(item.p).toLowerCase()===name
       && other.color.toLowerCase()===meta.color.toLowerCase()
       && other.isSealed===meta.isSealed;
   });
