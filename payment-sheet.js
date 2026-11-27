@@ -43,7 +43,6 @@
       : {capacity:'',color:'',battery:'',isSealed:product.tag === 'Sellado'};
     const ars = Number(product.price) || 0;
     const usd = Number(product.usd) || 0;
-    const installments = getInstallmentOptions(product);
     let selected = null;
 
     function updateWhatsapp() {
@@ -115,42 +114,13 @@
     }
     root.append(head, intro, prices);
 
-    if (installments.length) {
-      const creditTitle = document.createElement('div');
-      creditTitle.className = 'ic-inline-pay-credit-title';
-      const icon = paymentIcon('card');
-      creditTitle.append(icon, document.createTextNode('Opciones en cuotas'));
-      const creditNote = document.createElement('p');
-      creditNote.className = 'ic-inline-pay-note';
-      creditNote.textContent = 'Valores por cuota cargados en el catálogo. Tarjetas, intereses y condiciones a confirmar.';
-      const first = document.createElement('div');
-      first.className = 'ic-inline-pay-options';
-      const extra = document.createElement('div');
-      extra.className = 'ic-inline-pay-options ic-inline-pay-extra';
-      extra.id = 'icInlinePayExtra';
-      extra.hidden = true;
-      installments.forEach((plan, index) => {
-        makeRow(index < 2 ? first : extra, 'cuotas-' + plan.count,
-          plan.count + ' cuotas de', formatARS(plan.amount));
-      });
-      root.append(creditTitle, creditNote, first);
-      if (installments.length > 2) {
-        const more = document.createElement('button');
-        more.className = 'ic-inline-pay-more';
-        more.type = 'button';
-        more.setAttribute('aria-controls', 'icInlinePayExtra');
-        more.setAttribute('aria-expanded', 'false');
-        more.textContent = 'Ver más cuotas (' + (installments.length - 2) + ')';
-        more.addEventListener('click', () => {
-          extra.hidden = !extra.hidden;
-          more.setAttribute('aria-expanded', String(!extra.hidden));
-          more.textContent = extra.hidden
-            ? 'Ver más cuotas (' + (installments.length - 2) + ')'
-            : 'Ver menos cuotas';
-        });
-        root.append(more, extra);
-      }
-    }
+    const creditTitle = document.createElement('div');
+    creditTitle.className = 'ic-inline-pay-credit-title';
+    creditTitle.append(paymentIcon('card'), document.createTextNode('Hasta 12 cuotas sin interés'));
+    creditTitle.style.fontSize = '1.2rem';
+    creditTitle.style.fontWeight = '800';
+    creditTitle.style.color = '#0875a6';
+    root.append(creditTitle);
 
     const selection = document.createElement('p');
     selection.className = 'ic-inline-pay-status';
