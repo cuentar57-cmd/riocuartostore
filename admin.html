@@ -335,7 +335,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <div class="login-title">Panel Admin</div>
     <div class="login-sub">iPhone Club · Río Cuarto</div>
     <input type="email" id="adminEmail" class="login-input" placeholder="Correo de administrador" autocomplete="username" required>
-    <input type="password" id="pwInput" class="login-input" placeholder="Contraseña de Supabase" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="password" id="pwInput" class="login-input" placeholder="Contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">Ingresar →</button>
     <div id="loginError" class="login-error">No se pudo iniciar sesión</div>
   </div>
@@ -412,10 +412,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
           Agregar producto
         </button>
-        <button class="sb-btn" onclick="showView('instrucciones')">
-          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/></svg>
-          Conexión Supabase
-        </button>
+        
       </div>
     </aside>
 
@@ -479,16 +476,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <div class="prod-grid" id="prodGrid"></div>
       </div>
 
-      <div id="view-instrucciones" style="display:none">
-        <div class="supabase-panel">
-          <h3>Conexión segura con Supabase</h3>
-          <p>Los productos, las imágenes, el stock y los precios se administran desde esta base de datos. Solo los usuarios habilitados pueden realizar cambios.</p>
-          <p>Proyecto conectado:</p>
-          <div class="url-display">
-            <code id="connectedUrl">—</code>
-            <button class="url-copy-btn" onclick="copyApiUrl()">Copiar URL</button>
-          </div>
-        </div>
+      <div id="view-instrucciones" hidden style="display:none">
+        <div id="connectedUrl" hidden></div>
       </div>
     </main>
   </div>
@@ -579,7 +568,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <button class="add-row-btn" onclick="addSpec()">+ Agregar especificación manual</button>
         </div>
       </div>
-      <div class="form-row full">
+      <div class="form-row full" hidden style="display:none!important">
         <div class="form-group">
           <label class="form-label">Puntos destacados</label>
           <div class="spec-quick-btns">
@@ -600,7 +589,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <button class="cancel-btn" onclick="closeModal()">Cancelar</button>
       <button class="save-btn" id="saveBtn" onclick="saveProduct()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Guardar en Supabase
+        Guardar producto
       </button>
     </div>
   </div>
@@ -843,7 +832,7 @@ async function refreshAll(){
     return rows;
   }catch(error){
     setSyncStatus('error','Sin conexión');
-    toast('error','❌','Error de Supabase: '+error.message);
+    toast('error','❌','No se pudo completar la operación: '+error.message);
     throw error;
   }
 }
@@ -1013,11 +1002,11 @@ async function toggleHide(id){
 // ═══════════════════════════════════════════════════════════════
 
 async function deleteProduct(id){
-  if(!confirm('¿Eliminar definitivamente este producto de Supabase? Esta acción no se puede deshacer.'))return;
+  if(!confirm('¿Eliminar definitivamente este producto del catálogo? Esta acción no se puede deshacer.'))return;
   try{
     await supabaseRequest('DELETE','catalog_products?id=eq.'+encodeURIComponent(id),null,{prefer:'return=minimal'});
     await refreshAll();
-    toast('success','✅','Producto eliminado de Supabase');
+    toast('success','✅','Producto eliminado del catálogo');
   }catch(e){setSyncStatus('error','Error');toast('error','❌',e.message)}
 }
 
@@ -1157,7 +1146,7 @@ async function saveProduct(){
     else await supabaseRequest('POST','catalog_products',data,{prefer:'return=minimal'});
     closeModal();
     await refreshAll();
-    toast('success','✅',id?'Producto actualizado':'Producto guardado en Supabase');
+    toast('success','✅',id?'Producto actualizado':'Producto guardado');
   }catch(error){toast('error','❌','Error al guardar: '+error.message)}
   finally{button.disabled=false;button.innerHTML=previous}
 }
@@ -1192,7 +1181,7 @@ function setSyncStatus(state, label){
 
 
 function copyApiUrl(){
-  navigator.clipboard.writeText(SUPABASE_URL).then(()=>toast('success','✅','URL de Supabase copiada'));
+  navigator.clipboard.writeText(SUPABASE_URL).then(()=>toast('success','✅','URL copiada'));
 }
 
 let toastTimer;
