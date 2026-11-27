@@ -2740,6 +2740,20 @@ nav .logo-wrap{flex:0 0 auto!important}
 #storePage #sellados #selladosGrid .prod-card.custom-card .prod-actions .prod-payment-btn{background:#edf7fc!important;color:#0875a6!important;border:1px solid #c3dfed!important}
 }
 </style>
+<style>
+/* Carril navideño independiente y escala uniforme de fotografías */
+#storePage>.hero>.rc-santa-sky{position:relative!important;top:auto!important;left:auto!important;width:calc(100% + 36px)!important;margin:-12px -18px 12px!important;height:clamp(105px,14vw,190px)!important;overflow:hidden!important;z-index:1!important}
+#storePage>.hero>.rc-santa-sky .rc-santa-flight{top:50%!important;width:clamp(240px,32vw,430px)!important;animation:rc-santa-lane 22s linear infinite}
+@keyframes rc-santa-lane{from{transform:translate(-110%,-50%)}to{transform:translate(100vw,-50%)}}
+#storePage :is(#usedGrid,#selladosGrid) .prod-card .prod-photo-wrap{height:clamp(195px,21vw,244px)!important;min-height:195px!important}
+#storePage :is(#usedGrid,#selladosGrid) .prod-card .prod-photo-wrap:not(.has-variant-gallery)>.prod-photo{width:40%!important;height:calc(100% - 29px)!important;max-width:40%!important;max-height:calc(100% - 29px)!important;padding:0!important;object-fit:contain!important;object-position:center!important;align-self:center!important;margin:19px auto 0!important}
+@media(max-width:700px){
+#storePage>.hero>.rc-santa-sky{width:calc(100% + 28px)!important;margin:-8px -14px 10px!important;height:112px!important}
+#storePage>.hero>.rc-santa-sky .rc-santa-flight{width:250px!important}
+#storePage :is(#usedGrid,#selladosGrid) .prod-card .prod-photo-wrap{height:clamp(145px,42vw,185px)!important;min-height:145px!important}
+}
+@media(prefers-reduced-motion:reduce){#storePage>.hero>.rc-santa-sky{display:none!important}}
+</style>
 </head>
 <body class="loading">
 
