@@ -712,9 +712,9 @@ function renderDrivePhotos(){
   grid.replaceChildren();
   if(drivePhotoError){status.textContent='No se pudieron cargar las fotos: '+drivePhotoError;return;}
   const key=modelKey(model);
-  const family=k=>k.replace(/promax$/,'pro');
+  const family=k=>k.replace(/pro\s*max$/,'pro');
   const exact=drivePhotos.filter(row=>modelKey(row.model)===key);
-  const shared=/pro(?:max)?$/.test(key)?drivePhotos.filter(row=>family(modelKey(row.model))===family(key)&&modelKey(row.model)!==key):[];
+  const shared=/pro(?:\s*max)?$/.test(key)?drivePhotos.filter(row=>family(modelKey(row.model))===family(key)&&modelKey(row.model)!==key):[];
   const colors=new Set(exact.map(row=>modelKey(row.color)));
   const photos=[...exact,...shared.filter(row=>!colors.has(modelKey(row.color)))];
   if(!model){status.textContent='Seleccioná un modelo para ver sus fotografías.';return;}
