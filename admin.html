@@ -534,8 +534,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <label class="form-label">Imagen del producto</label>
           <input type="url" class="form-input" id="f-image" placeholder="Elegí una imagen abajo o pegá una URL HTTPS" inputmode="url" oninput="markDriveSelection()">
           <div class="drive-picker">
-            <h4>Fotos de Google Drive por color</h4>
-            <p class="drive-hint">Elegí el modelo de arriba para ver las fotos disponibles. Tocá una imagen para asignarla al equipo sin modificar el archivo original.</p>
+            
             <label for="f-color" class="form-label">Color del equipo</label>
             <input type="text" class="form-input" id="f-color" placeholder="Ej.: Negro, Rosa, Azul Titanio">
             <p class="drive-photo-status" id="drivePhotoStatus">Cargando fotos…</p>
@@ -712,11 +711,16 @@ function renderDrivePhotos(){
   const status=document.getElementById('drivePhotoStatus');
   grid.replaceChildren();
   if(drivePhotoError){status.textContent='No se pudieron cargar las fotos: '+drivePhotoError;return;}
-  const photos=drivePhotos.filter(row=>modelKey(row.model)===modelKey(model));
+  const key=modelKey(model);
+  const family=k=>k.replace(/promax$/,'pro');
+  const exact=drivePhotos.filter(row=>modelKey(row.model)===key);
+  const shared=/pro(?:max)?$/.test(key)?drivePhotos.filter(row=>family(modelKey(row.model))===family(key)&&modelKey(row.model)!==key):[];
+  const colors=new Set(exact.map(row=>modelKey(row.color)));
+  const photos=[...exact,...shared.filter(row=>!colors.has(modelKey(row.color)))];
   if(!model){status.textContent='Seleccioná un modelo para ver sus fotografías.';return;}
   status.textContent=photos.length
    ? photos.length+' fotos disponibles. Seleccioná el color que corresponde al equipo.'
-   : 'Sin fotos de este modelo en Drive. Podés ingresar una URL manual.';
+   : 'Sin fotos disponibles. Podés ingresar una URL manual.';
   photos.forEach(photo=>{
     const button=document.createElement('button');
     button.type='button';
