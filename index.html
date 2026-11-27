@@ -2680,7 +2680,7 @@ nav .logo-wrap{flex:0 0 auto!important}
 }
 
 .rc-santa-sky{position:absolute;top:12px;left:0;width:100%;height:clamp(120px,24vw,300px);overflow:hidden;pointer-events:none;z-index:50}
-.rc-santa-flight{position:absolute;top:0;left:0;width:clamp(260px,38vw,560px);animation:rc-santa-cross 22s linear infinite}
+.rc-santa-flight{position:absolute;top:0;left:0;width:clamp(260px,38vw,560px);animation:rc-santa-cross 14s linear infinite}
 .rc-santa-flight img{display:block;width:100%;height:auto}
 @keyframes rc-santa-cross{from{transform:translateX(-110%)}to{transform:translateX(100vw)}}
 @media(prefers-reduced-motion:reduce){.rc-santa-sky{display:none}}
@@ -2743,7 +2743,7 @@ nav .logo-wrap{flex:0 0 auto!important}
 <style>
 /* Carril navideño independiente y escala uniforme de fotografías */
 #storePage>.hero>.rc-santa-sky{position:relative!important;top:auto!important;left:auto!important;width:calc(100% + 36px)!important;margin:-12px -18px 12px!important;height:clamp(105px,14vw,190px)!important;overflow:hidden!important;z-index:1!important}
-#storePage>.hero>.rc-santa-sky .rc-santa-flight{top:50%!important;width:clamp(240px,32vw,430px)!important;animation:rc-santa-lane 22s linear infinite}
+#storePage>.hero>.rc-santa-sky .rc-santa-flight{top:50%!important;width:clamp(240px,32vw,430px)!important;animation:rc-santa-lane 14s linear infinite}
 @keyframes rc-santa-lane{from{transform:translate(-110%,-50%)}to{transform:translate(100vw,-50%)}}
 #storePage :is(#usedGrid,#selladosGrid) .prod-card .prod-photo-wrap{height:clamp(195px,21vw,244px)!important;min-height:195px!important}
 #storePage :is(#usedGrid,#selladosGrid) .prod-card .prod-photo-wrap:not(.has-variant-gallery)>.prod-photo{width:56%!important;height:calc(100% - 29px)!important;max-width:56%!important;max-height:calc(100% - 29px)!important;padding:0!important;object-fit:contain!important;object-position:center!important;align-self:center!important;margin:19px auto 0!important}
@@ -2759,7 +2759,8 @@ nav .logo-wrap{flex:0 0 auto!important}
 .rc-card-gift strong{font-family:inherit;font-size:10px;font-weight:850;letter-spacing:.13em;color:#ffd38a}
 .rc-card-gift span{font-family:inherit;font-size:12px;font-weight:700;letter-spacing:.01em}
 @media(max-width:700px){.rc-card-gift span{font-size:10px;line-height:1.35}.rc-card-gift strong{font-size:9px}}
-</style></head>
+</style><style>#installmentsBox .rc-detail-finance{font-size:clamp(18px,3vw,24px)!important;font-weight:850!important;line-height:1.25!important;color:#0875a6!important;margin:10px 0 0!important}</style>
+</head>
 <body class="loading">
 
 <div id="loaderScreen" role="status" aria-live="polite">
@@ -3871,7 +3872,8 @@ function openDetail(id){
   paymentTitle.append(paymentIcon,document.createTextNode('Medios de pago y financiación'));
   const paymentCopy=document.createElement('p');
   paymentCopy.className='detail-payment-copy';
-  paymentCopy.textContent='Consultá por WhatsApp las opciones disponibles para este equipo, incluyendo financiación en 3, 9 y 12 cuotas sin interés y sus condiciones.';
+  paymentCopy.textContent='Hasta 12 cuotas sin interés';
+  paymentCopy.classList.add('rc-detail-finance');
   payment.append(paymentTitle,paymentCopy);
 
   document.getElementById('detailAddBtn').onclick=()=>addToCartDirect((p.name||'iPhone')+' '+(p.storage||''),'📱',pricePesos);
