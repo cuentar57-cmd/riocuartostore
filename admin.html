@@ -554,8 +554,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <label class="form-label">Especificaciones técnicas</label>
           <div class="spec-quick-btns" id="specQuickBtns">
             <span class="spec-quick-label">Agregar rápido:</span>
-            <button type="button" class="spec-quick" onclick="addSpecKey('Pantalla')">Pantalla</button>
-            <button type="button" class="spec-quick" onclick="addSpecKey('Chip')">Chip</button>
+            
+            
             <button type="button" class="spec-quick" onclick="addSpecKey('Almacenamiento')">Almacenamiento</button>
             <button type="button" class="spec-quick" onclick="addSpecKey('Batería')">Batería</button>
             <button type="button" class="spec-quick" onclick="addSpecKey('Color')">Color</button>
@@ -1036,7 +1036,7 @@ function openModal(id){
     if(p.specs)Object.entries(p.specs).forEach(([k,v])=>addSpec(String(k),String(v)));
     if(p.benefits)p.benefits.forEach(b=>addBen(String(b)));
   }else{
-    ['Pantalla','Chip','Almacenamiento','Batería','Color'].forEach(k=>addSpec(k,''));
+    ['Almacenamiento','Batería','Color'].forEach(k=>addSpec(k,''));
     for(let i=0;i<3;i++)addBen('');
   }
   populateDriveModels();
@@ -1096,7 +1096,7 @@ function addSpec(key='',val='', focusVal=false){
   const id = 'spec-'+(++specCount);
   const d = document.createElement('div');
   d.className='list-item spec-pair';d.id=id;
-  d.innerHTML=`<input type="text" class="spec-key" value="${key.replace(/"/g,'&quot;')}" placeholder="ej: Chip">
+  d.innerHTML=`<input type="text" class="spec-key" value="${key.replace(/"/g,'&quot;')}" placeholder="ej: Garantía">
                <input type="text" class="spec-val" value="${val.replace(/"/g,'&quot;')}" placeholder="ej: A18 Pro">
                <button type="button" class="list-rm" onclick="document.getElementById('${id}').remove()">✕</button>`;
   document.getElementById('specsContainer').appendChild(d);
