@@ -41,7 +41,7 @@
     const meta = typeof getDetailMeta === 'function'
       ? getDetailMeta(product)
       : {capacity:'',color:'',battery:'',isSealed:product.tag === 'Sellado'};
-    const ars = Number(product.price) || 0;
+    const ars = typeof catalogPrice === 'function' ? catalogPrice(product) : (Number(product.price) || 0);
     const usd = Number(product.usd) || 0;
     let selected = null;
 
