@@ -3114,7 +3114,9 @@ function toggleTheme(){const h=document.documentElement,b=document.getElementByI
 
 // ── STATE ──
 let cart=JSON.parse(localStorage.getItem('cart_rc')||'[]');
-let dolarBlue=1425;
+let dolarBlue=0;
+try{const saved=JSON.parse(localStorage.getItem('rc_blue_venta')||'null');if(Number(saved?.venta)>0)dolarBlue=Number(saved.venta)+15;}catch(e){}
+function catalogPrice(p){const usd=Number(p?.usd)||0;return usd>0&&dolarBlue>0?Math.round(usd*dolarBlue):Number(p?.price)||0;}
 let hiddenIds=new Set();
 let customProducts={};
 let customProductGroups={};
@@ -3175,7 +3177,7 @@ function getCatalogModelClass(name){
 }
 
 function getCatalogVariantPrice(p){
-  const ars=Number(p?.price)||0;
+  const ars=catalogPrice(p);
   return ars>0?ars:(Number(p?.usd)||0);
 }
 
@@ -3426,7 +3428,7 @@ function selectCatalogVariant(card,group,variant,showSelected=false){
     }
   }
 
-  const pricePesos=Number(variant.price)||0;
+  const pricePesos=catalogPrice(variant);
   const usd=Number(variant.usd)||0;
   const price=card.querySelector('.prod-price');
   const usdNode=card.querySelector('.prod-usd');
@@ -3613,10 +3615,8 @@ function renderCustomCards(){
 }
 // ── DÓLAR ──
 async function fetchDolar(){
-  try{const r=await fetch('https://dolarapi.com/v1/dolares/blue');const d=await r.json();dolarBlue=d.venta+25;}catch(e){dolarBlue=1425;}
-  document.querySelectorAll('.prod-price[data-usd]').forEach(el=>{el.textContent=money(Number(el.dataset.usd)*dolarBlue)});
+  try{const r=await fetch('https://dolarapi.com/v1/dolares/blue',{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();const venta=Number(d.venta);if(!Number.isFinite(venta)||venta<=0)throw new Error('Cotización inválida');const next=venta+15;const changed=next!==dolarBlue;dolarBlue=next;try{localStorage.setItem('rc_blue_venta',JSON.stringify({venta,updatedAt:d.fechaActualizacion}));}catch(e){}if(changed&&Object.keys(customProducts).length)renderCustomCards();}catch(e){console.warn('No se pudo actualizar el dólar blue; se conserva la última cotización válida.',e);}
 }
-fetchDolar();
 setInterval(fetchDolar,300000);
 
 // ── HELPERS ──
@@ -3703,7 +3703,7 @@ function getDetailRelatedProducts(p){
 }
 
 function getDetailPrice(p){
-  return Number(p?.price)>0?Math.round(Number(p.price)):0;
+  return Math.round(catalogPrice(p));
 }
 
 function getDetailStockLabel(p){
@@ -4310,8 +4310,9 @@ if(document.readyState==='loading'){
   window.setTimeout(startInitialEntrance,550);
 }
 loadCatalogFromSupabase();
+fetchDolar();
 </script>
-<script src="payment-sheet.js?v=20261127-1"></script>
+<script src="payment-sheet.js?v=20261127-2"></script>
 <script>
 (function(){
  const promo=document.querySelector('.rc-finance');if(!promo)return;
