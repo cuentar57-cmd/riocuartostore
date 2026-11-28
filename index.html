@@ -2771,7 +2771,15 @@ nav .logo-wrap{flex:0 0 auto!important}
 #storePage>.hero>.hero-inner>.reference-trust{grid-column:1/-1;grid-row:5;text-align:center!important;margin-top:48px!important}
 }
 </style>
-</head>
+<style>
+.rc-wa-icon{width:1.15em!important;height:1.15em!important;flex:none;vertical-align:middle}
+.reference-button-secondary,.prod-consult-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:6px!important}
+nav .nav-right .nav-category{border:1px solid #42bdf0!important;animation:rc-nav-glow 2.8s ease-in-out infinite;position:relative}
+nav .nav-right .nav-category-used{animation-delay:1.4s}
+nav .nav-right .nav-category:hover,nav .nav-right .nav-category:focus-visible{border-color:#078bd2!important;box-shadow:0 0 0 3px #20b8f333,0 0 14px #20b8f366!important}
+@keyframes rc-nav-glow{0%,100%{box-shadow:0 0 0 0 #26b8ef00,0 0 5px #26b8ef22}50%{box-shadow:0 0 0 3px #26b8ef30,0 0 13px #26b8ef66}}
+@media(prefers-reduced-motion:reduce){nav .nav-right .nav-category{animation:none!important;box-shadow:0 0 5px #26b8ef44}}
+</style></head>
 <body class="loading">
 
 <div id="loaderScreen" role="status" aria-live="polite">
@@ -2839,7 +2847,7 @@ nav .logo-wrap{flex:0 0 auto!important}
     <p class="hero-under hero-entry" style="--entry-delay:500ms">Consultá disponibilidad, medios de pago y opciones de financiación.</p>
     <div class="hero-actions hero-entry" style="--entry-delay:590ms">
       <a href="#seminuevos" class="reference-button" onclick="showPage('storePage')">Ver equipos <span>›</span></a>
-      <a href="https://wa.me/5493584015415" target="_blank" rel="noopener" class="reference-button reference-button-secondary">Consultar <span class="reference-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></a>
+      <a href="https://wa.me/5493584015415" target="_blank" rel="noopener" class="reference-button reference-button-secondary">Consultar <svg class="rc-wa-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L4 20.5l1.4-4.1a8.5 8.5 0 1 1 15.1-4.9Z"/><path d="M8.3 8.1c.4 3.9 3.6 7.1 7.5 7.5l1.1-1.9-2.4-1.2-1 1a6.5 6.5 0 0 1-3.4-3.4l1-1-1.2-2.4Z"/></svg></a>
     </div>
     <div class="reference-trust hero-entry" style="--entry-delay:960ms">
       <div class="reference-trust-heading">
@@ -3621,7 +3629,7 @@ function renderCustomCards(){
     detailsButton.textContent='Formas de pago ›';
     detailsButton.classList.add('prod-payment-btn');
     const consult=document.createElement('button');
-    consult.type='button';consult.className='prod-btn prod-consult-btn';consult.textContent='Consultar';
+    consult.type='button';consult.className='prod-btn prod-consult-btn';consult.innerHTML="<svg class=\"rc-wa-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L4 20.5l1.4-4.1a8.5 8.5 0 1 1 15.1-4.9Z\"/><path d=\"M8.3 8.1c.4 3.9 3.6 7.1 7.5 7.5l1.1-1.9-2.4-1.2-1 1a6.5 6.5 0 0 1-3.4-3.4l1-1-1.2-2.4Z\"/></svg><span>Consultar</span>";
     actions.append(consult,detailsButton);
     right.append(pricePanel,actions);
     const gift=document.createElement('div');gift.className='rc-card-gift';
